@@ -2,6 +2,7 @@ package kr.simula.calcula.core.factory;
 
 import java.util.LinkedList;
 
+import kr.simula.calcula.builder.BuildException;
 import kr.simula.calcula.core.Block;
 import kr.simula.calcula.core.Context;
 import kr.simula.calcula.core.Executable;
@@ -23,7 +24,7 @@ public abstract class AbstractBlock implements Block {
 
 	public void append(Node node) {
 		if(!(node instanceof Executable)){
-			throw new DslBuildException("Block has only Executable nodes. " + node);
+			throw new BuildException("Block has only Executable nodes. " + node);
 		}
 		
 		nodeList.add((Executable)node);

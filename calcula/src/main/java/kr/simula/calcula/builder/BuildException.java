@@ -12,10 +12,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package kr.simula.calcula.core.factory;
+package kr.simula.calcula.builder;
 
+import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonToken;
 import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.misc.Interval;
 
 
 /**
@@ -26,7 +28,7 @@ import org.antlr.v4.runtime.Token;
  * @date 2012. 10. 22.
  * @since	1.0
  */
-public class DslBuildException extends RuntimeException {
+public class BuildException extends RuntimeException {
 
 	private static final long serialVersionUID = 1050340953390702771L;
 	
@@ -35,7 +37,7 @@ public class DslBuildException extends RuntimeException {
 	/**
 	 * 
 	 */
-	public DslBuildException() {
+	public BuildException() {
 		super();
 	}
 
@@ -43,14 +45,14 @@ public class DslBuildException extends RuntimeException {
 	 * @param arg0
 	 * @param arg1
 	 */
-	public DslBuildException(String message, Throwable cause) {
+	public BuildException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
 	/**
 	 * @param arg0
 	 */
-	public DslBuildException(String message) {
+	public BuildException(String message) {
 		super(message);
 	}
 
@@ -58,7 +60,7 @@ public class DslBuildException extends RuntimeException {
 	/**
 	 * @param arg0
 	 */
-	public DslBuildException(Throwable cause) {
+	public BuildException(Throwable cause) {
 		super(cause);
 	}
 
@@ -79,12 +81,13 @@ public class DslBuildException extends RuntimeException {
 			buf.append("\n");
 			buf.append( " at [").append(token.getLine()).append(",").append(token.getCharPositionInLine()).append("] ");
 			
-//			if(token instanceof CommonToken){
-//				int index = ((CommonToken)token).getStartIndex();
-//				buf.append("\n").append( token.getInputStream().substring(0, index) );
-//			} else {
-//				buf.append("\n").append( token.getInputStream().substring(0, token.getInputStream().index()) );
-//			}
+			if(token instanceof CommonToken){
+				int index = ((CommonToken)token).getStartIndex();
+				buf.append("\n").append( token.getInputStream().getText(new Interval(0, index)) );
+			} else {
+				CharStream stream = token.getInputStream();
+				buf.append("\n").append( stream.getText(new Interval(0, stream.index())) );
+			}
 			
 			
 			return buf.toString();

@@ -16,6 +16,8 @@ package kr.simula.calcula.core.factory.def;
 
 import java.math.BigDecimal;
 
+import kr.simula.calcula.builder.BuildException;
+import kr.simula.calcula.builder.OperatorFactory;
 import kr.simula.calcula.core.Context;
 import kr.simula.calcula.core.DslException;
 import kr.simula.calcula.core.Executable;
@@ -23,8 +25,6 @@ import kr.simula.calcula.core.Gettable;
 import kr.simula.calcula.core.Ref;
 import kr.simula.calcula.core.Settable;
 import kr.simula.calcula.core.Operator.Binary;
-import kr.simula.calcula.core.factory.DslBuildException;
-import kr.simula.calcula.core.factory.OperatorFactory;
 import kr.simula.calcula.core.factory.TypeMeta;
 
 /**
@@ -102,7 +102,7 @@ public class OperatorFactoryImpl implements OperatorFactory {
 			return new SettableWrapper(ref ,  type);
 		}
 		
-		throw new DslBuildException(ref + " is not Ref or not supported unchecked mode.");
+		throw new BuildException(ref + " is not Ref or not supported unchecked mode.");
 	}
 	
 	@SuppressWarnings("rawtypes")
@@ -139,7 +139,7 @@ public class OperatorFactoryImpl implements OperatorFactory {
 		if(gettable != null) {
 			return new Negate(gettable);
 		} else {
-			throw new DslBuildException("<Negate> Illegal operand data type " + operand);
+			throw new BuildException("<Negate> Illegal operand data type " + operand);
 		}
 	}
 
@@ -250,13 +250,13 @@ public class OperatorFactoryImpl implements OperatorFactory {
 		Gettable<BigDecimal> gettable1 = (Gettable<BigDecimal>)getGettable(operand1, BigDecimal.class);
 		
 		if(gettable1 == null) {
-			throw new DslBuildException("<" + operator + "> Illegal operand data type " + operand1);
+			throw new BuildException("<" + operator + "> Illegal operand data type " + operand1);
 		}
 		
 		Gettable<BigDecimal> gettable2 = (Gettable<BigDecimal>)getGettable(operand2, BigDecimal.class);
 		
 		if(gettable2 == null) {
-			throw new DslBuildException("<" + operator + "> Illegal operand data type " + operand2);
+			throw new BuildException("<" + operator + "> Illegal operand data type " + operand2);
 		}
 		
 		NumberBinary op = new NumberBinary(operator, gettable1, gettable2);
@@ -458,13 +458,13 @@ public class OperatorFactoryImpl implements OperatorFactory {
 		Gettable<Comparable> gettable1 = (Gettable<Comparable>)getGettable(operand1, Comparable.class);
 		
 		if(gettable1 == null) {
-			throw new DslBuildException("<" + operator + "> Illegal operand data type " + operand1);
+			throw new BuildException("<" + operator + "> Illegal operand data type " + operand1);
 		}
 		
 		Gettable<Comparable> gettable2 = (Gettable<Comparable>)getGettable(operand2, Comparable.class);
 		
 		if(gettable2 == null) {
-			throw new DslBuildException("<" + operator + "> Illegal operand data type " + operand2);
+			throw new BuildException("<" + operator + "> Illegal operand data type " + operand2);
 		}
 		
 		CompareBinary op = new CompareBinary(operator, gettable1, gettable2);
@@ -540,13 +540,13 @@ public class OperatorFactoryImpl implements OperatorFactory {
 		Gettable<Boolean> gettable1 = (Gettable<Boolean>)getGettable(operand1, Boolean.class);
 		
 		if(gettable1 == null) {
-			throw new DslBuildException("<" + operator + "> Illegal operand data type " + operand1);
+			throw new BuildException("<" + operator + "> Illegal operand data type " + operand1);
 		}
 		
 		Gettable<Boolean> gettable2 = (Gettable<Boolean>)getGettable(operand2, Boolean.class);
 		
 		if(gettable2 == null) {
-			throw new DslBuildException("<" + operator + "> Illegal operand data type " + operand2);
+			throw new BuildException("<" + operator + "> Illegal operand data type " + operand2);
 		}
 		
 		LogicalBinary op = new LogicalBinary(operator, gettable1, gettable2);
@@ -565,7 +565,7 @@ public class OperatorFactoryImpl implements OperatorFactory {
 
 	public Executable assign(Settable<?> assignee, Gettable<?> assigned) {
 		if(assignee == null){
-			throw new DslBuildException("Assignee must not be null.");
+			throw new BuildException("Assignee must not be null.");
 		}
 		Settable<?> settable = assignee;
 		Gettable<?> gettable = assigned;
@@ -579,7 +579,7 @@ public class OperatorFactoryImpl implements OperatorFactory {
 			} else if(assigned.type() == TypeMeta.UNKNOWN_TYPE.type()){
 				gettable = getGettable(assigned, assignee.type());
 			}  else {
-				throw new DslBuildException("Assigned type[" 
+				throw new BuildException("Assigned type[" 
 						+ assigned.type() + "] is not matched to assignee type[" 
 						+ assignee.type() + "].");
 			}

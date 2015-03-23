@@ -17,9 +17,9 @@ package kr.simula.calcula.core.factory.def;
 import java.math.BigDecimal;
 import java.util.HashMap;
 
+import kr.simula.calcula.builder.BuildException;
+import kr.simula.calcula.builder.TypeFactory;
 import kr.simula.calcula.core.DataSet;
-import kr.simula.calcula.core.factory.DslBuildException;
-import kr.simula.calcula.core.factory.TypeFactory;
 import kr.simula.calcula.core.factory.TypeMeta;
 
 /**
@@ -55,7 +55,7 @@ public class TypeFactoryImpl implements TypeFactory {
 				try {
 					type = Class.forName(typeExpression);
 				} catch (ClassNotFoundException e) {
-					throw new DslBuildException("Unknown type " + typeExpression);
+					throw new BuildException("Unknown type " + typeExpression);
 				}
 			}
 			
@@ -74,7 +74,7 @@ public class TypeFactoryImpl implements TypeFactory {
 		} else if( "String".equals( typeExpression ) ){
 			type = String.class;
 		} else {
-			throw new DslBuildException("Constraint must be on Number or String type" + typeExpression);
+			throw new BuildException("Constraint must be on Number or String type" + typeExpression);
 		}
 		
 		int idx = constraints.indexOf(',');

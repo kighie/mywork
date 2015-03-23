@@ -14,6 +14,8 @@
  */
 package kr.simula.calcula.core.factory;
 
+import kr.simula.calcula.builder.BuildException;
+
 
 /**
  * <pre>
@@ -22,7 +24,7 @@ package kr.simula.calcula.core.factory;
  * @date 2012. 10. 19.
  * @since	1.0
  */
-public class NotImplementedException extends DslBuildException {
+public class NotImplementedException extends BuildException {
 	private static final long serialVersionUID = -35187138330219322L;
 
 	public NotImplementedException() {

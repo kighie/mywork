@@ -12,48 +12,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package kr.simula.calcula.core.factory;
+package kr.simula.calcula.builder;
 
-import java.util.Map.Entry;
+import kr.simula.calcula.core.factory.TypeMeta;
 
-import kr.simula.calcula.core.QName;
-import kr.simula.calcula.core.Ref;
 
 /**
  * 
  * @author IkChan Kwon
- * @date 2012. 10. 10.
+ * @date 2012. 10. 11.
  * @since	1.0
  */
-public interface BuildContext {
-	
-	BuildContext getParent() ;
+public interface TypeFactory {
 	
 	/**
-	 * if typeChecked is false, variable type will not be checked in compile time.  
-	 * @return typeChecked
+	 * 
+	 * @param typeName
+	 * @return
 	 */
-	boolean isTypeChecked() ;
-	
-	void registerVariable(String name, Ref ref);
-	
-	Ref getVariable(String name);
-
-	Iterable<Entry<String, Ref>> variables();
-	
-	QName getQName(String name);
-
-	void registerQName(String name, QName qname);
-	
-	Ref getRef(QName qname);
-
-	Iterable<Entry<QName, Ref>> references();
-
-	void registerRef(QName qname, Ref ref);
-	
-	void registerConstant(String name, Ref ref);
-	
-	Ref getConstant(String name);
+	TypeMeta parseType(String typeExpression);
 	
 	
 }

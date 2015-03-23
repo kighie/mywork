@@ -17,18 +17,18 @@ package kr.simula.calcula.core.factory.def;
 import java.util.LinkedList;
 import java.util.List;
 
+import kr.simula.calcula.builder.BuildContext;
+import kr.simula.calcula.builder.BuildException;
+import kr.simula.calcula.builder.StatementFactory;
 import kr.simula.calcula.core.Block;
 import kr.simula.calcula.core.Context;
 import kr.simula.calcula.core.Gettable;
 import kr.simula.calcula.core.Node;
 import kr.simula.calcula.core.Scope;
-import kr.simula.calcula.core.factory.BuildContext;
 import kr.simula.calcula.core.factory.ConditionalStatement;
-import kr.simula.calcula.core.factory.DslBuildException;
 import kr.simula.calcula.core.factory.EvalutateWhenStatement;
 import kr.simula.calcula.core.factory.IfStatement;
 import kr.simula.calcula.core.factory.NotImplementedException;
-import kr.simula.calcula.core.factory.StatementFactory;
 
 /**
  * <pre>
@@ -73,7 +73,7 @@ public class StatementFactoryImpl implements StatementFactory {
 		
 		public Block appendElseIf(Node condition) {
 			if( list.get(list.size()-1) instanceof ElseStatement ){
-				throw new DslBuildException("IF statement already completed.");
+				throw new BuildException("IF statement already completed.");
 			}
 			if( condition instanceof Gettable ){
 				Gettable<?> g = (Gettable<?>)condition;
@@ -84,12 +84,12 @@ public class StatementFactoryImpl implements StatementFactory {
 					return next;
 				}
 			}
-			throw new DslBuildException("Else if statement condition must be a logical expression but " + condition);
+			throw new BuildException("Else if statement condition must be a logical expression but " + condition);
 		}
 		
 		public Block appendElse() {
 			if( list.get(list.size()-1) instanceof ElseStatement ){
-				throw new DslBuildException("IF statement already completed.");
+				throw new BuildException("IF statement already completed.");
 			}
 			ElseStatement last = new ElseStatement();
 			list.add(last);

@@ -16,6 +16,9 @@ package kr.simula.calcula.core.factory.def;
 
 import java.util.List;
 
+import kr.simula.calcula.builder.BuildContext;
+import kr.simula.calcula.builder.BuildException;
+import kr.simula.calcula.builder.ReferenceFactory;
 import kr.simula.calcula.core.Context;
 import kr.simula.calcula.core.DslException;
 import kr.simula.calcula.core.Executable;
@@ -27,9 +30,6 @@ import kr.simula.calcula.core.Settable;
 import kr.simula.calcula.core.bean.MethodUtils;
 import kr.simula.calcula.core.bean.PropertyUtils;
 import kr.simula.calcula.core.factory.AbstractRef;
-import kr.simula.calcula.core.factory.BuildContext;
-import kr.simula.calcula.core.factory.DslBuildException;
-import kr.simula.calcula.core.factory.ReferenceFactory;
 import kr.simula.calcula.core.factory.TypeMeta;
 
 /**
@@ -72,7 +72,7 @@ public class ReferenceFactoryImpl implements ReferenceFactory {
 			return simpleRef;
 		}
 		
-		throw new DslBuildException("Unknown Reference : " + name );
+		throw new BuildException("Unknown Reference : " + name );
 	}
 
 	/* (non-Javadoc)
@@ -97,7 +97,7 @@ public class ReferenceFactoryImpl implements ReferenceFactory {
 		Ref ref = buildContext.getVariable(name);
 		
 		if( ref != null){
-			throw new DslBuildException("Variable[" + name + "] is already declared.");
+			throw new BuildException("Variable[" + name + "] is already declared.");
 		}
 		
 		QName qname = buildContext.getQName(name);
@@ -118,13 +118,13 @@ public class ReferenceFactoryImpl implements ReferenceFactory {
 		Ref ref = buildContext.getVariable(name);
 		
 		if( ref != null){
-			throw new DslBuildException("Constant name [" + name + "] is already declared as variable.");
+			throw new BuildException("Constant name [" + name + "] is already declared as variable.");
 		}
 		
 		ref = buildContext.getConstant(name);
 		
 		if( ref != null){
-			throw new DslBuildException("Constant [" + name + "] is already declared.");
+			throw new BuildException("Constant [" + name + "] is already declared.");
 		}
 		
 		QName qname = buildContext.getQName(name);
@@ -155,7 +155,7 @@ public class ReferenceFactoryImpl implements ReferenceFactory {
 		Ref ref = buildContext.getRef(qname);
 		
 		if( ref != null){
-			throw new DslBuildException("Ref[" + qname + "] is already declared.");
+			throw new BuildException("Ref[" + qname + "] is already declared.");
 		}
 	
 		ref = new SimpleReference(qname, typeMeta);
@@ -377,7 +377,7 @@ public class ReferenceFactoryImpl implements ReferenceFactory {
 			super(qname, typeMeta);
 			this.parent = parent;
 			if(parent == null){
-				throw new DslBuildException("Reference property must have a parent reference.");
+				throw new BuildException("Reference property must have a parent reference.");
 			}
 			name = qname.getLastPath();
 		}
@@ -451,7 +451,7 @@ public class ReferenceFactoryImpl implements ReferenceFactory {
 			super(qname, typeMeta);
 			this.parent = parent;
 			if(parent == null){
-				throw new DslBuildException("Reference method must have a parent reference.");
+				throw new BuildException("Reference method must have a parent reference.");
 			}
 			this.methodName = qname.getLastPath();
 			this.argDecls = args;

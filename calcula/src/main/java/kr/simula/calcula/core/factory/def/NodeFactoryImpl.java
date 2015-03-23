@@ -20,6 +20,13 @@ import java.math.MathContext;
 import java.util.LinkedList;
 import java.util.List;
 
+import kr.simula.calcula.builder.BuildContext;
+import kr.simula.calcula.builder.BuildException;
+import kr.simula.calcula.builder.NodeFactory;
+import kr.simula.calcula.builder.OperatorFactory;
+import kr.simula.calcula.builder.ReferenceFactory;
+import kr.simula.calcula.builder.StatementFactory;
+import kr.simula.calcula.builder.TypeFactory;
 import kr.simula.calcula.core.Block;
 import kr.simula.calcula.core.Context;
 import kr.simula.calcula.core.Executable;
@@ -29,17 +36,10 @@ import kr.simula.calcula.core.NodeToken;
 import kr.simula.calcula.core.Ref;
 import kr.simula.calcula.core.Settable;
 import kr.simula.calcula.core.factory.AbstractBlock;
-import kr.simula.calcula.core.factory.BuildContext;
 import kr.simula.calcula.core.factory.CaseWhenTerm;
-import kr.simula.calcula.core.factory.DslBuildException;
 import kr.simula.calcula.core.factory.EvalutateWhenStatement;
 import kr.simula.calcula.core.factory.IfStatement;
-import kr.simula.calcula.core.factory.NodeFactory;
 import kr.simula.calcula.core.factory.NotImplementedException;
-import kr.simula.calcula.core.factory.OperatorFactory;
-import kr.simula.calcula.core.factory.ReferenceFactory;
-import kr.simula.calcula.core.factory.StatementFactory;
-import kr.simula.calcula.core.factory.TypeFactory;
 import kr.simula.calcula.core.factory.TypeMeta;
 
 /**
@@ -234,14 +234,14 @@ public class NodeFactoryImpl implements NodeFactory {
 
 	protected Gettable<?> getGettable(BuildContext buildContext, Node node){
 		if(node == null){
-			throw new DslBuildException("Node is null." );
+			throw new BuildException("Node is null." );
 		}
 		
 		if(node instanceof Gettable){
 			return (Gettable<?>)node;
 		} 
 		
-		throw new DslBuildException("Node " + node + " is not Gettable");
+		throw new BuildException("Node " + node + " is not Gettable");
 	}
 
 	protected Settable<?> getSettable(BuildContext buildContext, Node node){
@@ -249,7 +249,7 @@ public class NodeFactoryImpl implements NodeFactory {
 			return (Settable<?>)node;
 		} 
 		
-		throw new DslBuildException("Node " + node + " is not Settable");
+		throw new BuildException("Node " + node + " is not Settable");
 	}
 	
 	public Node operator(BuildContext buildContext, NodeToken token, Node operand) {
@@ -265,7 +265,7 @@ public class NodeFactoryImpl implements NodeFactory {
 		case NOT:
 			return operatorFactory.not(getGettable(buildContext, operand));
 		default:
-			throw new DslBuildException("Unknown Unary Operator " + token);
+			throw new BuildException("Unknown Unary Operator " + token);
 		}
 	}
 
@@ -304,7 +304,7 @@ public class NodeFactoryImpl implements NodeFactory {
 		case OR:
 			return operatorFactory.or(op1, op2);
 		default:
-			throw new DslBuildException("Unknown Binary Operator " + token);
+			throw new BuildException("Unknown Binary Operator " + token);
 		}
 	}
 	
@@ -338,7 +338,7 @@ public class NodeFactoryImpl implements NodeFactory {
 		
 		if(type == null){
 			if(initValNode == null){
-				throw new DslBuildException("Variable type is missing. " + name);
+				throw new BuildException("Variable type is missing. " + name);
 			}
 			type = initValNode.type().getName();
 			typeMeta = typeFactory.parseType(type);
@@ -348,7 +348,7 @@ public class NodeFactoryImpl implements NodeFactory {
 		
 		if( initValNode != null ){
 			if(!typeMeta.type().isAssignableFrom(initValNode.type())){
-				throw new DslBuildException("Variable type[" 
+				throw new BuildException("Variable type[" 
 						+ typeMeta + "] and value type["
 						+ initValNode.type().getName() + "] are mismatched.");
 			}
@@ -377,7 +377,7 @@ public class NodeFactoryImpl implements NodeFactory {
 		}
 		
 		if(!typeMeta.type().isAssignableFrom(initValNode.type())){
-			throw new DslBuildException("Constant type[" 
+			throw new BuildException("Constant type[" 
 					+ typeMeta + "] and value type["
 					+ initValNode.type().getName() + "] are mismatched.");
 		}
@@ -387,7 +387,7 @@ public class NodeFactoryImpl implements NodeFactory {
 	
 	public Executable declareRef(BuildContext buildContext, String name, String type) {
 		if(type == null){
-			throw new DslBuildException("Ref[" + name+ "] type is null." );
+			throw new BuildException("Ref[" + name+ "] type is null." );
 		}
 		
 		TypeMeta typeMeta = typeFactory.parseType(type);
@@ -433,7 +433,7 @@ public class NodeFactoryImpl implements NodeFactory {
 		if(gettable.type() == Boolean.class){
 			return statementFactory.ifStatement(buildContext, (Gettable<Boolean>)condition);
 		}
-		throw new DslBuildException("Condition node must be a Gettable<Boolean>");
+		throw new BuildException("Condition node must be a Gettable<Boolean>");
 	}
 
 	
