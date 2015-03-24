@@ -14,13 +14,15 @@
  */
 package kr.simula.calcula.antlr;
 
-import kr.simula.calcula.antlr.CalculaParser.FuncExpContext;
+import kr.simula.calcula.antlr.CalculaParser.FormulaExpressionContext;
+import kr.simula.calcula.antlr.CalculaParser.OperatorExpressionContext;
 import kr.simula.calcula.builder.CalculaBuilder;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.TokenStream;
+import org.antlr.v4.runtime.tree.ParseTree;
 import org.junit.Test;
 
 /**
@@ -29,18 +31,33 @@ import org.junit.Test;
  */
 public class CalculaParserTests {
 
-	@Test
-	public void testSimple(){
+	static final String FormulaExpression1 = "=(1+3 * 4 + 15 / (fn4(1,2,3) + fn2() ) * aa.bb.meth())";
+	static final String OperatorExpression1 = "1+3 * 4 + 15 / (fn4(1,2,3) + fn2() ) * aa.bb.meth()";
+	
+	private CalculaParser createParser(String expression){
+
 		CalculaBuilder calculaBuilder = new CalculaBuilder();
-		CharStream input = new ANTLRInputStream("  call( aaa, put2(33,11) )");
+		CharStream input = new ANTLRInputStream(FormulaExpression1);
 		CalculaLexer lexer = new CalculaLexer(input);
 		TokenStream tokenStream = new CommonTokenStream(lexer);
 		CalculaParser parser =new CalculaParser(tokenStream, calculaBuilder);
 		
-		FuncExpContext ctx = parser.funcExp();
+		return parser;
+	}
+	
+	@Test
+	public void testFormulaExpression(){
+		CalculaParser parser = createParser(FormulaExpression1);
+		FormulaExpressionContext ctx = parser.formulaExpression();
 		System.out.println();
 		System.out.println(ctx.children);
-		
-		
+	}
+	
+	@Test
+	public void testOperatorExpression1(){
+		CalculaParser parser = createParser(OperatorExpression1);
+		OperatorExpressionContext ctx = parser.operatorExpression();
+		System.out.println();
+		System.out.println(ctx.toStringTree());
 	}
 }

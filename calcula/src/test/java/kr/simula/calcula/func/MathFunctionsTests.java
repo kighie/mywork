@@ -35,8 +35,8 @@ public class MathFunctionsTests {
 	
 	@Test
 	public void testACOS(){
-		double acos1 = MathFunctions.ACOS(0.3);
-		BigDecimal acos2 = MathFunctions.ACOS(new BigDecimal("0.3"));
+		double acos1 = MathFunctions.acos(0.3);
+		BigDecimal acos2 = MathFunctions.acos(new BigDecimal("0.3"));
 		
 		Assert.assertEquals( 1.266103673D, acos1, EXCEL_JAVA_GAP);
 		Assert.assertEquals( acos1, acos2.doubleValue(), 0);
@@ -46,8 +46,8 @@ public class MathFunctionsTests {
 
 	@Test
 	public void testACOSH(){
-		double acos1 = MathFunctions.ACOSH(1.2);
-		BigDecimal acos3 = MathFunctions.ACOSH(1.2, SCALE, RoundingMode.HALF_EVEN);
+		double acos1 = MathFunctions.acosh(1.2);
+		BigDecimal acos3 = MathFunctions.acosh(1.2, SCALE, RoundingMode.HALF_EVEN);
 		
 		Assert.assertEquals( 0.622362504D, acos1, EXCEL_JAVA_GAP);
 		Assert.assertEquals( 0.622362504D, acos3.doubleValue(), 0);

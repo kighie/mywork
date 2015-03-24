@@ -18,6 +18,7 @@ options {
 	language = Java;
 }
 
+
 @parser::header {
 	package kr.simula.calcula.antlr;
 	
@@ -55,24 +56,100 @@ options {
 	package kr.simula.calcula.antlr;
 }
 
+
+tokens {
+  	NEGATION
+}
+
+
 /* *************************************
  * Formula Expression
  *************************************** */
 
-funcExp  
-	: IDENT '(' term (',' term )+  ')'
+formulaExpression 
+	: '='
+		(operatorExpression
+		| funcCallExp
+		| methodCallExp
+		)
 	;
 
+funcCallExp  
+	: IDENT '(' arguments? ')'
+	;
 
-term
+methodCallExp  
+	: qualifiedName '.' IDENT '(' arguments? ')'
+	;
+
+arguments 
+	: ( operatorExpression (',' operatorExpression )*  )?
+	;
+
+formulaTerm
 	: BOOLEAN
 	| STRING_LITERAL
 	| NUMBER
 	| IDENT
-
+	| qualifiedName
+	| funcCallExp
+	| methodCallExp
 	;
 
+qualifiedName
+	:	IDENT ('.' IDENT)* 
+	;
 
+/* *****************************
+ * Numeric Expression
+ ******************************/
+negation
+	:	'-'
+	;
+	
+unary
+	:  negation? ( 
+		formulaTerm
+		| '(' operatorExpression ')'
+		)
+	;
+
+multiplicative
+    :   unary ( ( '*' | '/' | '%' ) unary )*
+    ;
+    
+additiveExpression
+    :   multiplicative ( ('+' | '-') multiplicative )*
+    ;
+    
+/*
+	String Expression
+*/
+
+stringExpression
+    :   additiveExpression ( '&' additiveExpression )* 
+    ;
+  
+/*
+	Logical Expression
+*/
+comparison
+	: stringExpression ( ('=' |'!='|'<>' |'>' |'>=' |'<' |'<=' ) stringExpression)*
+	;
+	
+notExpression
+	: ('not' | 'NOT') ? comparison
+	;
+	
+logicalExpression
+	: notExpression ( ('and' |'or' | 'AND' | 'OR' ) operatorExpression )*
+	;
+    
+operatorExpression
+	: logicalExpression 
+	;
+    
+    
 /* *********************************************
 	Lexer rules
 ********************************************* */
@@ -88,7 +165,7 @@ fragment LETTER
 //       | '\u1100'..'\u11FF'
     ;
 
-NUMBER :   DIGIT+ ('.' DIGIT+)? ;
+NUMBER : DIGIT+ ('.' DIGIT+)? ;
 
 STRING_LITERAL
 	:	( '"' ( ~('"'|'\r'|'\n') )* '"' )
@@ -100,8 +177,8 @@ IDENT :  LETTER (LETTER|DIGIT)* ;
 
 WS : (' ' | '\t'| '\n'| '\r'| '\f') + -> channel(HIDDEN);
 
-COMMENT : '//' .* ('\n' | '\r') -> channel(HIDDEN);
-MULTILINE_COMMENT : '/*' .* '*/' -> channel(HIDDEN);
+COMMENT : '//' ()* EOL -> channel(HIDDEN);
+MULTILINE_COMMENT : '/*' ()* '*/' -> channel(HIDDEN);
 
 fragment EOL 	
 	:	(	( '\r\n' ) // DOS
