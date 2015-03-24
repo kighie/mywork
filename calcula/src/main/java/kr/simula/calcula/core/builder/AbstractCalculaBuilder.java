@@ -12,36 +12,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package kr.simula.calcula.core;
+package kr.simula.calcula.core.builder;
 
 /**
- * <pre>
- * Common interface of all Node classes.
- * </pre>
  * @author kighie@gmail.com
  *
  */
-public interface Node {
-	/**
-	 * Node's content value type
-	 */
-	public enum ValueType {
-		VOID, 
-		TEXT,
-		NUMERIC,
-		LOGICAL,
-		OBJECT
-	}
-	
-	/**
-	 * Returns the value type of this node.
-	 * @return
-	 */
-	ValueType getValueType();
-	
-	/**
-	 * Returns grammatical token for this node.
-	 * @return
-	 */
-	String getNodeToken();
+public abstract class AbstractCalculaBuilder implements CalculaBuilder {
+
 }

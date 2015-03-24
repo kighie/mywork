@@ -16,12 +16,12 @@ package kr.simula.calcula.core;
 
 /**
  * 
- * @author kighie
+ * @author IkChan Kwon
+ * @date 2012. 10. 11.
  * @since	1.0
- * @param <T>
  */
-public interface Executable extends Node {
-
-	void execute(Context context);
+public interface Block extends Executable {
+	
+	void append(Node node);
 	
 }

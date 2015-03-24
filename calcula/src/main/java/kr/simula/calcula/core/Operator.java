@@ -22,7 +22,7 @@ package kr.simula.calcula.core;
  * @author IkChan Kwon
  * @since	1.0
  */
-public interface Operator<T> {
+public interface Operator<T> extends Node {
 	
 	public interface Unary<T, OP> extends Operator<T> {
 		T eval(OP val);

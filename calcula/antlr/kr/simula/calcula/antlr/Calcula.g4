@@ -27,6 +27,7 @@ options {
 	
 	import kr.simula.calcula.core.*;
 	import kr.simula.calcula.core.builder.*;
+	import kr.simula.calcula.def.*;
 }
 
 @parser::members {
