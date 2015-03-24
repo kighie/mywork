@@ -57,7 +57,7 @@ public class QName implements Serializable {
 		}
 
 		public void remove() {
-			throw new DslException("Path in qname cannot be removed.");
+			throw new RtException("Path in qname cannot be removed.");
 		}
 	}
 	

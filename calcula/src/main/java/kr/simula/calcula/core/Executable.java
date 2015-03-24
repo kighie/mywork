@@ -20,7 +20,7 @@ package kr.simula.calcula.core;
  * @since	1.0
  * @param <T>
  */
-public interface Executable extends Node {
+public interface Executable {
 
 	void execute(Context context);
 	

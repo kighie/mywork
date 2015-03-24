@@ -28,8 +28,6 @@ public interface Context {
 
 	Object getAttribute(String name);
 
-	
-
 	Object getVariable(String name);
 	
 	void setVariable(String name, Object value);
@@ -37,12 +35,6 @@ public interface Context {
 	Iterable<Entry<String, Object>> attributes();
 
 	Iterable<Entry<String, Object>> variables();
-
-//	Object getInput(String name);
-//	void setOutput(String name, Object value);
-//	
-//	Iterable<Entry<String, Object>> inputs();
-//	Iterable<Entry<String, Object>> outputs();
 	
 	Object getReference(String name);
 	

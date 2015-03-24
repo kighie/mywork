@@ -1,4 +1,4 @@
-/* ******************************************************************************
+/* 
  * Copyright (c) 2012 IkChan Kwon kighie@gmail.com
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,33 @@
  */
 package kr.simula.calcula.core;
 
-import java.io.Serializable;
-
-
 /**
- * 
- * @author IkChan Kwon
- * @since	1.0
+ * <pre>
+ * Common interface of all Node classes.
+ * </pre>
+ * @author kighie@gmail.com
+ *
  */
-public interface Node extends Serializable {
+public interface Node {
+	/**
+	 * Node's content value type
+	 */
+	public enum ValueType {
+		TEXT,
+		NUMERIC,
+		LOGICAL,
+		OBJECT
+	}
 	
+	/**
+	 * Returns the value type of this node.
+	 * @return
+	 */
+	ValueType getValueType();
+	
+	/**
+	 * Returns grammatical token for this node.
+	 * @return
+	 */
+	String getNodeToken();
 }

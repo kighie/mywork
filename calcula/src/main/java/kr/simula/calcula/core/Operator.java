@@ -14,7 +14,6 @@
  */
 package kr.simula.calcula.core;
 
-import java.io.Serializable;
 
 
 
@@ -23,7 +22,7 @@ import java.io.Serializable;
  * @author IkChan Kwon
  * @since	1.0
  */
-public interface Operator<T> extends Serializable {
+public interface Operator<T> {
 	
 	public interface Unary<T, OP> extends Operator<T> {
 		T eval(OP val);

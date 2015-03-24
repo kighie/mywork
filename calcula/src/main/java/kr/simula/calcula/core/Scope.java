@@ -56,7 +56,7 @@ public class Scope implements Context {
 	}
 
 	/**
-	 * @see kr.simula.calcula.core.Context#getReference(kr.simula.calcula.core.QName)
+	 * @see net.kighie.dsl.core.Context#getReference(net.kighie.dsl.core.QName)
 	 */
 	public Object getReference(String name) {
 		return parent.getReference(name);
@@ -67,7 +67,7 @@ public class Scope implements Context {
 	}
 	
 	/**
-	 * @see kr.simula.calcula.core.Context#getVariable(java.lang.String)
+	 * @see net.kighie.dsl.core.Context#getVariable(java.lang.String)
 	 */
 	public Object getVariable(String name) {
 		Object value = variables.get(name);

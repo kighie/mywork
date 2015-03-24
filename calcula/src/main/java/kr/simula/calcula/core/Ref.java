@@ -22,18 +22,6 @@ package kr.simula.calcula.core;
  */
 public interface Ref extends Node {
 	
-	public enum TYPE {
-		VARIABLE,
-		CONST,
-		REF,
-		REF_PROPERTY,
-		REF_METHOD,
-		PROCEDURE,
-		FUNCTION,
-		RULE
-	}
-	
 	QName qualifiedName();
-	
-	TYPE refType();
+
 }
