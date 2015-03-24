@@ -18,7 +18,7 @@ package kr.simula.calcula.builder;
  * @author kighie@gmail.com
  *
  */
-public class CalculaBuilder {
+public interface CalculaBuilder {
 
 	
 }
