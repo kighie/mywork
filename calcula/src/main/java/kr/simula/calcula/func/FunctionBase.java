@@ -20,20 +20,73 @@ package kr.simula.calcula.func;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+import kr.simula.calcula.CalculaException;
+
 /**
  * @author kighie@gmail.com
  *
  */
 public abstract class FunctionBase {
-//	protected static
+
+	private static final double[] POW10 = { 1E-10, 1E-9, 1E-8, 1E-7, 1E-6, 1E-5, 1E-4, 1E-3, 1E-2, 1E-1, 1, 1E+1, 1E+2,
+		1E+3, 1E+4, 1E+5, 1E+6, 1E+7, 1E+8, 1E+9, 1E+10 };
 	
-	public static BigDecimal getDecimal(double number, int scale, RoundingMode rounding){
-		String numStr = Double.toString(number);
-		int index = numStr.indexOf('.');
-		if(index > 0){
-			
-		}
-		
-		return null;
+	public static double check(final double number) {
+		if (Double.isNaN(number))
+			throw new CalculaException("#NUM! (value is NaN)");
+		if (Double.isInfinite(number))
+			throw new CalculaException("#NUM! (value is infinite)");
+		return number;
 	}
+
+	public static BigDecimal decimal(double number, int scale, RoundingMode rounding) {
+		return new BigDecimal(number).setScale(scale, rounding);
+	}
+
+	public static double trunc(final double number, final int maxFrac) {
+		final double shift = pow10(maxFrac);
+		return roundDown(number * shift) / shift;
+	}
+
+	protected static double roundDown(final double number) {
+		return 0 > number ? Math.ceil(number) : Math.floor(number);
+	}
+
+	protected static double roundUp(final double number) {
+		return 0 > number ? Math.floor(number) : Math.ceil(number);
+	}
+
+	protected static double pow10(final int exponent) {
+		return (exponent >= -10 && exponent <= 10) ? POW10[exponent + 10] : Math.pow(10,exponent);
+	}
+
+	// protected static final String[] ZERO_ARRAY = new String[]{
+	// "", "0", "00", "000","0000", "00000", "000000","0000000", "00000000",
+	// "000000000","0000000000",
+	// "00000000000", "000000000000", "0000000000000","00000000000000",
+	// "000000000000000", "0000000000000000","00000000000000000",
+	// "000000000000000000", "0000000000000000000","00000000000000000000"
+	// };
+	// static String decimalString(double number, int scale, RoundingMode
+	// rounding){
+	// StringBuilder numBuf = new StringBuilder();
+	// numBuf.append(number);
+	//
+	// int index = numBuf.indexOf(".");
+	// if(index > 0){
+	// if(scale == 0){
+	// numBuf = numBuf.delete(index, -1);
+	// } else if(scale < 0) {
+	//
+	// }
+	// } else if(index == 0){
+	// if(scale == 0){
+	//
+	// }
+	// } else {
+	//
+	// }
+	//
+	// return numBuf.toString();
+	// }
 }

@@ -19,8 +19,11 @@ package kr.simula.calcula.func;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.math.MathContext;
 import java.math.RoundingMode;
+
+import javax.naming.OperationNotSupportedException;
+
+import kr.simula.calcula.CalculaException;
 
 /**
  * @author kighie@gmail.com
@@ -29,27 +32,27 @@ import java.math.RoundingMode;
 public final class MathFunctions extends FunctionBase {
 	private MathFunctions() {}
 
-	public static BigInteger ABS(BigInteger number){
+	public static BigInteger abs(BigInteger number){
 		return number.abs();
 	}
 
-	public static BigDecimal ABS(BigDecimal number){
+	public static BigDecimal abs(BigDecimal number){
 		return number.abs();
 	}
 	
-	public static int ABS (int number) {
+	public static int abs (int number) {
         return (number < 0) ? -number : number;
     }
 
-    public static long ABS(long number) {
+    public static long abs(long number) {
         return (number < 0) ? -number : number;
     }
 
-    public static float ABS(float number) {
+    public static float abs(float number) {
         return (number <= 0.0F) ? 0.0F - number : number;
     }
 
-    public static double ABS(double number) {
+    public static double abs(double number) {
         return (number <= 0.0D) ? 0.0D - number : number;
     }
 
@@ -62,7 +65,7 @@ public final class MathFunctions extends FunctionBase {
      * @param number
      * @return
      */
-    public static double ACOS(final double number) {
+    public static double acos(final double number) {
         return Math.acos(number);
     }
 
@@ -77,7 +80,7 @@ public final class MathFunctions extends FunctionBase {
      * @param rounding
      * @return
      */
-    public static BigDecimal ACOS(final double number, int scale, RoundingMode rounding) {
+    public static BigDecimal acos(final double number, int scale, RoundingMode rounding) {
     	double ret = Math.acos(number);
         return new BigDecimal(ret).setScale(scale, rounding);
     }
@@ -91,7 +94,7 @@ public final class MathFunctions extends FunctionBase {
      * @param number
      * @return
      */
-    public static BigDecimal ACOS(final BigDecimal number) {
+    public static BigDecimal acos(final BigDecimal number) {
         return BigDecimal.valueOf( Math.acos(number.doubleValue()) ).setScale(number.scale());
     }
 
@@ -105,7 +108,7 @@ public final class MathFunctions extends FunctionBase {
      * @param number
      * @return
      */
-    public static double ACOSH(final double number) {
+    public static double acosh(final double number) {
     	return Math.log( number + Math.sqrt( number * number - 1 ) );
     }
 
@@ -123,26 +126,11 @@ public final class MathFunctions extends FunctionBase {
      * @param rounding
      * @return
      */
-    public static BigDecimal ACOSH(final double number, int scale, RoundingMode rounding) {
-    	double ret = ACOSH(number);
-    	return new BigDecimal(ret).setScale(scale, rounding);
+    public static BigDecimal acosh(final double number, int scale, RoundingMode rounding) {
+    	double ret = acosh(number);
+    	return decimal(ret, scale, rounding);
     }
     
-    /**
-     * <pre>
-     * Returns the inverse hyperbolic cosine of a number. 
-     * Number must be greater than or equal to 1. 
-     * The inverse hyperbolic cosine is the value whose hyperbolic cosine is number, 
-     * so ACOSH(COSH(number)) equals number.
-     * </pre>
-     * @param number
-     * @return
-     */
-    public static BigDecimal ACOSH(final BigDecimal number) {
-    	double ret = ACOSH(number.doubleValue());
-    	return BigDecimal.valueOf(ret).setScale(number.scale());
-    }
-
     /**
      * 
      * <pre>
@@ -153,7 +141,7 @@ public final class MathFunctions extends FunctionBase {
      * @param number is the sine of the angle you want and must be from -1 to 1.
      * @return
      */
-    public static double ASIN(final double number) {
+    public static double asin(final double number) {
     	return Math.asin(number);
     }
 
@@ -168,35 +156,193 @@ public final class MathFunctions extends FunctionBase {
      * @param rounding
      * @return
      */
-    public static BigDecimal ASIN(final double number, int scale, RoundingMode rounding) {
-    	double ret = ASIN(number);
-    	return new BigDecimal(ret).setScale(scale, rounding);
+    public static BigDecimal asin(final double number, int scale, RoundingMode rounding) {
+    	double ret = asin(number);
+    	return decimal(ret, scale, rounding);
     }
     
+
+    /**
+     * <pre>
+     * Returns an aggregate in a list or database. 
+     * The AGGREGATE function can apply different aggregate functions to a list or database with the option to ignore hidden rows and error values.
+     * 
+     * AGGREGATE(function_num, options, array, [k])
+     * 
+     * </pre>
+     * @param number
+     * @return
+     */
+    /**
+     * <pre>
+     * Returns an aggregate in a list or database. 
+     * The AGGREGATE function can apply different aggregate functions to a list or database with the option to ignore hidden rows and error values.
+     * 
+     * AGGREGATE(function_num, options, array, [k])
+     * </pre>
+     * @param function_num  A number 1 to 19 that specifies which function to use.
+     * @param options A numerical value that determines which values to ignore in the evaluation range for the function.
+     * @param ref1 The first numeric argument for functions that take multiple numeric arguments for which you want the aggregate value. 
+     * @param ref2 Optional. Numeric arguments 2 to 253 for which you want the aggregate value.
+     * @return
+     */
+    public static double aggregate(final int function_num, int options, Object ref, Object...ref2) {
+    	throw new FunctionNotImplementedException("AGGREGATE");
+    }
+
+    /**
+     * <pre>
+     * Returns the inverse hyperbolic sine of a number. 
+     * The inverse hyperbolic sine is the value whose hyperbolic sine is number, 
+     * so ASINH(SINH(number)) equals number.
+     * </pre>
+     * @param number  Any real number.
+     * @return
+     */
+    public static double asinh(final double number) {
+    	return Math.log( number + Math.sqrt( number * number + 1 ) );
+    }
+
+    /**
+     * <pre>
+     * Returns the inverse hyperbolic sine of a number. 
+     * The inverse hyperbolic sine is the value whose hyperbolic sine is number, 
+     * so ASINH(SINH(number)) equals number.
+     * </pre>
+     * @param number  Any real number.
+     * @param scale
+     * @param rounding
+     * @return
+     */
+    public static BigDecimal asinh(final double number, int scale, RoundingMode rounding) {
+    	check(number);
+    	double ret = asinh(number);
+    	return decimal(ret, scale, rounding);
+    }
+    
+
+    /**
+     * <pre>
+     * Returns the arctangent, or inverse tangent, of a number. 
+     * The arctangent is the angle whose tangent is number. 
+     * The returned angle is given in radians in the range -pi/2 to pi/2.
+     * </pre>
+     * @param number The tangent of the angle you want.
+     * @return
+     * @see Math#atan(double)
+     */
+    public static double atan(final double number) {
+    	return Math.atan(number);
+    }
+    
+
+    /**
+     * <pre>
+     * Returns the arctangent, or inverse tangent, of a number. 
+     * The arctangent is the angle whose tangent is number. 
+     * The returned angle is given in radians in the range -pi/2 to pi/2.
+     * </pre>
+     * @param number The tangent of the angle you want.
+     * @param scale
+     * @param rounding
+     * @return
+     */
+    public static BigDecimal atan(final double number, int scale, RoundingMode rounding) {
+    	check(number);
+    	double ret = atan(number);
+    	return decimal(ret, scale, rounding);
+    }
+    
+
+    /**
+     * <pre>
+     * Returns the arctangent, or inverse tangent, of the specified x- and y-coordinates. 
+     * The arctangent is the angle from the x-axis to a line containing the origin (0, 0) and a point with coordinates (x_num, y_num). 
+     * The angle is given in radians between -pi and pi, excluding -pi.
+     * </pre>
+     * @param x_num The x-coordinate of the point.
+     * @param y_num The y-coordinate of the point.
+     * @return
+     */
+    public static double atan2(final double x_num, final double y_num) {
+    	return Math.atan2(y_num, x_num);
+    }
+    
+
+    public static BigDecimal atan2(final double x_num, final double y_num, 
+    		int scale, RoundingMode rounding) {
+    	check(x_num);
+    	check(y_num);
+    	double ret = atan2(x_num, y_num);
+    	return decimal(ret, scale, rounding);
+    }
+    
+
+    /**
+     * <pre>
+     * Returns the inverse hyperbolic tangent of a number. 
+     * Number must be between -1 and 1 (excluding -1 and 1). 
+     * The inverse hyperbolic tangent is the value whose hyperbolic tangent is number, so ATANH(TANH(number)) equals number.
+     * </pre>
+     * @param number Any real number between 1 and -1.
+     * @return
+     */
+    public static double atanh(final double number) {
+    	return Math.log( (1 + number) / (1 - number) ) / 2;
+    }
+
+    public static BigDecimal atanh(final double number, int scale, RoundingMode rounding) {
+    	check(number);
+    	double ret = atanh(number);
+    	return decimal(ret, scale, rounding);
+    }
+
+    /**
+     * <pre>
+     * Returns number rounded up, away from zero, to the nearest multiple of significance. 
+     * 
+     * For example, if you want to avoid using pennies in your prices and your product is priced at $4.42, 
+     * use the formula =CEILING(4.42,0.05) to round prices up to the nearest nickel.
+     * </pre>
+     * @param number  The value you want to round.
+     * @param significance The multiple to which you want to round.
+     * @return
+     */
+    public static double ceiling(final double number, final double significance) {
+    	final double ret = number / significance;
+		if (ret < 0) {
+			throw new CalculaException("#NUM! because signum of args not equal in CEILING");
+		}
+		return roundUp( ret ) * significance;
+    }
+
+
+    public static BigDecimal ceiling(final double number, final double significance, 
+    		int scale, RoundingMode rounding) {
+    	check(number);
+    	double ret = ceiling(number, significance);
+    	return decimal(ret, scale, rounding);
+    }
+    
+
+    /**
+     * <pre>
+     * Returns the number of combinations for a given number of items. 
+     * Use COMBIN to determine the total possible number of groups for a given number of items.
+     * 
+     * =COMBIN(8,2) : Possible two-person teams that can be formed from 8 candidates - 28
+     * </pre>
+     * @param number The number of items.
+     * @param number_chosen  The number of items in each combination.
+     * @return
+     */
+    public static double combin(final int number, final int number_chosen) {
+    	
+		return 0;
+    }
     
 	/*
 
-ASINH
-
-Returns the inverse hyperbolic sine of a number
-
-ATAN
-
-Returns the arctangent of a number
-
-ATAN2
-
-Returns the arctangent from x- and y-coordinates
-
-ATANH
-
-Returns the inverse hyperbolic tangent of a number
-
-CEILING
-
-Rounds a number to the nearest integer or to the nearest multiple of significance
-
-COMBIN
 
 Returns the number of combinations for a given number of objects
 

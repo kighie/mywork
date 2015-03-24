@@ -47,11 +47,9 @@ public class MathFunctionsTests {
 	@Test
 	public void testACOSH(){
 		double acos1 = MathFunctions.ACOSH(1.2);
-		BigDecimal acos2 = MathFunctions.ACOSH(new BigDecimal("1.2"));
 		BigDecimal acos3 = MathFunctions.ACOSH(1.2, SCALE, RoundingMode.HALF_EVEN);
 		
 		Assert.assertEquals( 0.622362504D, acos1, EXCEL_JAVA_GAP);
-		Assert.assertEquals( acos1, acos2.doubleValue(), 0);
 		Assert.assertEquals( 0.622362504D, acos3.doubleValue(), 0);
 //		System.out.println(acos1 + " = " + acos2);
 	}

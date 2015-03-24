@@ -14,7 +14,6 @@
  */
 grammar Calcula;
 
-
 options {
 	language = Java;
 }
