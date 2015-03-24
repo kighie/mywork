@@ -18,6 +18,7 @@
 package kr.simula.calcula.func;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.RoundingMode;
 
 import kr.simula.calcula.CalculaException;
@@ -30,6 +31,11 @@ public abstract class FunctionBase {
 
 	private static final double[] POW10 = { 1E-10, 1E-9, 1E-8, 1E-7, 1E-6, 1E-5, 1E-4, 1E-3, 1E-2, 1E-1, 1, 1E+1, 1E+2,
 		1E+3, 1E+4, 1E+5, 1E+6, 1E+7, 1E+8, 1E+9, 1E+10 };
+	
+	private static final long[] FACTORIALS = { 1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800, 39916800, 479001600 };
+	
+	public static final BigDecimal PI = BigDecimal.valueOf( Math.PI );
+	public static final BigDecimal TWO = BigDecimal.valueOf( 2 );
 	
 	public static double check(final double number) {
 		if (Double.isNaN(number))
@@ -60,6 +66,22 @@ public abstract class FunctionBase {
 		return (exponent >= -10 && exponent <= 10) ? POW10[exponent + 10] : Math.pow(10,exponent);
 	}
 
+	protected static BigInteger factorial(int value) {
+		if (value < 0 ) {
+			throw new CalculaException("#NUM! because number < 0 in FACT");
+		}
+		
+		if (value < FACTORIALS.length) {
+			return BigInteger.valueOf( FACTORIALS[ value ] );
+		}
+		
+        BigInteger n = BigInteger.ONE;
+        for (int i = 2; i <= value; i++) {
+            n = n.multiply(BigInteger.valueOf(i));
+        }
+        return n;
+    }
+	
 	// protected static final String[] ZERO_ARRAY = new String[]{
 	// "", "0", "00", "000","0000", "00000", "000000","0000000", "00000000",
 	// "000000000","0000000000",

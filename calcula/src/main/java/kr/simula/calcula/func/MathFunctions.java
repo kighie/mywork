@@ -19,6 +19,7 @@ package kr.simula.calcula.func;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.MathContext;
 import java.math.RoundingMode;
 
 import javax.naming.OperationNotSupportedException;
@@ -337,38 +338,112 @@ public final class MathFunctions extends FunctionBase {
      * @return
      */
     public static double combin(final int number, final int number_chosen) {
-    	
-		return 0;
+    	return factorial(number).divide(
+                factorial(number_chosen).multiply(factorial(number - number_chosen))).doubleValue();
     }
+    
+    
+
+    /**
+     * <pre>
+     * Returns the cosine of the given angle.
+     * </pre>
+     * @param angle
+     * @return
+     * @see Math#cos(double)
+     */
+    public static double cos(final double angle) {
+		return Math.cos(angle);
+    }
+
+    /**
+     * <pre>
+     * Returns the hyperbolic cosine of the given angle.
+     * </pre>
+     * @param angle
+     * @return
+     * @see Math#cosh(double)
+     */
+    public static double cosh(final double angle) {
+		return Math.cosh(angle);
+    }
+
+    /**
+     * <pre>
+     * Converts radians to degrees
+     * </pre>
+     * @param radians
+     * @return
+     */
+    public static double degree(final double radians) {
+		return radians * 180 / Math.PI;
+    }
+
+    public static BigDecimal degree(final double radians, MathContext mc) {
+    	BigDecimal ret = BigDecimal.valueOf(radians).multiply( BigDecimal.valueOf( 180 ) , mc);
+		return ret.divide( PI, mc );
+    }
+
+    public static BigDecimal degree(BigDecimal radians, MathContext mc) {
+		return radians.multiply( BigDecimal.valueOf( 180 ) ,mc ).divide( PI, mc );
+    }
+    
+
+    /**
+     * <pre>
+     * Rounds a number up to the nearest even integer
+     * </pre>
+     * @param number
+     * @return
+     */
+    public static double even(final double number) {
+    	return roundUp( number / 2 ) * 2;
+    }
+    
+
+
+    /**
+     * <pre>
+     * Rounds a number up to the nearest even integer
+     * </pre>
+     * @param number
+     * @return
+     */
+    public static BigDecimal even( BigDecimal number) {
+    	final BigDecimal rounded = number.divide( TWO, 0, RoundingMode.UP );
+		return rounded.multiply( TWO );
+    }
+    
+
+    /**
+     * <pre>
+     * Returns e raised to the power of a given number
+     * </pre>
+     * @param number
+     * @return
+     */
+    public static double exp(final double number) {
+    	return Math.exp(number);
+    }
+    
+
+    /**
+     * <pre>
+     * Returns the factorial of a number
+     * </pre>
+     * @param number
+     * @return
+     */
+    public static BigInteger fact(final int number) {
+		return factorial( number );
+    }
+    
     
 	/*
 
-
-Returns the number of combinations for a given number of objects
-
-COS
-
-Returns the cosine of a number
-
-COSH
-
-Returns the hyperbolic cosine of a number
-
-DEGREES
-
-Converts radians to degrees
-
-EVEN
-
-Rounds a number up to the nearest even integer
-
-EXP
-
-Returns e raised to the power of a given number
-
 FACT
 
-Returns the factorial of a number
+
 
 FACTDOUBLE
 
