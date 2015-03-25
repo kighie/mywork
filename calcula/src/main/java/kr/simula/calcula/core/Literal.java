@@ -67,7 +67,7 @@ public class Literal<T> implements Node, Gettable<T>{
 	}
 
 	@Override
-	public ValueType getValueType() {
+	public ValueType valueType() {
 		return valueType;
 	}
 	

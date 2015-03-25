@@ -30,14 +30,15 @@ public interface Node {
 		TEXT,
 		NUMERIC,
 		LOGICAL,
-		OBJECT
+		OBJECT,
+		UNKNOWN
 	}
 	
 	/**
 	 * Returns the value type of this node.
 	 * @return
 	 */
-	ValueType getValueType();
+	ValueType valueType();
 	
 	/**
 	 * Returns grammatical token for this node.
