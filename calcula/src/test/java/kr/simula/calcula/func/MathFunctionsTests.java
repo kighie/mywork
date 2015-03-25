@@ -72,4 +72,8 @@ public class MathFunctionsTests {
 		Assert.assertEquals(392, MathFunctions.lcm(42, 56, 49));
 	}
 	
+	@Test
+	public void test(){
+		System.out.println(NumberFunction.toDecimal(11));
+	}
 }

@@ -14,6 +14,7 @@
  */
 package kr.simula.calcula.func.math;
 
+import kr.simula.calcula.func.MathFunctions;
 import kr.simula.calcula.func.NumberFunction;
 
 /**
@@ -27,8 +28,8 @@ public class ABS extends NumberFunction{
 
 	@Override
 	public Number eval(Object... args) {
-		// TODO Auto-generated method stub
-		return null;
+		checkArgCount(args, 1);
+		return MathFunctions.abs(toDecimal(args[0]));
 	}
 
 }

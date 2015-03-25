@@ -12,8 +12,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package kr.simula.calcula.func;
+package kr.simula.calcula.def;
 
+import kr.simula.calcula.CalculaException;
 import kr.simula.calcula.core.Function;
 
 /**
@@ -38,14 +39,25 @@ public abstract class AbstractFunction<O> implements Function<O> {
 		return returnType;
 	}
 	
-//	protected void checkArgCount(Expr[] args, int count) throws ExprException {
-//        if (args == null && count != 0) {
-//            throw new ExprException(getClass().getSimpleName() +
-//                    " function takes no arguments");
-//        }
-//
-//        if (args.length != count)
-//            throw new ExprException(getClass().getSimpleName() +
-//                    " function takes " + count + " arguments");
-//    }
+	protected void checkArgCount(Object[] args, int count) throws CalculaException {
+        if (args == null && count != 0) {
+            throw new CalculaException(getClass().getSimpleName() +
+                    " function takes no arguments");
+        }
+
+        if (args.length != count)
+            throw new CalculaException(getClass().getSimpleName() +
+                    " function takes " + count + " arguments");
+    }
+	
+	protected void checkArgCountMoreThan(Object[] args, int count) throws CalculaException {
+        if (args == null && count != 0) {
+            throw new CalculaException(getClass().getSimpleName() +
+                    " function takes no arguments");
+        }
+
+        if (args.length < count)
+            throw new CalculaException(getClass().getSimpleName() +
+                    " function takes " + count + " arguments");
+    }
 }

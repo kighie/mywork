@@ -16,6 +16,8 @@ package kr.simula.calcula.func;
 
 import java.math.BigDecimal;
 
+import kr.simula.calcula.def.AbstractFunction;
+
 /**
  * <pre>
  * </pre>
@@ -39,4 +41,17 @@ public abstract class NumberFunction extends AbstractFunction<Number>{
 		super(returnType);
 	}
 
+	protected static BigDecimal toDecimal(Object value){
+		if(value == null){
+			return null;
+		}
+		
+		if(value instanceof BigDecimal){
+			return (BigDecimal)value;
+		} else if(value instanceof Number){
+			return new BigDecimal(value.toString());
+		} else {
+			return new BigDecimal(value.toString());
+		}
+	}
 }
