@@ -19,7 +19,9 @@ package kr.simula.calcula.func;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.MathContext;
 import java.math.RoundingMode;
+import java.util.Random;
 
 import kr.simula.calcula.CalculaException;
 
@@ -35,18 +37,35 @@ public abstract class FunctionBase {
 	private static final long[] FACTORIALS = { 1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800, 39916800, 479001600 };
 	
 	public static final BigDecimal PI = BigDecimal.valueOf( Math.PI );
+	public static final BigDecimal ONE = BigDecimal.ONE;
 	public static final BigDecimal TWO = BigDecimal.valueOf( 2 );
+	public static final BigDecimal TEN = BigDecimal.TEN;
+	
+	protected static Random RANDOM = new Random();
+	
 	
 	public static double check(final double number) {
-		if (Double.isNaN(number))
+		if (Double.isNaN(number)) {
 			throw new CalculaException("#NUM! (value is NaN)");
-		if (Double.isInfinite(number))
+		} else if (Double.isInfinite(number)) {
 			throw new CalculaException("#NUM! (value is infinite)");
+		}
 		return number;
 	}
 
 	public static BigDecimal decimal(double number, int scale, RoundingMode rounding) {
+		check(number);
 		return new BigDecimal(number).setScale(scale, rounding);
+	}
+
+	public static BigDecimal decimal(double number) {
+		check(number);
+		return new BigDecimal(number);
+	}
+
+	public static BigDecimal decimal(double number, MathContext mc) {
+		check(number);
+		return new BigDecimal(number, mc);
 	}
 
 	public static double trunc(final double number, final int maxFrac) {
@@ -61,6 +80,23 @@ public abstract class FunctionBase {
 	protected static double roundUp(final double number) {
 		return 0 > number ? Math.floor(number) : Math.ceil(number);
 	}
+
+	protected static double[] toDoubleArray(BigDecimal[] bigDecimals) {
+		double[] result = new double[bigDecimals.length];
+		for (int i = 0; i < bigDecimals.length; i++) {
+			result[i] = bigDecimals[i].doubleValue();
+		}
+		return result;
+	}
+
+	protected static BigDecimal[] toDecimalArray(double[] doubles, MathContext mc) {
+		BigDecimal[] result = new BigDecimal[doubles.length];
+		for (int i = 0; i < doubles.length; i++) {
+			result[i] = new BigDecimal(doubles[i], mc);
+		}
+		return result;
+	}
+	
 
 	protected static double pow10(final int exponent) {
 		return (exponent >= -10 && exponent <= 10) ? POW10[exponent + 10] : Math.pow(10,exponent);

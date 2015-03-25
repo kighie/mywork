@@ -55,4 +55,20 @@ public class MathFunctionsTests {
 	}
 	
 
+	@Test
+	public void gcd(){
+		Assert.assertEquals(2, MathFunctions.gcd(4, 6));
+		Assert.assertEquals(2, MathFunctions.gcd(4, 6, 8));
+		Assert.assertEquals(14, MathFunctions.gcd(42, 56));
+		Assert.assertEquals(7, MathFunctions.gcd(42, 56, 49));
+	}
+	
+
+	@Test
+	public void lcm(){
+		Assert.assertEquals(12, MathFunctions.lcm(4, 6));
+		Assert.assertEquals(24, MathFunctions.lcm(4, 6, 8));
+		Assert.assertEquals(168, MathFunctions.lcm(42, 56));
+		Assert.assertEquals(392, MathFunctions.lcm(42, 56, 49));
+	}
 }
