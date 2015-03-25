@@ -71,4 +71,5 @@ public class MathFunctionsTests {
 		Assert.assertEquals(168, MathFunctions.lcm(42, 56));
 		Assert.assertEquals(392, MathFunctions.lcm(42, 56, 49));
 	}
+	
 }

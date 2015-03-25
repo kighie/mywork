@@ -31,7 +31,7 @@ public interface ExpressionTokens {
 	String OP_NOT	 		= "OP_NOT";
 	String OP_AND	 		= "OP_AND";
 	String OP_OR	 		= "OP_OR";
-	String OP_STR_ADD 		= "OP_NOT";
+	String OP_CONCAT 		= "OP_CONCAT";
 	String OP_EQ	 		= "OP_EQ";
 	String OP_NOT_EQ		= "OP_NOT_EQ";
 	String OP_EQ_LT 		= "OP_EQ_LT";
