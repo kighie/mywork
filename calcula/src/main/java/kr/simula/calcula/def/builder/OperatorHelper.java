@@ -74,6 +74,7 @@ public class OperatorHelper {
 			if(type() == null){
 				return val;
 			}
+			
 			if(type().isAssignableFrom(val.getClass())){
 				return val;
 			} else if((type() == BigDecimal.class) &&  (val instanceof Number)) {
