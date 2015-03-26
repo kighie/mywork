@@ -17,7 +17,7 @@ package kr.simula.calcula.def.builder;
 import java.util.HashMap;
 
 import kr.simula.calcula.core.Literal;
-import kr.simula.calcula.def.ExpressionTokens;
+import kr.simula.calcula.def.ExprTokens;
 
 /**
  * <pre></pre>
@@ -29,7 +29,7 @@ public class LiteralHelper {
 	protected static HashMap<String, Class<?>> TYPE_MAP = new HashMap<String, Class<?>>();
 	
 	static {
-		TYPE_MAP.put(ExpressionTokens.LIT_BOOLEAN, Boolean.class);
+		TYPE_MAP.put(ExprTokens.LIT_BOOLEAN, Boolean.class);
 	}
 	
 	
