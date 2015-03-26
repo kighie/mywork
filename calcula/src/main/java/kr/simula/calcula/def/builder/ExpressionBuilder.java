@@ -25,13 +25,13 @@ import kr.simula.calcula.core.builder.BuildContext;
 import kr.simula.calcula.core.builder.BuildException;
 import kr.simula.calcula.core.builder.CalculaBuilder;
 import kr.simula.calcula.core.builder.RootBuildContext;
-import kr.simula.calcula.def.ExpressionTokens;
+import kr.simula.calcula.def.ExprTokens;
 
 /**
  * @author kighie@gmail.com
  *
  */
-public class ExpressionBuilder implements ExpressionTokens, CalculaBuilder {
+public class ExpressionBuilder implements ExprTokens, CalculaBuilder {
 	protected RootBuildContext rootContext = new RootBuildContext();
 	protected BuildContext current = rootContext;
 	

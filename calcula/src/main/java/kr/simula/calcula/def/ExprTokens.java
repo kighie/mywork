@@ -18,7 +18,7 @@ package kr.simula.calcula.def;
  * @author kighie@gmail.com
  *
  */
-public interface ExpressionTokens {
+public interface ExprTokens {
 
 	String LIT_NUMBER 		= "LIT_NUMBER";
 	String LIT_BOOLEAN 		= "LIT_BOOLEAN";

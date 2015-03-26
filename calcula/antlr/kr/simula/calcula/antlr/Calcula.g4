@@ -31,7 +31,7 @@ options {
 }
 
 @parser::members {
-  	private CalculaBuilder calculaBuilder;
+  	private CalculaBuilder builder;
   	
   	public CalculaParser(TokenStream input, CalculaBuilder calculaBuilder){
   		this(input);
@@ -39,17 +39,29 @@ options {
   	}
   	
   	public void setBuilder(CalculaBuilder calculaBuilder){
-  		this.calculaBuilder = calculaBuilder;
+  		this.builder = calculaBuilder;
   	}
   	
 
-	public String stripString( String text ) {
+	public String strip( String text ) {
     	if( text != null && text.length() >= 4 ) {
     		text = text.substring( 1, text.length() - 1 );
     		text = text.replaceAll( "\'", "'" );
     		text = text.replaceAll( "\"", "\\\"" );
     	}
     	return text;
+	}
+}
+
+
+@rulecatch {
+	catch (RecognitionException re) {
+	    throw re;
+	} 
+	catch (BuildException dsle) {
+		TokenStream cts = (TokenStream)input;
+		dsle.setToken(cts.get(cts.index()));
+	    throw dsle;
 	}
 }
 
@@ -67,23 +79,25 @@ tokens {
  * Formula Expression
  *************************************** */
 
-formulaExpression 
+formulaExpression returns [Node result]
 	: '='
-		(operatorExpression
-		| funcCallExp
-		| methodCallExp
-		)
+	(
+	operatorExpression { $result = $operatorExpression.result ; }
+	| funcCallExp { $result =  $funcCallExp.result ; }
+	| methodCallExp { $result =  $methodCallExp.result ; }
+	)
 	;
 
-funcCallExp  
-	: IDENT '(' arguments? ')'
+funcCallExp returns [Gettable result]
+	: IDENT '(' arguments? ')' 
+		{ $result = builder.functionCall(ExprTokens.FUNC_CALL, $IDENT.text, $arguments.result) ;}
 	;
 
-methodCallExp  
+methodCallExp returns [Node result]
 	: qualifiedName '.' IDENT '(' arguments? ')'
 	;
 
-arguments 
+arguments  returns [Node[] result]
 	: ( operatorExpression (',' operatorExpression )*  )?
 	;
 
@@ -146,7 +160,7 @@ logicalExpression
 	: notExpression ( ('and' |'or' | 'AND' | 'OR' ) operatorExpression )*
 	;
     
-operatorExpression
+operatorExpression returns [Node result]
 	: logicalExpression 
 	;
     
