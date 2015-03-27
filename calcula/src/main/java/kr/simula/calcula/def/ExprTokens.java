@@ -22,6 +22,7 @@ public interface ExprTokens {
 
 	String LIT_NUMBER 		= "LIT_NUMBER";
 	String LIT_BOOLEAN 		= "LIT_BOOLEAN";
+	String LIT_DATE 		= "LIT_DATE";
 	String LIT_STRING 		= "LIT_STRING";
 	String OP_NUM_NEGATION 	= "OP_NUM_NEGATION";
 	String OP_MINUS 		= "OP_MINUS";

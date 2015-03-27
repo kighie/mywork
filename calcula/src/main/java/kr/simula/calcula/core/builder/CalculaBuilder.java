@@ -69,8 +69,7 @@ public interface CalculaBuilder {
 	 * @param node
 	 * @return
 	 */
-	@SuppressWarnings("rawtypes")
-	Operator operator (String token, Node node);
+	Node operator (String token, Node node);
 	
 	/**
 	 * <pre>
@@ -81,8 +80,7 @@ public interface CalculaBuilder {
 	 * @param right
 	 * @return
 	 */
-	@SuppressWarnings("rawtypes")
-	Operator operator (String token, Node left, Node right);
+	Node operator (String token, Node left, Node right);
 	
 	/**
 	 * <pre>
@@ -127,7 +125,7 @@ public interface CalculaBuilder {
 	 * @param args
 	 * @return
 	 */
-	Executable methodCall(String token, Ref parent, String name, Node ... args);
+	Node methodCall(String token, Ref parent, String name, Node ... args);
 	
 	
 }

@@ -28,6 +28,7 @@ public interface Node {
 	public enum ValueType {
 		VOID, 
 		TEXT,
+		DATE,
 		NUMERIC,
 		LOGICAL,
 		OBJECT,
@@ -44,5 +45,5 @@ public interface Node {
 	 * Returns grammatical token for this node.
 	 * @return
 	 */
-	String getNodeToken();
+	String getExpToken();
 }

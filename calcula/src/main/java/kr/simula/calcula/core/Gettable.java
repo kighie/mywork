@@ -22,7 +22,7 @@ package kr.simula.calcula.core;
  */
 public interface Gettable<T> extends Node {
 
-	Class<T> type();
+	Class<? extends T> type();
 	
 	T get(Context context);
 	

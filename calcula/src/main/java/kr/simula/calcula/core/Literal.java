@@ -19,61 +19,25 @@ package kr.simula.calcula.core;
  * @author kighie@gmail.com
  *
  */
-public class Literal<T> implements Node, Gettable<T>{
-	
-	private Class<T> type;
+public abstract class Literal<T> implements Node, Gettable<T>{
 	private T value;
-	private String nodeToken;
-	private final ValueType valueType;
 	
 	
 	/**
-	 * @param type
 	 * @param value
-	 * @param nodeToken
-	 * @param valueType
 	 */
-	@SuppressWarnings("unchecked")
-	public Literal(T value, String nodeToken, ValueType valueType) {
-		this.type = (Class<T>)value.getClass();
+	public Literal(T value) {
 		this.value = value;
-		this.nodeToken = nodeToken;
-		this.valueType = valueType;
 	}
 
-	
-	/**
-	 * <pre>
-	 * Makes null value
-	 * </pre>
-	 * @param type
-	 * @param nodeToken
-	 * @param valueType
-	 */
-	public Literal() {
-		super();
-		this.valueType = ValueType.VOID;
-	}
-
-
+	@SuppressWarnings("unchecked")
 	@Override
-	public Class<T> type() {
-		return type;
+	public Class<? extends T> type() {
+		return (Class<? extends T>)value.getClass();
 	}
 
 	@Override
 	public T get(Context context) {
 		return value;
 	}
-
-	@Override
-	public ValueType valueType() {
-		return valueType;
-	}
-	
-	@Override
-	public String getNodeToken() {
-		return nodeToken;
-	}
-
 }

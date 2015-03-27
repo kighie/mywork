@@ -15,14 +15,17 @@
 package kr.simula.calcula.def.builder;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
+import kr.simula.calcula.CalculaException;
 import kr.simula.calcula.core.Context;
-import kr.simula.calcula.core.Executable;
 import kr.simula.calcula.core.Gettable;
-import kr.simula.calcula.core.Node;
+import kr.simula.calcula.core.Node.ValueType;
 import kr.simula.calcula.core.Operator.Binary;
+import kr.simula.calcula.core.Operator.Unary;
 import kr.simula.calcula.core.Ref;
-import kr.simula.calcula.core.Settable;
+import kr.simula.calcula.core.builder.BuildException;
+import kr.simula.calcula.def.ExprTokens;
 
 /**
  * @author kighie@gmail.com
@@ -30,303 +33,260 @@ import kr.simula.calcula.core.Settable;
  */
 public class OperatorHelper {
 
-	/**
-	 * If ref's generic componentType is type, return ref. 
-	 * Else if ref is not of Ref nor ref's valueType is Node.ValueType, return null
-	 * @param ref
-	 * @param type
-	 * @return
-	 */
-	protected Gettable<?> getGettable(Gettable<?> ref, Class<?> type){
+	@SuppressWarnings("unchecked")
+	protected <T> Gettable<T> getGettable(Gettable<?> ref, Class<T> type){
+		if(ref == null) {
+			throw new BuildException("node is null.");
+		}
+		
 		if(type.isAssignableFrom( ref.type() )) {
-			return ref;
+			return (Gettable<T>)ref;
+		} else if( (ref instanceof Ref)  ){
+			return (Gettable<T>)ref;
+		}
+		
+		return null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected Gettable<? extends Number> getNumericGettable(Gettable<?> ref){
+		if(ref == null) {
+			throw new BuildException("node is null.");
+		}
+		
+		if(Number.class.isAssignableFrom( ref.type() )) {
+			return (Gettable<? extends Number>)ref;
 		} else if( (ref instanceof Ref) 
-				&& (ref.valueType() != null ) 
-				&& (ref.valueType() != Node.ValueType.UNKNOWN )){
-			return new GettableWrapper(ref);
+				&& (ref.valueType() == ValueType.NUMERIC )){
+			return (Gettable<? extends Number>)ref;
 		}
 		return null;
 	}
 	
-	@SuppressWarnings("rawtypes")
-	public class GettableWrapper implements Gettable {
-		private Gettable<?> original;
+
+	public Negate negate(Gettable<?> operand) {
+		Gettable<? extends Number> num = getNumericGettable(operand);
 		
-		public GettableWrapper(Gettable<?> original) {
-			this.original = original;
+		if(num != null) {
+			return new Negate(num);
+		} else {
+			throw new BuildException("<Negate> Illegal operand data type " + operand);
+		}
+	}
+
+	/**
+	 * number negate
+	 * @author IkChan Kwon
+	 * @since	1.0
+	 */
+	protected class Negate implements Gettable<Number> {
+		private Gettable<? extends Number> operand;
+		
+		public Negate(Gettable<? extends Number> operand) {
+			this.operand = operand;
 		}
 
+		@Override
 		public ValueType valueType() {
-			return original.valueType();
+			return ValueType.NUMERIC;
 		}
-
-		public String getNodeToken() {
-			return original.getNodeToken();
-		}
-
 		
-		public Class<?> type() {
-			return original.type();
+		@Override
+		public String getExpToken() {
+			return ExprTokens.OP_NUM_NEGATION;
 		}
+		
+		public Class<? extends Number> type() {
+			return operand.type();
+		}
+		
 
-		public Object get(Context context) {
-			Object val = original.get(context);
-			if(type() == null){
-				return val;
+		public Number get(Context context) {
+			Number number = operand.get(context);
+			if(number instanceof BigDecimal){
+				return ((BigDecimal)number).negate();
+			} else if(number instanceof BigInteger){
+				return ((BigInteger)number).negate();
+			} else if(number instanceof Integer){
+				return -((Integer)number);
+			} else {
+				throw new CalculaException("Cannot negate " + number.getClass());
 			}
-			
-			if(type().isAssignableFrom(val.getClass())){
-				return val;
-			} else if((type() == BigDecimal.class) &&  (val instanceof Number)) {
-				return new BigDecimal(val.toString());
-			}
-			
-			throw new IllegalArgumentException( "Type mismatch :"
-					+ type() + " is expected, but  " 
-					 +  " return value type is " + val.getClass().getName() );
 		}
 		
 		@Override
 		public String toString() {
-			return "<WRAP " + original.toString() + ">";
+			StringBuilder buf = new StringBuilder();
+			buf.append("[").append(ExprTokens.OP_NUM_NEGATION).append(operand).append("]");
+			return buf.toString();
 		}
-
-
-
+		
 	}
 
-//	/**
-//	 * If ref's generic componentType is type, return ref. 
-//	 * Else if ref is not of Ref nor ref's type is not TypeMeta.UNKNOWN_TYPE.type, return null
-//	 * @param ref
-//	 * @param type
-//	 * @return
-//	 */
-//	protected Settable<?> getSettable(Settable<?> ref, Class<?> type){
-//		if(type.isAssignableFrom( ref.type() )) {
-//			return ref;
-//		} else if( (ref instanceof Ref) && (ref.type() == TypeMeta.UNKNOWN_TYPE.type() )){
-//			return new SettableWrapper(ref ,  type);
-//		}
-//		
-//		throw new DslBuildException(ref + " is not Ref or not supported unchecked mode.");
-//	}
-//	
-//	@SuppressWarnings("rawtypes")
-//	public class SettableWrapper implements Settable {
-//		private static final long serialVersionUID = 4777136234377747561L;
-//		private Class<?> type;
-//		private Settable original;
-//		
-//		public SettableWrapper(Settable original, Class<?> type) {
-//			this.original = original;
-//			this.type = type;
-//		}
-//
-//		public Class<?> type() {
-//			return type;
-//		}
-//		
-//		@SuppressWarnings("unchecked")
-//		public void set(Context context, Object value) {
-//			original.set(context, value);
-//		}
-//		
-//
-//		@Override
-//		public String toString() {
-//			return "<WRAP "+ type.getSimpleName() + " "  + original.toString() + ">";
-//		}
-//	}
-//	
-//	@SuppressWarnings("unchecked")
-//	public Gettable<BigDecimal> negate(Gettable<?> operand) {
-//		Gettable<BigDecimal> gettable = (Gettable<BigDecimal>)getGettable(operand, BigDecimal.class);
-//		
-//		if(gettable != null) {
-//			return new Negate(gettable);
-//		} else {
-//			throw new DslBuildException("<Negate> Illegal operand data type " + operand);
-//		}
-//	}
-//
-//	/**
-//	 * number negate
-//	 * @author IkChan Kwon
-//	 * @since	1.0
-//	 */
-//	protected class Negate implements Gettable<BigDecimal> {
-//		private static final long serialVersionUID = -4556180626634778464L;
-//		private Gettable<BigDecimal> operand;
-//		
-//		public Negate(Gettable<BigDecimal> operand) {
-//			this.operand = operand;
-//		}
-//		
-//		public Class<BigDecimal> type() {
-//			return BigDecimal.class;
-//		}
-//		
-//		public BigDecimal get(Context context) {
-//			return operand.get(context).negate();
-//		}
-//		
-//		@Override
-//		public String toString() {
-//			StringBuilder buf = new StringBuilder();
-//			buf.append("[NEGATE ").append(operand).append("]");
-//			return buf.toString();
-//		}
-//	}
-//
-//	@SuppressWarnings("unchecked")
-//	public Gettable<Boolean> not(Gettable<?> operand) {
-//		Gettable<Boolean> gettable = (Gettable<Boolean>)getGettable(operand, Boolean.class);
-//		
-//		if(gettable != null) {
-//			return new Not((Gettable<Boolean>)operand);
-//		} else {
-//			throw new DslException("<Not> Illegal operand data type " + operand);
-//		}
-//	}
-//	
-//	/**
-//	 * logical negate
-//	 * @author IkChan Kwon
-//	 * @since	1.0
-//	 */
-//	protected class Not implements Gettable<Boolean> {
-//		private static final long serialVersionUID = -4556180626634778464L;
-//		private Gettable<Boolean> operand;
-//		
-//		public  Not(Gettable<Boolean> operand) {
-//			this.operand = operand;
-//		}
-//		
-//		public Class<Boolean> type() {
-//			return Boolean.class;
-//		}
-//		
-//		public Boolean get(Context context) {
-//			return !operand.get(context);
-//		}
-//	}
-//
-//	
-//	@SuppressWarnings("serial")
-//	protected abstract class BinaryHolder<T, O1, O2> implements Gettable<T> {
-//		protected Binary<T, O1, O2> operator;
-//		protected Gettable<O1> operand1;
-//		protected Gettable<O2> operand2;
-//		
-//		public BinaryHolder(Binary<T, O1, O2> operator, Gettable<O1> operand1, Gettable<O2> operand2) {
-//			this.operator = operator;
-//			this.operand1 = operand1;
-//			this.operand2 = operand2;
-//		}
-//		
-//		public T get(Context context) {
-//			return operator.eval(operand1.get(context), operand2.get(context));
-//		}
-//		
-//		@Override
-//		public String toString() {
-//			StringBuilder buf = new StringBuilder();
-//			buf.append("[").append(operator).append(" ").append(operand1).append(" ").append(operand2).append("]");
-//			return buf.toString();
-//		}
-//	}
-//
-//	protected class NumberBinary extends BinaryHolder<BigDecimal, BigDecimal, BigDecimal> {
-//		private static final long serialVersionUID = -8279034082814023607L;
-//		
-//		public NumberBinary(
-//				Binary<BigDecimal, BigDecimal, BigDecimal> operator,
-//				Gettable<BigDecimal> operand1, Gettable<BigDecimal> operand2) {
-//			super(operator, operand1, operand2);
-//		}
-//		
-//		public Class<BigDecimal> type() {
-//			return BigDecimal.class;
-//		}
-//	}
-//
-//	@SuppressWarnings("unchecked")
-//	protected NumberBinary createNumberBinary(Binary<BigDecimal, BigDecimal, BigDecimal> operator,
-//			Gettable<?> operand1, Gettable<?> operand2){
-//		Gettable<BigDecimal> gettable1 = (Gettable<BigDecimal>)getGettable(operand1, BigDecimal.class);
-//		
-//		if(gettable1 == null) {
-//			throw new DslBuildException("<" + operator + "> Illegal operand data type " + operand1);
-//		}
-//		
-//		Gettable<BigDecimal> gettable2 = (Gettable<BigDecimal>)getGettable(operand2, BigDecimal.class);
-//		
-//		if(gettable2 == null) {
-//			throw new DslBuildException("<" + operator + "> Illegal operand data type " + operand2);
-//		}
-//		
-//		NumberBinary op = new NumberBinary(operator, gettable1, gettable2);
-//		
-//		return op;
-//	}
-//
-//	public static Binary<BigDecimal, BigDecimal, BigDecimal> ADD = new Binary<BigDecimal, BigDecimal, BigDecimal>() {
-//		private static final long serialVersionUID = 7193497731680749528L;
-//
-//		public BigDecimal eval(BigDecimal term1, BigDecimal term2) {
-//			return term1.add(term2);
-//		}
-//		public String toString() { return "ADD"; };
-//	};
-//
-//	public static Binary<BigDecimal, BigDecimal, BigDecimal> SUBTRACT = new Binary<BigDecimal, BigDecimal, BigDecimal>() {
-//		private static final long serialVersionUID = 7193497731680749528L;
-//
-//		public BigDecimal eval(BigDecimal term1, BigDecimal term2) {
-//			return term1.subtract(term2);
-//		}
-//		public String toString() { return "SUBTRACT"; };
-//	};
-//
-//	public static Binary<BigDecimal, BigDecimal, BigDecimal> MULTIPLY = new Binary<BigDecimal, BigDecimal, BigDecimal>() {
-//		private static final long serialVersionUID = 7193497731680749528L;
-//
-//		public BigDecimal eval(BigDecimal term1, BigDecimal term2) {
-//			return term1.multiply(term2);
-//		}
-//
-//		public String toString() { return "MULTIPLY"; };
-//	};
-//
-//	public static Binary<BigDecimal, BigDecimal, BigDecimal> MOD = new Binary<BigDecimal, BigDecimal, BigDecimal>() {
-//		private static final long serialVersionUID = 7193497731680749528L;
-//
-//		public BigDecimal eval(BigDecimal term1, BigDecimal term2) {
-//			return term1.remainder(term2);
-//		}
-//		
-//		public String toString() { return "MOD "; };
-//	};
-//	
-//	
-//
-//	/**
-//	 * divide half up
-//	 * @see BigDecimal.ROUND_HALF_UP
-//	 */
-//	public static Binary<BigDecimal, BigDecimal, BigDecimal> DIVIDE = new Binary<BigDecimal, BigDecimal, BigDecimal>() {
-//		private static final long serialVersionUID = 7193497731680749528L;
-//
-//		public BigDecimal eval(BigDecimal term1, BigDecimal term2) {
-//			return term1.divide(term2,BigDecimal.ROUND_HALF_UP);
-//		}
-//
-//		public String toString() { return "DIVIDE "; };
-//	};
-//
-//	
-//	
+	@SuppressWarnings("unchecked")
+	public Gettable<Boolean> not(Gettable<?> operand) {
+		Gettable<Boolean> gettable = (Gettable<Boolean>)getGettable(operand, Boolean.class);
+		
+		if(gettable != null) {
+			return new Not((Gettable<Boolean>)operand);
+		} else {
+			throw new BuildException("<Not> Illegal operand data type " + operand);
+		}
+	}
+	
+	/**
+	 * logical negate
+	 * @author IkChan Kwon
+	 * @since	1.0
+	 */
+	protected class Not implements Gettable<Boolean> {
+		private Gettable<Boolean> operand;
+		
+		public  Not(Gettable<Boolean> operand) {
+			this.operand = operand;
+		}
+		
+		@Override
+		public ValueType valueType() {
+			return ValueType.LOGICAL;
+		}
+		
+		@Override
+		public String getExpToken() {
+			return ExprTokens.OP_NOT;
+		}
+		
+		public Class<Boolean> type() {
+			return Boolean.class;
+		}
+		
+		public Boolean get(Context context) {
+			return !operand.get(context);
+		}
+	}
+
+	protected abstract class BinaryHolder<T, O1, O2> implements Gettable<T> {
+		protected Binary<T, O1, O2> operator;
+		protected Gettable<O1> operand1;
+		protected Gettable<O2> operand2;
+		
+		public BinaryHolder(Binary<T, O1, O2> operator, Gettable<O1> operand1, Gettable<O2> operand2) {
+			this.operator = operator;
+			this.operand1 = operand1;
+			this.operand2 = operand2;
+		}
+		
+		public T get(Context context) {
+			return operator.eval(operand1.get(context), operand2.get(context));
+		}
+		
+		@Override
+		public String toString() {
+			StringBuilder buf = new StringBuilder();
+			buf.append("[").append(operator).append(" ").append(operand1).append(" ").append(operand2).append("]");
+			return buf.toString();
+		}
+	}
+
+	protected class NumberBinary extends BinaryHolder<Number, Number, Number> {
+		public NumberBinary(
+				Binary<Number, Number, Number> operator,
+				Gettable<Number> operand1, Gettable<Number> operand2) {
+			super(operator, operand1, operand2);
+		}
+		
+		
+		public Class<Number> type() {
+			return Number.class;
+		}
+		
+		@Override
+		public ValueType valueType() {
+			return ValueType.NUMERIC;
+		}
+		
+		@Override
+		public String getExpToken() {
+			return null;
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	protected NumberBinary createNumberBinary(Binary<BigDecimal, BigDecimal, BigDecimal> operator,
+			Gettable<?> operand1, Gettable<?> operand2){
+		Gettable<BigDecimal> gettable1 = (Gettable<BigDecimal>)getGettable(operand1, BigDecimal.class);
+		
+		if(gettable1 == null) {
+			throw new BuildException("<" + operator + "> Illegal operand data type " + operand1);
+		}
+		
+		Gettable<BigDecimal> gettable2 = (Gettable<BigDecimal>)getGettable(operand2, BigDecimal.class);
+		
+		if(gettable2 == null) {
+			throw new BuildException("<" + operator + "> Illegal operand data type " + operand2);
+		}
+		
+		NumberBinary op = new NumberBinary(operator, gettable1, gettable2);
+		
+		return op;
+	}
+
+	public static Binary<BigDecimal, BigDecimal, BigDecimal> ADD = new Binary<BigDecimal, BigDecimal, BigDecimal>() {
+		private static final long serialVersionUID = 7193497731680749528L;
+
+		public BigDecimal eval(BigDecimal term1, BigDecimal term2) {
+			return term1.add(term2);
+		}
+		public String toString() { return "ADD"; };
+	};
+
+	public static Binary<BigDecimal, BigDecimal, BigDecimal> SUBTRACT = new Binary<BigDecimal, BigDecimal, BigDecimal>() {
+		private static final long serialVersionUID = 7193497731680749528L;
+
+		public BigDecimal eval(BigDecimal term1, BigDecimal term2) {
+			return term1.subtract(term2);
+		}
+		public String toString() { return "SUBTRACT"; };
+	};
+
+	public static Binary<BigDecimal, BigDecimal, BigDecimal> MULTIPLY = new Binary<BigDecimal, BigDecimal, BigDecimal>() {
+		private static final long serialVersionUID = 7193497731680749528L;
+
+		public BigDecimal eval(BigDecimal term1, BigDecimal term2) {
+			return term1.multiply(term2);
+		}
+
+		public String toString() { return "MULTIPLY"; };
+	};
+
+	public static Binary<BigDecimal, BigDecimal, BigDecimal> MOD = new Binary<BigDecimal, BigDecimal, BigDecimal>() {
+		private static final long serialVersionUID = 7193497731680749528L;
+
+		public BigDecimal eval(BigDecimal term1, BigDecimal term2) {
+			return term1.remainder(term2);
+		}
+		
+		public String toString() { return "MOD "; };
+	};
+	
+	
+
+	/**
+	 * divide half up
+	 * @see BigDecimal.ROUND_HALF_UP
+	 */
+	public static Binary<BigDecimal, BigDecimal, BigDecimal> DIVIDE = new Binary<BigDecimal, BigDecimal, BigDecimal>() {
+		private static final long serialVersionUID = 7193497731680749528L;
+
+		public BigDecimal eval(BigDecimal term1, BigDecimal term2) {
+			return term1.divide(term2,BigDecimal.ROUND_HALF_UP);
+		}
+
+		public String toString() { return "DIVIDE "; };
+	};
+
+	
+	
 //	public Gettable<BigDecimal> add(Gettable<?> operand1, Gettable<?> operand2) {
 //		return createNumberBinary(ADD, operand1, operand2);
 //	}
@@ -619,5 +579,98 @@ public class OperatorHelper {
 //			return buf.toString();
 //		}
 //	}
+
+//	
+//	@SuppressWarnings("rawtypes")
+//	public class GettableWrapper implements Gettable {
+//		private Gettable<?> original;
+//		
+//		public GettableWrapper(Gettable<?> original) {
+//			this.original = original;
+//		}
+//
+//		public ValueType valueType() {
+//			return original.valueType();
+//		}
+//
+//		public String getExpToken() {
+//			return original.getExpToken();
+//		}
+//
+//		
+//		public Class<?> type() {
+//			return original.type();
+//		}
+//
+//		public Object get(Context context) {
+//			Object val = original.get(context);
+//			if(type() == null){
+//				return val;
+//			}
+//			
+//			if(type().isAssignableFrom(val.getClass())){
+//				return val;
+//			} else if((type() == BigDecimal.class) &&  (val instanceof Number)) {
+//				return new BigDecimal(val.toString());
+//			}
+//			
+//			throw new IllegalArgumentException( "Type mismatch :"
+//					+ type() + " is expected, but  " 
+//					 +  " return value type is " + val.getClass().getName() );
+//		}
+//		
+//		@Override
+//		public String toString() {
+//			return "<WRAP " + original.toString() + ">";
+//		}
+//
+//
+//
+//	}
+
+//	/**
+//	 * If ref's generic componentType is type, return ref. 
+//	 * Else if ref is not of Ref nor ref's type is not TypeMeta.UNKNOWN_TYPE.type, return null
+//	 * @param ref
+//	 * @param type
+//	 * @return
+//	 */
+//	protected Settable<?> getSettable(Settable<?> ref, Class<?> type){
+//		if(type.isAssignableFrom( ref.type() )) {
+//			return ref;
+//		} else if( (ref instanceof Ref) && (ref.type() == TypeMeta.UNKNOWN_TYPE.type() )){
+//			return new SettableWrapper(ref ,  type);
+//		}
+//		
+//		throw new DslBuildException(ref + " is not Ref or not supported unchecked mode.");
+//	}
+//	
+//	@SuppressWarnings("rawtypes")
+//	public class SettableWrapper implements Settable {
+//		private static final long serialVersionUID = 4777136234377747561L;
+//		private Class<?> type;
+//		private Settable original;
+//		
+//		public SettableWrapper(Settable original, Class<?> type) {
+//			this.original = original;
+//			this.type = type;
+//		}
+//
+//		public Class<?> type() {
+//			return type;
+//		}
+//		
+//		@SuppressWarnings("unchecked")
+//		public void set(Context context, Object value) {
+//			original.set(context, value);
+//		}
+//		
+//
+//		@Override
+//		public String toString() {
+//			return "<WRAP "+ type.getSimpleName() + " "  + original.toString() + ">";
+//		}
+//	}
+//	\
 	
 }

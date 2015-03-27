@@ -59,7 +59,7 @@ public class ExpressionBuilder implements ExprTokens, CalculaBuilder {
 	
 	@SuppressWarnings("rawtypes")
 	@Override
-	public Operator operator(String token, Node node) {
+	public Node operator(String token, Node node) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -67,7 +67,7 @@ public class ExpressionBuilder implements ExprTokens, CalculaBuilder {
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public Operator operator(String token, Node left, Node right) {
+	public Node operator(String token, Node left, Node right) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -94,7 +94,7 @@ public class ExpressionBuilder implements ExprTokens, CalculaBuilder {
 	}
 
 	@Override
-	public Executable methodCall(String token, Ref parent, String name,
+	public Node methodCall(String token, Ref parent, String name,
 			Node... args) {
 		// TODO Auto-generated method stub
 		return null;

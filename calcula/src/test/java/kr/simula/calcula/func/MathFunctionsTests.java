@@ -75,5 +75,9 @@ public class MathFunctionsTests {
 	@Test
 	public void test(){
 		System.out.println(NumberFunction.toDecimal(11));
+		System.out.println(new BigDecimal(1));
+		System.out.println(new BigDecimal(1.0));
+		System.out.println(new BigDecimal("1"));
+		System.out.println(new BigDecimal("1.0"));
 	}
 }
