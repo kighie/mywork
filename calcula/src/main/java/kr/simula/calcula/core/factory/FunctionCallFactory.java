@@ -15,6 +15,7 @@
 package kr.simula.calcula.core.factory;
 
 import kr.simula.calcula.core.Gettable;
+import kr.simula.calcula.core.Node;
 
 /**
  * <pre></pre>
@@ -23,5 +24,5 @@ import kr.simula.calcula.core.Gettable;
  */
 public interface FunctionCallFactory<T> {
 
-	Gettable<T> create(Gettable<?> ... args);
+	Gettable<T> create(Node ... args);
 }

@@ -19,34 +19,8 @@ package kr.simula.calcula.core;
  * @author kighie@gmail.com
  *
  */
-public abstract class Literal<T> implements Node, Gettable<T>{
-	private T value;
+public interface Literal<T> extends Node, Gettable<T>{
 	
+	public T getValue();
 	
-	/**
-	 * @param value
-	 */
-	public Literal(T value) {
-		this.value = value;
-	}
-
-	public T getValue(){
-		return value;
-	}
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	public Class<? extends T> type() {
-		return (Class<? extends T>)value.getClass();
-	}
-
-	@Override
-	public T get(Context context) {
-		return value;
-	}
-	
-	@Override
-	public String getExpression() {
-		return value.toString();
-	}
 }

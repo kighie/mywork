@@ -12,39 +12,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package kr.simula.calcula.core.wrapper;
-
-import java.math.BigDecimal;
+package kr.simula.calcula.core.factory.helper;
 
 import kr.simula.calcula.core.Gettable;
-import kr.simula.calcula.core.Operator.Unary;
+import kr.simula.calcula.core.Node;
+import kr.simula.calcula.core.builder.BuildException;
+import kr.simula.calcula.core.factory.FunctionCallFactory;
 
 /**
  * <pre></pre>
  * @author kighie@gmail.com
  * @since 1.0
  */
-public class DecimalUnaryOperatorGettable extends UnaryOperatorGettable<BigDecimal, BigDecimal> {
+public class FunctionCallHelper extends AbstractHelper<FunctionCallFactory<?>> {
 
-	/**
-	 * @param operator
-	 * @param operand1
-	 * @param operand2
-	 */
-	public DecimalUnaryOperatorGettable(
-			Unary<BigDecimal, BigDecimal> operator,
-			Gettable<BigDecimal> operand) {
-		super(operator, operand);
+	public Gettable<?> create(String name , Node ... args){
+		FunctionCallFactory<?> factory = factories.get(name);
+		if(factory == null){
+			throw new BuildException("FunctionCallFactory for " + name + " is not registered.");
+		}
+		return factory.create(args);
 	}
-
-	@Override
-	public Class<BigDecimal> type() {
-		return BigDecimal.class;
-	}
-
-	@Override
-	public ValueType valueType() {
-		return ValueType.NUMERIC;
-	}
-	
 }

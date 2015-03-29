@@ -14,37 +14,53 @@
  */
 package kr.simula.calcula.core.wrapper;
 
-import java.math.BigDecimal;
-
+import kr.simula.calcula.core.Context;
 import kr.simula.calcula.core.Gettable;
-import kr.simula.calcula.core.Operator.Unary;
 
 /**
  * <pre></pre>
  * @author kighie@gmail.com
  * @since 1.0
  */
-public class DecimalUnaryOperatorGettable extends UnaryOperatorGettable<BigDecimal, BigDecimal> {
-
+public class BooleanConstantExpr implements Gettable<Boolean>{
+	private Boolean value;
+	private String exprStr;
+	
 	/**
-	 * @param operator
-	 * @param operand1
-	 * @param operand2
+	 * @param value
 	 */
-	public DecimalUnaryOperatorGettable(
-			Unary<BigDecimal, BigDecimal> operator,
-			Gettable<BigDecimal> operand) {
-		super(operator, operand);
+	public BooleanConstantExpr(Boolean value) {
+		this(value, value.toString());
 	}
 
-	@Override
-	public Class<BigDecimal> type() {
-		return BigDecimal.class;
+	/**
+	 * @param value
+	 * @param exprStr
+	 */
+	public BooleanConstantExpr(Boolean value, String exprStr) {
+		super();
+		this.value = value;
+		this.exprStr = exprStr;
 	}
 
 	@Override
 	public ValueType valueType() {
 		return ValueType.NUMERIC;
 	}
+
+	@Override
+	public String getExpression() {
+		return exprStr;
+	}
 	
+	@Override
+	public Class<Boolean> type() {
+		return Boolean.class;
+	}
+
+	@Override
+	public Boolean get(Context context) {
+		return value;
+	}
+
 }

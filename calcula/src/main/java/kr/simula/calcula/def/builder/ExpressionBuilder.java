@@ -33,7 +33,7 @@ public class ExpressionBuilder implements ExprTokens, CalculaBuilder {
 	protected RootBuildContext rootContext = new RootBuildContext();
 	protected BuildContext current = rootContext;
 
-	protected LiteralHelper literalHelper;
+	protected DefaultLiteralHelper literalHelper;
 	protected OperatorHelper operatorHelper;
 	
 	protected Node rootNode;
@@ -42,7 +42,7 @@ public class ExpressionBuilder implements ExprTokens, CalculaBuilder {
 	 * @param literalHelper
 	 * @param operatorHelper
 	 */
-	public ExpressionBuilder(LiteralHelper literalHelper,
+	public ExpressionBuilder(DefaultLiteralHelper literalHelper,
 			OperatorHelper operatorHelper) {
 		this.literalHelper = literalHelper;
 		this.operatorHelper = operatorHelper;

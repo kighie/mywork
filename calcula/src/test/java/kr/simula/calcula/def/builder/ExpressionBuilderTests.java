@@ -38,7 +38,7 @@ public class ExpressionBuilderTests {
 	static final String OperatorExpression1 = "1+3 * 4 + 15 / (fn4(1,2,3) + fn2() ) * aa.bb.meth()";
 	
 
-	protected LiteralHelper literalHelper = new LiteralHelper();
+	protected DefaultLiteralHelper literalHelper = new DefaultLiteralHelper();
 	protected OperatorHelper operatorHelper = new OperatorHelper();
 	
 	private CalculaParser createExpressionParser(String expression){

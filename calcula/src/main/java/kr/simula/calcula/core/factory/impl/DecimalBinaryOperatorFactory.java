@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package kr.simula.calcula.core.factory.helper;
+package kr.simula.calcula.core.factory.impl;
 
 import java.math.BigDecimal;
 
@@ -21,7 +21,7 @@ import kr.simula.calcula.core.Literal;
 import kr.simula.calcula.core.Node;
 import kr.simula.calcula.core.Operator.Binary;
 import kr.simula.calcula.core.factory.BinaryOperatorFactory;
-import kr.simula.calcula.core.util.DecimalUtils;
+import kr.simula.calcula.core.util.GettableUtils;
 import kr.simula.calcula.core.wrapper.DecimalBinaryOperatorGettable;
 import kr.simula.calcula.core.wrapper.DecimalConstantExpr;
 
@@ -45,12 +45,12 @@ public class DecimalBinaryOperatorFactory implements BinaryOperatorFactory {
 	@SuppressWarnings("rawtypes")
 	@Override
 	public Gettable<BigDecimal> create(Node operand1, Node operand2) {
-		Gettable<BigDecimal> gettable1 = DecimalUtils.getDecimalGettable(operand1);
-		Gettable<BigDecimal> gettable2 = DecimalUtils.getDecimalGettable(operand2);
+		Gettable<BigDecimal> gettable1 = GettableUtils.getDecimalGettable(operand1);
+		Gettable<BigDecimal> gettable2 = GettableUtils.getDecimalGettable(operand2);
 		
 		if( (gettable1 instanceof Literal) && (gettable2 instanceof Literal) ) {
-			BigDecimal val1 = DecimalUtils.getValue(((Literal)gettable1));
-			BigDecimal val2 = DecimalUtils.getValue(((Literal)gettable2));
+			BigDecimal val1 = GettableUtils.getDecimalValue(((Literal)gettable1));
+			BigDecimal val2 = GettableUtils.getDecimalValue(((Literal)gettable2));
 			
 			StringBuilder buf = new StringBuilder();
 			buf.append("(").append(operator).append(" ");

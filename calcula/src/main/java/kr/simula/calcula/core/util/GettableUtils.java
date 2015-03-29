@@ -27,13 +27,30 @@ import kr.simula.calcula.core.wrapper.DecimalGettableWrapper;
  * @author kighie@gmail.com
  * @since 1.0
  */
-public class DecimalUtils {
+public class GettableUtils {
 	public static final TypeConverter<Object, BigDecimal> NUMBER_TO_DECIMAL = new TypeConverter<Object, BigDecimal>(){
 		@Override
 		public BigDecimal convert(Object input) {
 			return new BigDecimal(input.toString());
 		}
 	};
+	
+
+	public static Gettable<?> checkGettable(Node node){
+		if(node instanceof Gettable){
+			return (Gettable<?>)node;
+		}
+		throw new BuildException(node + " is not Gettable.");
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static <T> Gettable<T> checkGettable(Node node, Class<T>type){
+		if(node instanceof Gettable
+				&& type.isAssignableFrom( ((Gettable) node).type() ) ){
+			return (Gettable<T>)node;
+		}
+		throw new BuildException(node + " is not Gettable<" + type.getName() + ">");
+	}
 	
 	public static BigDecimal getDecimal(Object value){
 		if(value instanceof BigDecimal){
@@ -70,16 +87,7 @@ public class DecimalUtils {
 		throw new BuildException(node + " is not numeric node.");
 	}
 	
-
-	public static Gettable<BigDecimal> getGettable(Node node){
-		if(node instanceof Gettable) {
-			return DecimalUtils.getDecimalGettable((Gettable<?>)node);
-		} 
-		
-		throw new BuildException("Numeric binary operator needs numeric gettable operand. But operand=" + node);
-	}
-	
-	public static BigDecimal getValue(Literal<?> literal){
+	public static BigDecimal getDecimalValue(Literal<?> literal){
 		Object value = literal.getValue();
 
 		if(value instanceof BigDecimal) {

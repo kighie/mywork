@@ -14,37 +14,37 @@
  */
 package kr.simula.calcula.core.wrapper;
 
-import java.math.BigDecimal;
-
 import kr.simula.calcula.core.Gettable;
-import kr.simula.calcula.core.Operator.Unary;
+import kr.simula.calcula.core.Operator.Binary;
 
 /**
  * <pre></pre>
  * @author kighie@gmail.com
  * @since 1.0
  */
-public class DecimalUnaryOperatorGettable extends UnaryOperatorGettable<BigDecimal, BigDecimal> {
+public class StringBinaryOperatorGettable extends BinaryOperatorGettable<String, Object, Object> {
+
 
 	/**
 	 * @param operator
 	 * @param operand1
 	 * @param operand2
 	 */
-	public DecimalUnaryOperatorGettable(
-			Unary<BigDecimal, BigDecimal> operator,
-			Gettable<BigDecimal> operand) {
-		super(operator, operand);
+	public StringBinaryOperatorGettable(
+			Binary<String, Object, Object> operator,
+			Gettable<?> operand1,
+			Gettable<?> operand2) {
+		super(operator, operand1, operand2);
 	}
 
 	@Override
-	public Class<BigDecimal> type() {
-		return BigDecimal.class;
+	public Class<String> type() {
+		return String.class;
 	}
 
 	@Override
 	public ValueType valueType() {
-		return ValueType.NUMERIC;
+		return ValueType.TEXT;
 	}
-	
+
 }

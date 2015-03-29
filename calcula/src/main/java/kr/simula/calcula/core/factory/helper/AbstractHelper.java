@@ -12,39 +12,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package kr.simula.calcula.core.wrapper;
+package kr.simula.calcula.core.factory.helper;
 
-import java.math.BigDecimal;
-
-import kr.simula.calcula.core.Gettable;
-import kr.simula.calcula.core.Operator.Unary;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <pre></pre>
  * @author kighie@gmail.com
  * @since 1.0
  */
-public class DecimalUnaryOperatorGettable extends UnaryOperatorGettable<BigDecimal, BigDecimal> {
+public abstract class AbstractHelper<FACTORY_TYPE> {
 
+	protected HashMap<String, FACTORY_TYPE> factories = new HashMap<String, FACTORY_TYPE>();
+	
+	
 	/**
-	 * @param operator
-	 * @param operand1
-	 * @param operand2
+	 * 
 	 */
-	public DecimalUnaryOperatorGettable(
-			Unary<BigDecimal, BigDecimal> operator,
-			Gettable<BigDecimal> operand) {
-		super(operator, operand);
-	}
-
-	@Override
-	public Class<BigDecimal> type() {
-		return BigDecimal.class;
-	}
-
-	@Override
-	public ValueType valueType() {
-		return ValueType.NUMERIC;
+	public AbstractHelper() {
+		initDefaults();
 	}
 	
+	protected void initDefaults(){
+	}
+	
+	public FACTORY_TYPE getFactory(String expToken) {
+		return factories.get(expToken);
+	}
+	
+	public FACTORY_TYPE setFactory(String expToken, FACTORY_TYPE factory) {
+		return factories.put(expToken, factory);
+	}
+	
+	public void setFactories(Map<String, ? extends FACTORY_TYPE> m) {
+		factories.putAll(m);
+	}
+
 }

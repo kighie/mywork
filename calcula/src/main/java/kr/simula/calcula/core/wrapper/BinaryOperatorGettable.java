@@ -55,4 +55,8 @@ public abstract class BinaryOperatorGettable<T, O1, O2> implements Gettable<T> {
 		return operator.eval(operand1.get(context), operand2.get(context));
 	}
 	
+	@Override
+	public String toString() {
+		return getExpression();
+	}
 }

@@ -14,7 +14,7 @@
  */
 package kr.simula.calcula.core.factory;
 
-import kr.simula.calcula.core.Gettable;
+import kr.simula.calcula.core.Node;
 
 
 /**
@@ -22,7 +22,7 @@ import kr.simula.calcula.core.Gettable;
  * @author kighie@gmail.com
  * @since 1.0
  */
-public interface UnaryOperatorFactory<T> {
+public interface UnaryOperatorFactory {
 	
-	Gettable<T> create(Gettable<?> operand);
+	Node create(Node operand);
 }

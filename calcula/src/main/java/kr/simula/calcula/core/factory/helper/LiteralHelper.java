@@ -12,39 +12,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package kr.simula.calcula.core.wrapper;
+package kr.simula.calcula.core.factory.helper;
 
-import java.math.BigDecimal;
-
-import kr.simula.calcula.core.Gettable;
-import kr.simula.calcula.core.Operator.Unary;
+import kr.simula.calcula.core.Literal;
+import kr.simula.calcula.core.builder.BuildException;
+import kr.simula.calcula.core.factory.LiteralFactory;
 
 /**
- * <pre></pre>
+ * <pre>
+ * LiteralHelper creates Literal Nodes (string, number, boolean, date, etc.)
+ * </pre>
  * @author kighie@gmail.com
  * @since 1.0
  */
-public class DecimalUnaryOperatorGettable extends UnaryOperatorGettable<BigDecimal, BigDecimal> {
-
-	/**
-	 * @param operator
-	 * @param operand1
-	 * @param operand2
-	 */
-	public DecimalUnaryOperatorGettable(
-			Unary<BigDecimal, BigDecimal> operator,
-			Gettable<BigDecimal> operand) {
-		super(operator, operand);
-	}
-
-	@Override
-	public Class<BigDecimal> type() {
-		return BigDecimal.class;
-	}
-
-	@Override
-	public ValueType valueType() {
-		return ValueType.NUMERIC;
-	}
+public class LiteralHelper extends AbstractHelper<LiteralFactory<?>> {
 	
+	@SuppressWarnings("rawtypes")
+	public Literal create(String expToken , String value){
+		LiteralFactory factory = factories.get(expToken);
+		if(factory == null){
+			throw new BuildException("LiteralFacotry for " + expToken + " is not registered.");
+		}
+		return factory.create(value);
+	}
 }

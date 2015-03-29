@@ -24,7 +24,7 @@ import kr.simula.calcula.core.Operator.Binary;
 import kr.simula.calcula.core.Operator.Unary;
 import kr.simula.calcula.core.Ref;
 import kr.simula.calcula.core.builder.BuildException;
-import kr.simula.calcula.core.util.DecimalUtils;
+import kr.simula.calcula.core.util.GettableUtils;
 import kr.simula.calcula.core.wrapper.DecimalGettableWrapper;
 import kr.simula.calcula.def.ExprTokens;
 
@@ -85,7 +85,7 @@ public class OperatorHelper {
 		}
 		
 		if(Number.class.isAssignableFrom( nodeValType )) {
-			return new DecimalGettableWrapper(DecimalUtils.NUMBER_TO_DECIMAL, node);
+			return new DecimalGettableWrapper(GettableUtils.NUMBER_TO_DECIMAL, node);
 		}
 		
 		
