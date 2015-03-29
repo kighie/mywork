@@ -37,13 +37,11 @@ public class ExpressionBuilderTests {
 	static final String FormulaExpression1 = "=(1+3 * 4 + 15 / (fn4(1,2,3) + fn2() ) * aa.bb.meth())";
 	static final String OperatorExpression1 = "1+3 * 4 + 15 / (fn4(1,2,3) + fn2() ) * aa.bb.meth()";
 	
-
-	protected DefaultLiteralHelper literalHelper = new DefaultLiteralHelper();
-	protected OperatorHelper operatorHelper = new OperatorHelper();
+	
+	protected ExpressionBuilderFactory builderFactory = new ExpressionBuilderFactory();
 	
 	private CalculaParser createExpressionParser(String expression){
-		
-		CalculaBuilder calculaBuilder = new ExpressionBuilder(literalHelper, operatorHelper);
+		CalculaBuilder calculaBuilder = builderFactory.newBuilder();
 		CharStream input = new ANTLRInputStream(FormulaExpression1);
 		CalculaLexer lexer = new CalculaLexer(input);
 		TokenStream tokenStream = new CommonTokenStream(lexer);

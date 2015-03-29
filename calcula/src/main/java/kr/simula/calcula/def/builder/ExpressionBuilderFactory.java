@@ -14,48 +14,29 @@
  */
 package kr.simula.calcula.def.builder;
 
-import kr.simula.calcula.core.Block;
-import kr.simula.calcula.core.builder.AbstractCalculaBuilder;
-import kr.simula.calcula.core.builder.BuildException;
+import kr.simula.calcula.core.builder.CalculaBuilder;
+import kr.simula.calcula.core.builder.CalculaBuilderFactory;
 import kr.simula.calcula.core.builder.RootBuildContext;
 import kr.simula.calcula.core.factory.helper.BinaryOperatorHelper;
 import kr.simula.calcula.core.factory.helper.FunctionCallHelper;
 import kr.simula.calcula.core.factory.helper.LiteralHelper;
 import kr.simula.calcula.core.factory.helper.UnaryOperatorHelper;
-import kr.simula.calcula.def.ExprTokens;
 
 /**
+ * <pre></pre>
  * @author kighie@gmail.com
- *
+ * @since 1.0
  */
-public class ExpressionBuilder extends AbstractCalculaBuilder implements ExprTokens {
-	
-
-	/**
-	 * @param rootContext
-	 * @param literalHelper
-	 * @param binaryOperatorHelper
-	 * @param unaryOperatorHelper
-	 * @param functionCallHelper
-	 */
-	public ExpressionBuilder(RootBuildContext rootContext,
-			LiteralHelper literalHelper,
-			BinaryOperatorHelper binaryOperatorHelper,
-			UnaryOperatorHelper unaryOperatorHelper,
-			FunctionCallHelper functionCallHelper) {
-		super(rootContext, literalHelper, binaryOperatorHelper, unaryOperatorHelper,
-				functionCallHelper);
-	}
-
+public class ExpressionBuilderFactory extends CalculaBuilderFactory {
+	private LiteralHelper literalHelper = new DefaultLiteralHelper();
+	private BinaryOperatorHelper binaryOperatorHelper = new DefaultBinaryOperatorHelper();
+	private UnaryOperatorHelper unaryOperatorHelper ;
+	private FunctionCallHelper functionCallHelper ;
 	
 	@Override
-	public Block block(String token){
-		throw new BuildException("New block is not supported.");
+	public CalculaBuilder newBuilder() {
+		return new ExpressionBuilder(new RootBuildContext(), 
+				literalHelper, binaryOperatorHelper, unaryOperatorHelper, functionCallHelper);
 	}
-	
-	@Override
-	public Block endBlock() {
-		return null;
-	}
-	
+
 }
