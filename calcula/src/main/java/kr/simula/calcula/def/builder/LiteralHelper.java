@@ -15,7 +15,6 @@
 package kr.simula.calcula.def.builder;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -25,6 +24,7 @@ import java.util.Map;
 
 import kr.simula.calcula.core.Literal;
 import kr.simula.calcula.core.builder.BuildException;
+import kr.simula.calcula.core.factory.LiteralFactory;
 import kr.simula.calcula.def.ExprTokens;
 
 /**
@@ -36,12 +36,7 @@ import kr.simula.calcula.def.ExprTokens;
  */
 public class LiteralHelper {
 
-	public static interface LiteralFactory {
-		@SuppressWarnings("rawtypes")
-		Literal create(String value);
-	}
-	
-	protected HashMap<String, LiteralFactory> factories = new HashMap<String, LiteralFactory>();
+	protected HashMap<String, LiteralFactory<?>> factories = new HashMap<String, LiteralFactory<?>>();
 	
 	
 	/**
@@ -52,23 +47,22 @@ public class LiteralHelper {
 	}
 	
 	protected final void initDefaults(){
-		factories.put(ExprTokens.LIT_STRING, new LiteralFactory() {
+		factories.put(ExprTokens.LIT_STRING, new LiteralFactory<String>() {
 			@Override
 			public Literal<String> create(String value) {
 				return new StringLiteral(value);
 			}
 		} );
 		
-		factories.put(ExprTokens.LIT_NUMBER, new LiteralFactory() {
-			@SuppressWarnings("rawtypes")
+		factories.put(ExprTokens.LIT_NUMBER, new LiteralFactory<BigDecimal>() {
 			@Override
-			public Literal create(String value) {
+			public Literal<BigDecimal> create(String value) {
 				return new NumberLiteral(new BigDecimal(value));
 			}
 		} );
 		
 
-		factories.put(ExprTokens.LIT_BOOLEAN, new LiteralFactory() {
+		factories.put(ExprTokens.LIT_BOOLEAN, new LiteralFactory<Boolean>() {
 			@Override
 			public Literal<Boolean> create(String value) {
 				if("true".equals(value) ||"TRUE".equals(value) ){
@@ -80,7 +74,7 @@ public class LiteralHelper {
 			}
 		} );
 		
-		factories.put(ExprTokens.LIT_DATE, new LiteralFactory() {
+		factories.put(ExprTokens.LIT_DATE, new LiteralFactory<Date>() {
 			@Override
 			public Literal<Date> create(String value) {
 				try {
@@ -92,15 +86,15 @@ public class LiteralHelper {
 		} );
 	}
 	
-	public LiteralFactory getFactory(String expToken) {
+	public LiteralFactory<?> getFactory(String expToken) {
 		return factories.get(expToken);
 	}
 	
-	public LiteralFactory setFactory(String expToken, LiteralFactory factory) {
+	public LiteralFactory<?> setFactory(String expToken, LiteralFactory<?> factory) {
 		return factories.put(expToken, factory);
 	}
 	
-	public void setFactories(Map<String, ? extends LiteralFactory> m) {
+	public void setFactories(Map<String, ? extends LiteralFactory<?>> m) {
 		factories.putAll(m);
 	}
 
@@ -125,10 +119,6 @@ public class LiteralHelper {
 			return ValueType.TEXT;
 		}
 		
-		@Override
-		public String getExpToken() {
-			return ExprTokens.LIT_STRING;
-		}
 	}
 	
 
@@ -147,10 +137,6 @@ public class LiteralHelper {
 			return BigDecimal.class;
 		}
 		
-		@Override
-		public String getExpToken() {
-			return ExprTokens.LIT_NUMBER;
-		}
 	}
 
 	protected static class BooleanLiteral extends Literal<Boolean> {
@@ -171,10 +157,6 @@ public class LiteralHelper {
 			return Boolean.class;
 		}
 		
-		@Override
-		public String getExpToken() {
-			return ExprTokens.LIT_BOOLEAN;
-		}
 	}
 
 	protected static class DateLiteral extends Literal<Date> {
@@ -194,7 +176,7 @@ public class LiteralHelper {
 		}
 		
 		@Override
-		public String getExpToken() {
+		public String getExpression() {
 			return ExprTokens.LIT_DATE;
 		}
 	}

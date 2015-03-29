@@ -12,38 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package kr.simula.calcula.core;
+package kr.simula.calcula.core.factory;
+
+import kr.simula.calcula.core.Gettable;
 
 /**
- * <pre>
- * Common interface of all Node classes.
- * </pre>
+ * <pre></pre>
  * @author kighie@gmail.com
- *
+ * @since 1.0
  */
-public interface Node {
-	/**
-	 * Node's content value type
-	 */
-	public enum ValueType {
-		VOID, 
-		TEXT,
-		DATE,
-		NUMERIC,
-		LOGICAL,
-		OBJECT,
-		UNKNOWN
-	}
-	
-	/**
-	 * Returns the value type of this node.
-	 * @return
-	 */
-	ValueType valueType();
-	
-	/**
-	 * Returns full expression string of this node 
-	 * @return
-	 */
-	String getExpression();
+public interface FunctionCallFactory<T> {
+
+	Gettable<T> create(Gettable<?> ... args);
 }

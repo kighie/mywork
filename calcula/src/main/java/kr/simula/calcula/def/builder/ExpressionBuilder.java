@@ -15,11 +15,9 @@
 package kr.simula.calcula.def.builder;
 
 import kr.simula.calcula.core.Block;
-import kr.simula.calcula.core.Executable;
 import kr.simula.calcula.core.Gettable;
 import kr.simula.calcula.core.Literal;
 import kr.simula.calcula.core.Node;
-import kr.simula.calcula.core.Operator;
 import kr.simula.calcula.core.Ref;
 import kr.simula.calcula.core.builder.BuildContext;
 import kr.simula.calcula.core.builder.BuildException;
@@ -34,9 +32,22 @@ import kr.simula.calcula.def.ExprTokens;
 public class ExpressionBuilder implements ExprTokens, CalculaBuilder {
 	protected RootBuildContext rootContext = new RootBuildContext();
 	protected BuildContext current = rootContext;
+
+	protected LiteralHelper literalHelper;
+	protected OperatorHelper operatorHelper;
 	
-	private Node rootNode;
+	protected Node rootNode;
 	
+	/**
+	 * @param literalHelper
+	 * @param operatorHelper
+	 */
+	public ExpressionBuilder(LiteralHelper literalHelper,
+			OperatorHelper operatorHelper) {
+		this.literalHelper = literalHelper;
+		this.operatorHelper = operatorHelper;
+	}
+
 	@Override
 	public Node getRootNode() {
 		return rootNode;
@@ -57,7 +68,6 @@ public class ExpressionBuilder implements ExprTokens, CalculaBuilder {
 		return null;
 	}
 	
-	@SuppressWarnings("rawtypes")
 	@Override
 	public Node operator(String token, Node node) {
 		// TODO Auto-generated method stub
@@ -65,7 +75,6 @@ public class ExpressionBuilder implements ExprTokens, CalculaBuilder {
 	}
 
 
-	@SuppressWarnings("rawtypes")
 	@Override
 	public Node operator(String token, Node left, Node right) {
 		// TODO Auto-generated method stub
@@ -75,8 +84,7 @@ public class ExpressionBuilder implements ExprTokens, CalculaBuilder {
 	@SuppressWarnings("rawtypes")
 	@Override
 	public Literal literal(String token, String value) {
-		// TODO Auto-generated method stub
-		return null;
+		return literalHelper.create(token, value);
 	}
 
 	@Override
@@ -88,14 +96,13 @@ public class ExpressionBuilder implements ExprTokens, CalculaBuilder {
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public Gettable functionCall(String token, String name, Node... args) {
+	public Gettable functionCall(String name, Node... args) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Node methodCall(String token, Ref parent, String name,
-			Node... args) {
+	public Node methodCall(Ref parent, String name, Node... args) {
 		// TODO Auto-generated method stub
 		return null;
 	}

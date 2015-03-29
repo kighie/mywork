@@ -12,38 +12,48 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package kr.simula.calcula.core;
+package kr.simula.calcula.core.wrapper;
+
+import kr.simula.calcula.core.Context;
+import kr.simula.calcula.core.Gettable;
 
 /**
- * <pre>
- * Common interface of all Node classes.
- * </pre>
+ * <pre></pre>
  * @author kighie@gmail.com
- *
+ * @since 1.0
  */
-public interface Node {
+public class StringGettableWrapper implements Gettable<String> {
+
+	private Gettable<?> original;
+	
 	/**
-	 * Node's content value type
+	 * @return ValueType#TEXT
 	 */
-	public enum ValueType {
-		VOID, 
-		TEXT,
-		DATE,
-		NUMERIC,
-		LOGICAL,
-		OBJECT,
-		UNKNOWN
+	@Override
+	public ValueType valueType() {
+		return ValueType.TEXT;
+	}
+
+	@Override
+	public String getExpression() {
+		return original.getExpression();
+	}
+
+	@Override
+	public Class<String> type() {
+		return String.class;
 	}
 	
-	/**
-	 * Returns the value type of this node.
-	 * @return
-	 */
-	ValueType valueType();
+	@Override
+	public String get(Context context) {
+		Object value = original.get(context);
+		
+		if(value == null){
+			return null;
+		}
+		
+		
+		return value.toString();
+	}
 	
-	/**
-	 * Returns full expression string of this node 
-	 * @return
-	 */
-	String getExpression();
 }

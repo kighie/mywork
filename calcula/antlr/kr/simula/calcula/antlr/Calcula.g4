@@ -90,7 +90,7 @@ formulaExpression returns [Node result]
 
 funcCallExp returns [Gettable result]
 	: IDENT '(' arguments? ')' 
-		{ $result = builder.functionCall(ExprTokens.FUNC_CALL, $IDENT.text, $arguments.result) ;}
+		{ $result = builder.functionCall($IDENT.text, $arguments.result) ;}
 	;
 
 methodCallExp returns [Node result]

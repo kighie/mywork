@@ -15,7 +15,6 @@
 package kr.simula.calcula.def.builder;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 
 import kr.simula.calcula.CalculaException;
 import kr.simula.calcula.core.Context;
@@ -25,6 +24,8 @@ import kr.simula.calcula.core.Operator.Binary;
 import kr.simula.calcula.core.Operator.Unary;
 import kr.simula.calcula.core.Ref;
 import kr.simula.calcula.core.builder.BuildException;
+import kr.simula.calcula.core.util.DecimalUtils;
+import kr.simula.calcula.core.wrapper.DecimalGettableWrapper;
 import kr.simula.calcula.def.ExprTokens;
 
 /**
@@ -47,7 +48,7 @@ public class OperatorHelper {
 		
 		return null;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	protected Gettable<? extends Number> getNumericGettable(Gettable<?> ref){
 		if(ref == null) {
@@ -58,119 +59,76 @@ public class OperatorHelper {
 			return (Gettable<? extends Number>)ref;
 		} else if( (ref instanceof Ref) 
 				&& (ref.valueType() == ValueType.NUMERIC )){
+			
 			return (Gettable<? extends Number>)ref;
 		}
-		return null;
-	}
-	
-
-	public Negate negate(Gettable<?> operand) {
-		Gettable<? extends Number> num = getNumericGettable(operand);
-		
-		if(num != null) {
-			return new Negate(num);
-		} else {
-			throw new BuildException("<Negate> Illegal operand data type " + operand);
-		}
+		throw new CalculaException(ref + " is not numeric.");
 	}
 
 	/**
-	 * number negate
-	 * @author IkChan Kwon
-	 * @since	1.0
+	 * TODO REF
+	 * <pre>
+	 * </pre>
+	 * @param node
+	 * @return
 	 */
-	protected class Negate implements Gettable<Number> {
-		private Gettable<? extends Number> operand;
-		
-		public Negate(Gettable<? extends Number> operand) {
-			this.operand = operand;
-		}
-
-		@Override
-		public ValueType valueType() {
-			return ValueType.NUMERIC;
+	@SuppressWarnings("unchecked")
+	protected Gettable<BigDecimal> getDecimalGettable(Gettable<?> node){
+		if(node == null) {
+			throw new BuildException("node is null.");
 		}
 		
-		@Override
-		public String getExpToken() {
-			return ExprTokens.OP_NUM_NEGATION;
+		Class<?> nodeValType = node.type();
+		
+		if(BigDecimal.class.isAssignableFrom( nodeValType )) {
+			return (Gettable<BigDecimal>)node;
 		}
 		
-		public Class<? extends Number> type() {
-			return operand.type();
+		if(Number.class.isAssignableFrom( nodeValType )) {
+			return new DecimalGettableWrapper(DecimalUtils.NUMBER_TO_DECIMAL, node);
 		}
 		
-
-		public Number get(Context context) {
-			Number number = operand.get(context);
-			if(number instanceof BigDecimal){
-				return ((BigDecimal)number).negate();
-			} else if(number instanceof BigInteger){
-				return ((BigInteger)number).negate();
-			} else if(number instanceof Integer){
-				return -((Integer)number);
-			} else {
-				throw new CalculaException("Cannot negate " + number.getClass());
+		
+		if(nodeValType == null){
+			if(node instanceof Ref) {
+				throw new CalculaException("TODO : REF " + node );
 			}
+		}
+		
+		throw new CalculaException(node + " is not numeric.");
+	}
+	
+	
+
+	protected abstract class UnaryHolder<T, O1> implements Gettable<T> {
+		protected Unary<T, O1> operator;
+		protected Gettable<? extends O1> operand1;
+		
+		public UnaryHolder(Unary<T, O1> operator, 
+				Gettable<? extends O1> operand1 ) {
+			this.operator = operator;
+			this.operand1 = operand1;
+		}
+		
+		public T get(Context context) {
+			return operator.eval(operand1.get(context));
 		}
 		
 		@Override
 		public String toString() {
 			StringBuilder buf = new StringBuilder();
-			buf.append("[").append(ExprTokens.OP_NUM_NEGATION).append(operand).append("]");
+			buf.append("[").append(operator).append(" ").append(operand1).append("]");
 			return buf.toString();
-		}
-		
-	}
-
-	@SuppressWarnings("unchecked")
-	public Gettable<Boolean> not(Gettable<?> operand) {
-		Gettable<Boolean> gettable = (Gettable<Boolean>)getGettable(operand, Boolean.class);
-		
-		if(gettable != null) {
-			return new Not((Gettable<Boolean>)operand);
-		} else {
-			throw new BuildException("<Not> Illegal operand data type " + operand);
 		}
 	}
 	
-	/**
-	 * logical negate
-	 * @author IkChan Kwon
-	 * @since	1.0
-	 */
-	protected class Not implements Gettable<Boolean> {
-		private Gettable<Boolean> operand;
-		
-		public  Not(Gettable<Boolean> operand) {
-			this.operand = operand;
-		}
-		
-		@Override
-		public ValueType valueType() {
-			return ValueType.LOGICAL;
-		}
-		
-		@Override
-		public String getExpToken() {
-			return ExprTokens.OP_NOT;
-		}
-		
-		public Class<Boolean> type() {
-			return Boolean.class;
-		}
-		
-		public Boolean get(Context context) {
-			return !operand.get(context);
-		}
-	}
-
 	protected abstract class BinaryHolder<T, O1, O2> implements Gettable<T> {
 		protected Binary<T, O1, O2> operator;
-		protected Gettable<O1> operand1;
-		protected Gettable<O2> operand2;
+		protected Gettable<? extends O1> operand1;
+		protected Gettable<? extends O2> operand2;
 		
-		public BinaryHolder(Binary<T, O1, O2> operator, Gettable<O1> operand1, Gettable<O2> operand2) {
+		public BinaryHolder(Binary<T, O1, O2> operator, 
+				Gettable<? extends O1> operand1, Gettable<? extends O2> operand2) {
 			this.operator = operator;
 			this.operand1 = operand1;
 			this.operand2 = operand2;
@@ -188,16 +146,34 @@ public class OperatorHelper {
 		}
 	}
 
-	protected class NumberBinary extends BinaryHolder<Number, Number, Number> {
-		public NumberBinary(
-				Binary<Number, Number, Number> operator,
-				Gettable<Number> operand1, Gettable<Number> operand2) {
-			super(operator, operand1, operand2);
+	/* ************************************************
+	 * Number Operators
+	 ************************************************ */
+
+	public Negate negate(Gettable<?> operand) {
+		Gettable<? extends Number> num = getNumericGettable(operand);
+		
+		if(num != null) {
+			return new Negate(NEGATE, num);
+		} else {
+			throw new BuildException("<Negate> Illegal operand data type " + operand);
 		}
+	}
+
+	/**
+	 * number negate
+	 * @author IkChan Kwon
+	 * @since	1.0
+	 */
+	protected class Negate extends UnaryHolder<BigDecimal, Number> {
 		
-		
-		public Class<Number> type() {
-			return Number.class;
+		/**
+		 * @param operator
+		 * @param operand1
+		 */
+		public Negate(Unary<BigDecimal, Number> operator,
+				Gettable<? extends Number> operand1) {
+			super(operator, operand1);
 		}
 		
 		@Override
@@ -206,12 +182,55 @@ public class OperatorHelper {
 		}
 		
 		@Override
-		public String getExpToken() {
-			return null;
+		public String getExpression() {
+			return ExprTokens.OP_NUM_NEGATION;
+		}
+		
+		public Class<BigDecimal> type() {
+			return BigDecimal.class;
+		}
+	}
+	
+	public static Unary<BigDecimal, Number> NEGATE = new Unary<BigDecimal, Number>() {
+		private static final long serialVersionUID = 1L;
+
+		public String toString() { return "NEGATE"; }
+
+		@Override
+		public BigDecimal eval(Number number) {
+			if(number instanceof BigDecimal){
+				return ((BigDecimal)number).negate();
+			} else if(number instanceof Number){
+				return new BigDecimal(number.toString()).negate();
+			} else {
+				throw new CalculaException("Cannot negate " + number.getClass());
+			}
+		};
+	};
+	
+	protected class NumberBinary extends BinaryHolder<BigDecimal, BigDecimal, BigDecimal> {
+		public NumberBinary(
+				Binary<BigDecimal, BigDecimal, BigDecimal> operator,
+				Gettable<BigDecimal> operand1, Gettable<BigDecimal> operand2) {
+			super(operator, operand1, operand2);
+		}
+		
+		
+		public Class<BigDecimal> type() {
+			return BigDecimal.class;
+		}
+		
+		@Override
+		public ValueType valueType() {
+			return ValueType.NUMERIC;
+		}
+		
+		@Override
+		public String getExpression() {
+			return operator.toString();
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	protected NumberBinary createNumberBinary(Binary<BigDecimal, BigDecimal, BigDecimal> operator,
 			Gettable<?> operand1, Gettable<?> operand2){
 		Gettable<BigDecimal> gettable1 = (Gettable<BigDecimal>)getGettable(operand1, BigDecimal.class);
@@ -226,7 +245,8 @@ public class OperatorHelper {
 			throw new BuildException("<" + operator + "> Illegal operand data type " + operand2);
 		}
 		
-		NumberBinary op = new NumberBinary(operator, gettable1, gettable2);
+		NumberBinary op = new NumberBinary(operator, 
+				getDecimalGettable(gettable1), getDecimalGettable(gettable2));
 		
 		return op;
 	}
@@ -287,252 +307,344 @@ public class OperatorHelper {
 
 	
 	
-//	public Gettable<BigDecimal> add(Gettable<?> operand1, Gettable<?> operand2) {
-//		return createNumberBinary(ADD, operand1, operand2);
-//	}
-//
-//	public Gettable<BigDecimal> subtract(Gettable<?> operand1, Gettable<?> operand2) {
-//		return createNumberBinary(SUBTRACT, operand1, operand2);
-//	}
-//
-//	public Gettable<BigDecimal> multiply(Gettable<?> operand1,
-//			Gettable<?> operand2) {
-//		return createNumberBinary(MULTIPLY, operand1, operand2);
-//	}
-//
-//	public Gettable<BigDecimal> divide(Gettable<?> operand1,
-//			Gettable<?> operand2) {
-//		return createNumberBinary(DIVIDE, operand1, operand2);
-//	}
-//
-//	public Gettable<BigDecimal> mod(Gettable<?> operand1, Gettable<?> operand2) {
-//		return createNumberBinary(MOD, operand1, operand2);
-//	}
-//
-//	
-//	protected class StringBinary extends BinaryHolder<String, Object, Object> {
-//		private static final long serialVersionUID = -7843344378508293521L;
-//
-//
-//		public StringBinary(Binary<String, Object, Object> operator,
-//				Gettable<Object> operand1, Gettable<Object> operand2) {
-//			super(operator, operand1, operand2);
-//		}
-//
-//		public Class<String> type() {
-//			return String.class;
-//		}
-//	}
-//
-//	public static Binary<String, Object, Object> CONCAT = new Binary<String, Object, Object>() {
-//		private static final long serialVersionUID = 8244939992124520090L;
-//		public String eval(Object val1, Object val2) {
-//			StringBuilder buf = new StringBuilder();
-//			buf.append(val1);
-//			buf.append(val2);
-//			return buf.toString();
-//		}
-//		public String toString() { return "CONCAT"; };
-//	};
-//	
-//	@SuppressWarnings("unchecked")
-//	public Gettable<String> concat(Gettable<?> operand1, Gettable<?> operand2) {
-//		return new StringBinary(CONCAT, (Gettable<Object>)operand1, (Gettable<Object>)operand2);
-//	}
-//	
-//
-//	@SuppressWarnings("rawtypes")
-//	protected class CompareBinary extends BinaryHolder<Boolean, Comparable, Comparable> {
-//		private static final long serialVersionUID = 4960603565749653612L;
-//
-//		public CompareBinary(Binary<Boolean, Comparable, Comparable> operator,
-//				Gettable<Comparable> operand1, Gettable<Comparable> operand2) {
-//			super(operator, operand1, operand2);
-//		}
-//
-//		public Class<Boolean> type() {
-//			return Boolean.class;
-//		}
-//	}
-//	
-//	@SuppressWarnings("rawtypes")
-//	public static Binary<Boolean, Comparable, Comparable> EQ = new Binary<Boolean, Comparable, Comparable>() {
-//		private static final long serialVersionUID = -1536350080253761897L;
-//
-//		public Boolean eval(Comparable val1, Comparable val2) {
-//			return val1.equals(val2);
-//		}
-//		public String toString() { return "EQ"; };
-//	};
-//
-//	@SuppressWarnings("rawtypes")
-//	public static Binary<Boolean, Comparable, Comparable> NOT_EQ = new Binary<Boolean, Comparable, Comparable>() {
-//		private static final long serialVersionUID = 8135499638098166188L;
-//
-//		public Boolean eval(Comparable val1, Comparable val2) {
-//			return !val1.equals(val2);
-//		}
-//		public String toString() { return "NOT_EQ"; };
-//	};
-//
-//	@SuppressWarnings("rawtypes")
-//	public static Binary<Boolean, Comparable, Comparable> EQ_GT = new Binary<Boolean, Comparable, Comparable>() {
-//		private static final long serialVersionUID = 8322598301178903435L;
-//
-//		@SuppressWarnings("unchecked")
-//		public Boolean eval(Comparable val1, Comparable val2) {
-//			return val1.compareTo(val2) >= 0;
-//		}
-//		public String toString() { return "EQ_GT"; };
-//	};
-//
-//	@SuppressWarnings("rawtypes")
-//	public static Binary<Boolean, Comparable, Comparable> GT = new Binary<Boolean, Comparable, Comparable>() {
-//		private static final long serialVersionUID = 1716214016154335373L;
-//
-//		@SuppressWarnings("unchecked")
-//		public Boolean eval(Comparable val1, Comparable val2) {
-//			return val1.compareTo(val2) > 0;
-//		}
-//		public String toString() { return "GT"; };
-//	};
-//
-//	@SuppressWarnings("rawtypes")
-//	public static Binary<Boolean, Comparable, Comparable> EQ_LT = new Binary<Boolean, Comparable, Comparable>() {
-//		private static final long serialVersionUID = -2326991012746003884L;
-//
-//		@SuppressWarnings("unchecked")
-//		public Boolean eval(Comparable val1, Comparable val2) {
-//			return val1.compareTo(val2) <= 0;
-//		}
-//		public String toString() { return "EQ_LT"; };
-//	};
-//
-//	@SuppressWarnings("rawtypes")
-//	public static Binary<Boolean, Comparable, Comparable> LT = new Binary<Boolean, Comparable, Comparable>() {
-//		private static final long serialVersionUID = 6077518262742783672L;
-//
-//		@SuppressWarnings("unchecked")
-//		public Boolean eval(Comparable val1, Comparable val2) {
-//			return val1.compareTo(val2) < 0;
-//		}
-//		public String toString() { return "LT"; };
-//	};
-//	
-//	@SuppressWarnings({ "unchecked", "rawtypes" })
-//	protected CompareBinary createCompareBinary(Binary<Boolean, Comparable, Comparable> operator,
-//			Gettable<?> operand1, Gettable<?> operand2){
-//		Gettable<Comparable> gettable1 = (Gettable<Comparable>)getGettable(operand1, Comparable.class);
-//		
-//		if(gettable1 == null) {
-//			throw new DslBuildException("<" + operator + "> Illegal operand data type " + operand1);
-//		}
-//		
-//		Gettable<Comparable> gettable2 = (Gettable<Comparable>)getGettable(operand2, Comparable.class);
-//		
-//		if(gettable2 == null) {
-//			throw new DslBuildException("<" + operator + "> Illegal operand data type " + operand2);
-//		}
-//		
-//		CompareBinary op = new CompareBinary(operator, gettable1, gettable2);
-//		
-//		return op;
-//	}
-//	
-//
-//	
-//	
-//	public Gettable<Boolean> eq(Gettable<?> operand1, Gettable<?> operand2) {
-//		return createCompareBinary(EQ, operand1, operand2);
-//	}
-//
-//	public Gettable<Boolean> notEq(Gettable<?> operand1, Gettable<?> operand2) {
-//		return createCompareBinary(NOT_EQ, operand1, operand2);
-//	}
-//
-//	public Gettable<Boolean> eqGt(Gettable<?> operand1, Gettable<?> operand2) {
-//		return createCompareBinary(EQ_GT, operand1, operand2);
-//	}
-//
-//	public Gettable<Boolean> gt(Gettable<?> operand1, Gettable<?> operand2) {
-//		return createCompareBinary(GT, operand1, operand2);
-//	}
-//
-//	public Gettable<Boolean> eqLt(Gettable<?> operand1, Gettable<?> operand2) {
-//		return createCompareBinary(EQ_LT, operand1, operand2);
-//	}
-//
-//	public Gettable<Boolean> lt(Gettable<?> operand1, Gettable<?> operand2) {
-//		return createCompareBinary(LT, operand1, operand2);
-//	}
-//	
-//
-//	protected class LogicalBinary extends BinaryHolder<Boolean, Boolean, Boolean> {
-//		private static final long serialVersionUID = -2038198432230606921L;
-//
-//		public LogicalBinary(Binary<Boolean, Boolean, Boolean> operator,
-//				Gettable<Boolean> operand1, Gettable<Boolean> operand2) {
-//			super(operator, operand1, operand2);
-//		}
-//
-//		public Class<Boolean> type() {
-//			return Boolean.class;
-//		}
-//	}
-//	
-//	public static Binary<Boolean, Boolean, Boolean> AND  = new Binary<Boolean, Boolean, Boolean>() {
-//		private static final long serialVersionUID = 3085262817760840162L;
-//		
-//		public Boolean eval(Boolean val1, Boolean val2) {
-//			return (val1 && val2);
-//		}
-//		
-//		public String toString() { return "AND"; };
-//	};
-//
-//	public static Binary<Boolean, Boolean, Boolean> OR  = new Binary<Boolean, Boolean, Boolean>() {
-//		private static final long serialVersionUID = -625569543622838365L;
-//
-//		public Boolean eval(Boolean val1, Boolean val2) {
-//			return (val1 || val2);
-//		}
-//		
-//		public String toString() { return "OR"; };
-//	};
-//	
-//
-//	@SuppressWarnings({ "unchecked"  })
-//	protected LogicalBinary createLogicalBinary(Binary<Boolean, Boolean, Boolean> operator,
-//			Gettable<?> operand1, Gettable<?> operand2){
-//		Gettable<Boolean> gettable1 = (Gettable<Boolean>)getGettable(operand1, Boolean.class);
-//		
-//		if(gettable1 == null) {
-//			throw new DslBuildException("<" + operator + "> Illegal operand data type " + operand1);
-//		}
-//		
-//		Gettable<Boolean> gettable2 = (Gettable<Boolean>)getGettable(operand2, Boolean.class);
-//		
-//		if(gettable2 == null) {
-//			throw new DslBuildException("<" + operator + "> Illegal operand data type " + operand2);
-//		}
-//		
-//		LogicalBinary op = new LogicalBinary(operator, gettable1, gettable2);
-//		
-//		return op;
-//	}
-//	
-//	
-//	public Gettable<Boolean> and(Gettable<?> operand1, Gettable<?> operand2) {
-//		return createLogicalBinary(AND, operand1, operand2);
-//	}
-//	
-//	public Gettable<Boolean> or(Gettable<?> operand1, Gettable<?> operand2) {
-//		return createLogicalBinary(OR, operand1, operand2);
-//	}
-//
+	public Gettable<BigDecimal> add(Gettable<?> operand1, Gettable<?> operand2) {
+		return createNumberBinary(ADD, operand1, operand2);
+	}
+
+	public Gettable<BigDecimal> subtract(Gettable<?> operand1, Gettable<?> operand2) {
+		return createNumberBinary(SUBTRACT, operand1, operand2);
+	}
+
+	public Gettable<BigDecimal> multiply(Gettable<?> operand1,
+			Gettable<?> operand2) {
+		return createNumberBinary(MULTIPLY, operand1, operand2);
+	}
+
+	public Gettable<BigDecimal> divide(Gettable<?> operand1,
+			Gettable<?> operand2) {
+		return createNumberBinary(DIVIDE, operand1, operand2);
+	}
+
+	public Gettable<BigDecimal> mod(Gettable<?> operand1, Gettable<?> operand2) {
+		return createNumberBinary(MOD, operand1, operand2);
+	}
+
+	
+	/* ************************************************
+	 * String Operators
+	 ************************************************ */
+	
+	protected class StringBinary extends BinaryHolder<String, Object, Object> {
+
+		public StringBinary(Binary<String, Object, Object> operator,
+				Gettable<Object> operand1, Gettable<Object> operand2) {
+			super(operator, operand1, operand2);
+		}
+
+		public Class<String> type() {
+			return String.class;
+		}
+		
+		@Override
+		public ValueType valueType() {
+			return ValueType.TEXT;
+		}
+
+		@Override
+		public String getExpression() {
+			return operator.toString();
+		}
+	}
+
+	public static Binary<String, Object, Object> CONCAT = new Binary<String, Object, Object>() {
+		private static final long serialVersionUID = 8244939992124520090L;
+		public String eval(Object val1, Object val2) {
+			StringBuilder buf = new StringBuilder();
+			buf.append(val1);
+			buf.append(val2);
+			return buf.toString();
+		}
+		public String toString() { return "CONCAT"; };
+	};
+	
+	@SuppressWarnings("unchecked")
+	public Gettable<String> concat(Gettable<?> operand1, Gettable<?> operand2) {
+		return new StringBinary(CONCAT, (Gettable<Object>)operand1, (Gettable<Object>)operand2);
+	}
+	
+
+	/* ************************************************
+	 * Compare  Operators
+	 ************************************************ */
+	
+	@SuppressWarnings("rawtypes")
+	protected class CompareBinary extends BinaryHolder<Boolean, Comparable, Comparable> {
+		public CompareBinary(Binary<Boolean, Comparable, Comparable> operator,
+				Gettable<Comparable> operand1, Gettable<Comparable> operand2) {
+			super(operator, operand1, operand2);
+		}
+
+		public Class<Boolean> type() {
+			return Boolean.class;
+		}
+
+		@Override
+		public ValueType valueType() {
+			return ValueType.LOGICAL;
+		}
+
+		@Override
+		public String getExpression() {
+			return operator.toString();
+		}
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public static Binary<Boolean, Comparable, Comparable> EQ = new Binary<Boolean, Comparable, Comparable>() {
+		private static final long serialVersionUID = -1536350080253761897L;
+
+		public Boolean eval(Comparable val1, Comparable val2) {
+			return val1.equals(val2);
+		}
+		public String toString() { return "EQ"; };
+	};
+
+	@SuppressWarnings("rawtypes")
+	public static Binary<Boolean, Comparable, Comparable> NOT_EQ = new Binary<Boolean, Comparable, Comparable>() {
+		private static final long serialVersionUID = 8135499638098166188L;
+
+		public Boolean eval(Comparable val1, Comparable val2) {
+			return !val1.equals(val2);
+		}
+		public String toString() { return "NOT_EQ"; };
+	};
+
+	@SuppressWarnings("rawtypes")
+	public static Binary<Boolean, Comparable, Comparable> EQ_GT = new Binary<Boolean, Comparable, Comparable>() {
+		private static final long serialVersionUID = 8322598301178903435L;
+
+		@SuppressWarnings("unchecked")
+		public Boolean eval(Comparable val1, Comparable val2) {
+			return val1.compareTo(val2) >= 0;
+		}
+		public String toString() { return "EQ_GT"; };
+	};
+
+	@SuppressWarnings("rawtypes")
+	public static Binary<Boolean, Comparable, Comparable> GT = new Binary<Boolean, Comparable, Comparable>() {
+		private static final long serialVersionUID = 1716214016154335373L;
+
+		@SuppressWarnings("unchecked")
+		public Boolean eval(Comparable val1, Comparable val2) {
+			return val1.compareTo(val2) > 0;
+		}
+		public String toString() { return "GT"; };
+	};
+
+	@SuppressWarnings("rawtypes")
+	public static Binary<Boolean, Comparable, Comparable> EQ_LT = new Binary<Boolean, Comparable, Comparable>() {
+		private static final long serialVersionUID = -2326991012746003884L;
+
+		@SuppressWarnings("unchecked")
+		public Boolean eval(Comparable val1, Comparable val2) {
+			return val1.compareTo(val2) <= 0;
+		}
+		public String toString() { return "EQ_LT"; };
+	};
+
+	@SuppressWarnings("rawtypes")
+	public static Binary<Boolean, Comparable, Comparable> LT = new Binary<Boolean, Comparable, Comparable>() {
+		private static final long serialVersionUID = 6077518262742783672L;
+
+		@SuppressWarnings("unchecked")
+		public Boolean eval(Comparable val1, Comparable val2) {
+			return val1.compareTo(val2) < 0;
+		}
+		public String toString() { return "LT"; };
+	};
+	
+	@SuppressWarnings({  "rawtypes" })
+	protected CompareBinary createCompareBinary(Binary<Boolean, Comparable, Comparable> operator,
+			Gettable<?> operand1, Gettable<?> operand2){
+		Gettable<Comparable> gettable1 = (Gettable<Comparable>)getGettable(operand1, Comparable.class);
+		
+		if(gettable1 == null) {
+			throw new BuildException("<" + operator + "> Illegal operand data type " + operand1);
+		}
+		
+		Gettable<Comparable> gettable2 = (Gettable<Comparable>)getGettable(operand2, Comparable.class);
+		
+		if(gettable2 == null) {
+			throw new BuildException("<" + operator + "> Illegal operand data type " + operand2);
+		}
+		
+		CompareBinary op = new CompareBinary(operator, gettable1, gettable2);
+		
+		return op;
+	}
+	
+
+	/* ************************************************
+	 * Logical Operators
+	 ************************************************ */
+	
+	@SuppressWarnings("unchecked")
+	public Gettable<Boolean> not(Gettable<?> operand) {
+		Gettable<Boolean> gettable = (Gettable<Boolean>)getGettable(operand, Boolean.class);
+		
+		if(gettable != null) {
+			return new Not(NOT,(Gettable<Boolean>)operand);
+		} else {
+			throw new BuildException("<Not> Illegal operand data type " + operand);
+		}
+	}
+	
+	/**
+	 * logical negate
+	 * @author IkChan Kwon
+	 * @since	1.0
+	 */
+	protected class Not  extends UnaryHolder<Boolean, Boolean> {
+		
+		/**
+		 * @param operator
+		 * @param operand1
+		 */
+		public Not(Unary<Boolean, Boolean> operator,
+				Gettable<? extends Boolean> operand1) {
+			super(operator, operand1);
+		}
+
+		@Override
+		public ValueType valueType() {
+			return ValueType.LOGICAL;
+		}
+		
+		@Override
+		public String getExpression() {
+			return ExprTokens.OP_NOT;
+		}
+		
+		public Class<Boolean> type() {
+			return Boolean.class;
+		}
+	}
+
+	public static Unary<Boolean, Boolean> NOT = new Unary<Boolean, Boolean>() {
+		private static final long serialVersionUID = 1L;
+
+		public String toString() { return "NEGATE"; }
+
+		@Override
+		public Boolean eval(Boolean value) {
+			return value ? Boolean.TRUE : Boolean.FALSE;
+		};
+	};
+	
+
+	protected class LogicalBinary extends BinaryHolder<Boolean, Boolean, Boolean> {
+		public LogicalBinary(Binary<Boolean, Boolean, Boolean> operator,
+				Gettable<Boolean> operand1, Gettable<Boolean> operand2) {
+			super(operator, operand1, operand2);
+		}
+
+		public Class<Boolean> type() {
+			return Boolean.class;
+		}
+
+		@Override
+		public ValueType valueType() {
+			return ValueType.LOGICAL;
+		}
+		
+		@Override
+		public String getExpression() {
+			return operator.toString();
+		}
+	}
+	
+	
+	public Gettable<Boolean> eq(Gettable<?> operand1, Gettable<?> operand2) {
+		return createCompareBinary(EQ, operand1, operand2);
+	}
+
+	public Gettable<Boolean> notEq(Gettable<?> operand1, Gettable<?> operand2) {
+		return createCompareBinary(NOT_EQ, operand1, operand2);
+	}
+
+	public Gettable<Boolean> eqGt(Gettable<?> operand1, Gettable<?> operand2) {
+		return createCompareBinary(EQ_GT, operand1, operand2);
+	}
+
+	public Gettable<Boolean> gt(Gettable<?> operand1, Gettable<?> operand2) {
+		return createCompareBinary(GT, operand1, operand2);
+	}
+
+	public Gettable<Boolean> eqLt(Gettable<?> operand1, Gettable<?> operand2) {
+		return createCompareBinary(EQ_LT, operand1, operand2);
+	}
+
+	public Gettable<Boolean> lt(Gettable<?> operand1, Gettable<?> operand2) {
+		return createCompareBinary(LT, operand1, operand2);
+	}
+	
+
+	public static Binary<Boolean, Boolean, Boolean> AND  = new Binary<Boolean, Boolean, Boolean>() {
+		private static final long serialVersionUID = 3085262817760840162L;
+		
+		public Boolean eval(Boolean val1, Boolean val2) {
+			return (val1 && val2);
+		}
+		
+		public String toString() { return "AND"; };
+	};
+
+	public static Binary<Boolean, Boolean, Boolean> OR  = new Binary<Boolean, Boolean, Boolean>() {
+		private static final long serialVersionUID = -625569543622838365L;
+
+		public Boolean eval(Boolean val1, Boolean val2) {
+			return (val1 || val2);
+		}
+		
+		public String toString() { return "OR"; };
+	};
+	
+
+	protected LogicalBinary createLogicalBinary(Binary<Boolean, Boolean, Boolean> operator,
+			Gettable<?> operand1, Gettable<?> operand2){
+		Gettable<Boolean> gettable1 = (Gettable<Boolean>)getGettable(operand1, Boolean.class);
+		
+		if(gettable1 == null) {
+			throw new BuildException("<" + operator + "> Illegal operand data type " + operand1);
+		}
+		
+		Gettable<Boolean> gettable2 = (Gettable<Boolean>)getGettable(operand2, Boolean.class);
+		
+		if(gettable2 == null) {
+			throw new BuildException("<" + operator + "> Illegal operand data type " + operand2);
+		}
+		
+		LogicalBinary op = new LogicalBinary(operator, gettable1, gettable2);
+		
+		return op;
+	}
+	
+	
+	public Gettable<Boolean> and(Gettable<?> operand1, Gettable<?> operand2) {
+		return createLogicalBinary(AND, operand1, operand2);
+	}
+	
+	public Gettable<Boolean> or(Gettable<?> operand1, Gettable<?> operand2) {
+		return createLogicalBinary(OR, operand1, operand2);
+	}
+
+	/* ************************************************
+	 * Assign Operators
+	 ************************************************ */
+	
 //	public Executable assign(Settable<?> assignee, Gettable<?> assigned) {
 //		if(assignee == null){
-//			throw new DslBuildException("Assignee must not be null.");
+//			throw new BuildException("Assignee must not be null.");
 //		}
 //		Settable<?> settable = assignee;
 //		Gettable<?> gettable = assigned;
@@ -546,7 +658,7 @@ public class OperatorHelper {
 //			} else if(assigned.type() == TypeMeta.UNKNOWN_TYPE.type()){
 //				gettable = getGettable(assigned, assignee.type());
 //			}  else {
-//				throw new DslBuildException("Assigned type[" 
+//				throw new BuildException("Assigned type[" 
 //						+ assigned.type() + "] is not matched to assignee type[" 
 //						+ assignee.type() + "].");
 //			}
@@ -579,7 +691,6 @@ public class OperatorHelper {
 //			return buf.toString();
 //		}
 //	}
-
 //	
 //	@SuppressWarnings("rawtypes")
 //	public class GettableWrapper implements Gettable {
@@ -642,7 +753,7 @@ public class OperatorHelper {
 //			return new SettableWrapper(ref ,  type);
 //		}
 //		
-//		throw new DslBuildException(ref + " is not Ref or not supported unchecked mode.");
+//		throw new BuildException(ref + " is not Ref or not supported unchecked mode.");
 //	}
 //	
 //	@SuppressWarnings("rawtypes")

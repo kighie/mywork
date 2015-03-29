@@ -15,11 +15,9 @@
 package kr.simula.calcula.core.builder;
 
 import kr.simula.calcula.core.Block;
-import kr.simula.calcula.core.Executable;
 import kr.simula.calcula.core.Gettable;
 import kr.simula.calcula.core.Literal;
 import kr.simula.calcula.core.Node;
-import kr.simula.calcula.core.Operator;
 import kr.simula.calcula.core.Ref;
 
 /**
@@ -107,25 +105,23 @@ public interface CalculaBuilder {
 	 * <pre>
 	 * Builds function call expression
 	 * </pre>
-	 * @param token
 	 * @param name
 	 * @param args
 	 * @return
 	 */
 	@SuppressWarnings("rawtypes")
-	Gettable functionCall(String token, String name, Node ... args);
+	Gettable functionCall(String name, Node ... args);
 
 	/**
 	 * <pre>
 	 * Builds method call expression
 	 * </pre>
-	 * @param token
 	 * @param parent
 	 * @param name
 	 * @param args
 	 * @return
 	 */
-	Node methodCall(String token, Ref parent, String name, Node ... args);
+	Node methodCall(Ref parent, String name, Node ... args);
 	
 	
 }

@@ -199,7 +199,7 @@ public class CalculaParser extends Parser {
 				break;
 			}
 			setState(47); match(T__7);
-			 ((FuncCallExpContext)_localctx).result =  builder.functionCall(ExprTokens.FUNC_CALL, (((FuncCallExpContext)_localctx).IDENT!=null?((FuncCallExpContext)_localctx).IDENT.getText():null), ((FuncCallExpContext)_localctx).arguments.result) ;
+			 ((FuncCallExpContext)_localctx).result =  builder.functionCall((((FuncCallExpContext)_localctx).IDENT!=null?((FuncCallExpContext)_localctx).IDENT.getText():null), ((FuncCallExpContext)_localctx).arguments.result) ;
 			}
 		}
 		catch (RecognitionException re) {

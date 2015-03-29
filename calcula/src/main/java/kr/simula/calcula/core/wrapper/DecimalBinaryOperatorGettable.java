@@ -12,41 +12,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package kr.simula.calcula.core;
+package kr.simula.calcula.core.wrapper;
 
+import java.math.BigDecimal;
+
+import kr.simula.calcula.core.Gettable;
+import kr.simula.calcula.core.Operator.Binary;
 
 /**
+ * <pre></pre>
  * @author kighie@gmail.com
- *
+ * @since 1.0
  */
-public abstract class Literal<T> implements Node, Gettable<T>{
-	private T value;
-	
-	
+public class DecimalBinaryOperatorGettable extends BinaryOperatorGettable<BigDecimal, BigDecimal, BigDecimal> {
+
+
 	/**
-	 * @param value
+	 * @param operator
+	 * @param operand1
+	 * @param operand2
 	 */
-	public Literal(T value) {
-		this.value = value;
-	}
-
-	public T getValue(){
-		return value;
-	}
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	public Class<? extends T> type() {
-		return (Class<? extends T>)value.getClass();
+	public DecimalBinaryOperatorGettable(
+			Binary<BigDecimal, BigDecimal, BigDecimal> operator,
+			Gettable<BigDecimal> operand1,
+			Gettable<BigDecimal> operand2) {
+		super(operator, operand1, operand2);
 	}
 
 	@Override
-	public T get(Context context) {
-		return value;
+	public Class<BigDecimal> type() {
+		return BigDecimal.class;
 	}
-	
+
 	@Override
-	public String getExpression() {
-		return value.toString();
+	public ValueType valueType() {
+		return ValueType.NUMERIC;
 	}
+
 }
