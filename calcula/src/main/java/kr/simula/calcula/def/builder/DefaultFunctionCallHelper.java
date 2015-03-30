@@ -23,5 +23,45 @@ import kr.simula.calcula.core.factory.helper.FunctionCallHelper;
  *
  */
 public class DefaultFunctionCallHelper extends FunctionCallHelper {
-
+	
+	protected final static String FUNC_CLASSPATH = "kr/simula/calcula/func";
+	
+	@Override
+	protected void initDefaults() {
+		super.initDefaults();
+		
+		
+	}
+	
+//	protected final void loadFunctions(ClassLoader classLoader, String classpath){
+//		FunctionClassLoader funcLoader = new FunctionClassLoader(classLoader);
+//		
+//		funcLoader.scanPackage(classpath, new FunctionLoader(){
+//			@Override
+//			public void loadFunction(Class<Function<?>> funcClass) {
+//				// TODO Auto-generated method stub
+//				
+//			}
+//		});
+//		
+//	}
+//	
+//	protected interface FunctionLoader {
+//		void loadFunction(Class<Function<?>> funcClass);
+//	}
+//	
+//	protected class FunctionClassLoader extends ClassLoader {
+//		
+//		/**
+//		 * @param parent
+//		 */
+//		protected FunctionClassLoader(ClassLoader parent) {
+//			super(parent);
+//		}
+//		
+//		protected void scanPackage(String classpath, FunctionLoader functionLoader){
+//			Package pkg = getPackage(classpath);
+//			this.
+//		}
+//	}
 }
