@@ -19,8 +19,11 @@ import kr.simula.calcula.core.builder.AbstractCalculaBuilder;
 import kr.simula.calcula.core.builder.BuildException;
 import kr.simula.calcula.core.builder.RootBuildContext;
 import kr.simula.calcula.core.factory.helper.BinaryOperatorHelper;
+import kr.simula.calcula.core.factory.helper.BlockHelper;
 import kr.simula.calcula.core.factory.helper.FunctionCallHelper;
 import kr.simula.calcula.core.factory.helper.LiteralHelper;
+import kr.simula.calcula.core.factory.helper.MethodCallHelper;
+import kr.simula.calcula.core.factory.helper.RefHelper;
 import kr.simula.calcula.core.factory.helper.UnaryOperatorHelper;
 import kr.simula.calcula.def.ExprTokens;
 
@@ -33,21 +36,24 @@ public class ExpressionBuilder extends AbstractCalculaBuilder implements ExprTok
 
 	/**
 	 * @param rootContext
+	 * @param blockHelper
 	 * @param literalHelper
+	 * @param refHelper
 	 * @param binaryOperatorHelper
 	 * @param unaryOperatorHelper
 	 * @param functionCallHelper
+	 * @param methodCallHelper
 	 */
 	public ExpressionBuilder(RootBuildContext rootContext,
-			LiteralHelper literalHelper,
-			BinaryOperatorHelper binaryOperatorHelper,
+			BlockHelper blockHelper, LiteralHelper literalHelper,
+			RefHelper refHelper, BinaryOperatorHelper binaryOperatorHelper,
 			UnaryOperatorHelper unaryOperatorHelper,
-			FunctionCallHelper functionCallHelper) {
-		super(rootContext, literalHelper, binaryOperatorHelper, unaryOperatorHelper,
-				functionCallHelper);
+			FunctionCallHelper functionCallHelper,
+			MethodCallHelper methodCallHelper) {
+		super(rootContext, blockHelper, literalHelper, refHelper, binaryOperatorHelper,
+				unaryOperatorHelper, functionCallHelper, methodCallHelper);
 	}
 
-	
 	@Override
 	public Block block(String token){
 		throw new BuildException("New block is not supported.");

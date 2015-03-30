@@ -20,8 +20,11 @@ import kr.simula.calcula.core.Literal;
 import kr.simula.calcula.core.Node;
 import kr.simula.calcula.core.Ref;
 import kr.simula.calcula.core.factory.helper.BinaryOperatorHelper;
+import kr.simula.calcula.core.factory.helper.BlockHelper;
 import kr.simula.calcula.core.factory.helper.FunctionCallHelper;
 import kr.simula.calcula.core.factory.helper.LiteralHelper;
+import kr.simula.calcula.core.factory.helper.MethodCallHelper;
+import kr.simula.calcula.core.factory.helper.RefHelper;
 import kr.simula.calcula.core.factory.helper.UnaryOperatorHelper;
 
 /**
@@ -31,10 +34,14 @@ import kr.simula.calcula.core.factory.helper.UnaryOperatorHelper;
 public abstract class AbstractCalculaBuilder implements CalculaBuilder {
 	protected final RootBuildContext rootContext;
 
+	
+	protected final BlockHelper blockHelper;
 	protected final LiteralHelper literalHelper;
+	protected final RefHelper refHelper;
 	protected final BinaryOperatorHelper binaryOperatorHelper;
 	protected final UnaryOperatorHelper unaryOperatorHelper ;
 	protected final FunctionCallHelper functionCallHelper ;
+	protected final MethodCallHelper methodCallHelper ;
 
 	protected BuildContext current;
 	
@@ -43,24 +50,32 @@ public abstract class AbstractCalculaBuilder implements CalculaBuilder {
 	
 	/**
 	 * @param rootContext
+	 * @param blockHelper
 	 * @param literalHelper
+	 * @param refHelper
 	 * @param binaryOperatorHelper
 	 * @param unaryOperatorHelper
 	 * @param functionCallHelper
+	 * @param methodCallHelper
 	 */
-	public AbstractCalculaBuilder(
-			RootBuildContext rootContext,
-			LiteralHelper literalHelper,
-			BinaryOperatorHelper binaryOperatorHelper,
+	public AbstractCalculaBuilder(RootBuildContext rootContext,
+			BlockHelper blockHelper, LiteralHelper literalHelper,
+			RefHelper refHelper, BinaryOperatorHelper binaryOperatorHelper,
 			UnaryOperatorHelper unaryOperatorHelper,
-			FunctionCallHelper functionCallHelper) {
-		this.current = this.rootContext = rootContext;
+			FunctionCallHelper functionCallHelper,
+			MethodCallHelper methodCallHelper) {
+		super();
+		this.rootContext = rootContext;
+		this.blockHelper = blockHelper;
 		this.literalHelper = literalHelper;
+		this.refHelper = refHelper;
 		this.binaryOperatorHelper = binaryOperatorHelper;
 		this.unaryOperatorHelper = unaryOperatorHelper;
 		this.functionCallHelper = functionCallHelper;
+		this.methodCallHelper = methodCallHelper;
 	}
 
+	
 	@Override
 	public Node getRootNode() {
 		return rootNode;
@@ -73,7 +88,9 @@ public abstract class AbstractCalculaBuilder implements CalculaBuilder {
 	
 	@Override
 	public Block block(String token){
-		throw new BuildException("New block is not supported.");
+		Block block = blockHelper.create(token);
+		
+		return block;
 	}
 	
 	@Override
@@ -100,8 +117,7 @@ public abstract class AbstractCalculaBuilder implements CalculaBuilder {
 
 	@Override
 	public Ref reference(String token, String exp) {
-		// TODO Auto-generated method stub
-		return null;
+		return refHelper.create(token, exp);
 	}
 
 
@@ -113,8 +129,7 @@ public abstract class AbstractCalculaBuilder implements CalculaBuilder {
 
 	@Override
 	public Node methodCall(Ref parent, String name, Node... args) {
-		// TODO Auto-generated method stub
-		return null;
+		return methodCallHelper.create(parent, name, args);
 	}
 
 }

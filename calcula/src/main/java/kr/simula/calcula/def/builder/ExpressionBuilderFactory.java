@@ -18,8 +18,11 @@ import kr.simula.calcula.core.builder.CalculaBuilder;
 import kr.simula.calcula.core.builder.CalculaBuilderFactory;
 import kr.simula.calcula.core.builder.RootBuildContext;
 import kr.simula.calcula.core.factory.helper.BinaryOperatorHelper;
+import kr.simula.calcula.core.factory.helper.BlockHelper;
 import kr.simula.calcula.core.factory.helper.FunctionCallHelper;
 import kr.simula.calcula.core.factory.helper.LiteralHelper;
+import kr.simula.calcula.core.factory.helper.MethodCallHelper;
+import kr.simula.calcula.core.factory.helper.RefHelper;
 import kr.simula.calcula.core.factory.helper.UnaryOperatorHelper;
 
 /**
@@ -28,15 +31,20 @@ import kr.simula.calcula.core.factory.helper.UnaryOperatorHelper;
  * @since 1.0
  */
 public class ExpressionBuilderFactory extends CalculaBuilderFactory {
-	private LiteralHelper literalHelper = new DefaultLiteralHelper();
-	private BinaryOperatorHelper binaryOperatorHelper = new DefaultBinaryOperatorHelper();
-	private UnaryOperatorHelper unaryOperatorHelper ;
-	private FunctionCallHelper functionCallHelper ;
+	protected BlockHelper blockHelper;
+	protected LiteralHelper literalHelper = new DefaultLiteralHelper();
+	protected RefHelper refHelper;
+	protected BinaryOperatorHelper binaryOperatorHelper = new DefaultBinaryOperatorHelper();
+	protected UnaryOperatorHelper unaryOperatorHelper ;
+	protected FunctionCallHelper functionCallHelper ;
+	protected MethodCallHelper methodCallHelper ;
+	
 	
 	@Override
 	public CalculaBuilder newBuilder() {
 		return new ExpressionBuilder(new RootBuildContext(), 
-				literalHelper, binaryOperatorHelper, unaryOperatorHelper, functionCallHelper);
+				blockHelper, literalHelper, refHelper, binaryOperatorHelper, unaryOperatorHelper, 
+				functionCallHelper, methodCallHelper);
 	}
 
 }
