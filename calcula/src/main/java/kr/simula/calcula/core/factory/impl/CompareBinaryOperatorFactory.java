@@ -27,21 +27,21 @@ import kr.simula.calcula.core.wrapper.CompareBinaryOperatorGettable;
  * @since 1.0
  */
 public class CompareBinaryOperatorFactory implements BinaryOperatorFactory {
-	private Binary<Boolean,Object,Object>operator;
+	private Binary<Boolean, Comparable<?>, Comparable<?>>operator;
 	
 
 	/**
 	 * @param operator
 	 */
 	public CompareBinaryOperatorFactory(
-			Binary<Boolean, Object,Object> operator) {
+			Binary<Boolean, Comparable<?>, Comparable<?>> operator) {
 		this.operator = operator;
 	}
 	
 	@Override
 	public Gettable<Boolean> create(Node operand1, Node operand2) {
-		Gettable<?> gettable1 = GettableUtils.checkGettable(operand1);
-		Gettable<?> gettable2 = GettableUtils.checkGettable(operand2);
+		Gettable<Comparable<?>> gettable1 = GettableUtils.checkComparableGettable(operand1);
+		Gettable<Comparable<?>> gettable2 = GettableUtils.checkComparableGettable(operand2);
 		
 		return new CompareBinaryOperatorGettable(operator, gettable1, gettable2);
 	}

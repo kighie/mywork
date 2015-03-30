@@ -22,7 +22,6 @@ import java.util.Date;
 
 import kr.simula.calcula.core.Context;
 import kr.simula.calcula.core.Literal;
-import kr.simula.calcula.def.ExprTokens;
 
 /**
  * <pre></pre>
@@ -30,7 +29,7 @@ import kr.simula.calcula.def.ExprTokens;
  * @since 1.0
  */
 public abstract class AbstractLiteral<T> implements Literal<T>{
-	private T value;
+	protected T value;
 	
 	
 	/**
@@ -56,7 +55,7 @@ public abstract class AbstractLiteral<T> implements Literal<T>{
 	
 	@Override
 	public String toString() {
-		return getExpression();
+		return value.toString();
 	}
 	
 	public static class StringLiteral extends AbstractLiteral<String> {
@@ -73,6 +72,18 @@ public abstract class AbstractLiteral<T> implements Literal<T>{
 		public Class<String> type() {
 			return String.class;
 		}
+		
+
+		@Override
+		public String getExpression() {
+			return "'" + value + "'";
+		}
+		
+		@Override
+		public String toString() {
+			return "'" + value + "'";
+		}
+		
 	}
 	
 
@@ -132,10 +143,6 @@ public abstract class AbstractLiteral<T> implements Literal<T>{
 		@Override
 		public Class<Date> type() {
 			return Date.class;
-		}
-		@Override
-		public String getExpression() {
-			return ExprTokens.LIT_DATE;
 		}
 	}
 }

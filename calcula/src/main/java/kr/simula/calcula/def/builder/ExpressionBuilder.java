@@ -27,6 +27,13 @@ import kr.simula.calcula.core.builder.CalculaBuilder;
 import kr.simula.calcula.core.builder.CalculaHandler;
 import kr.simula.calcula.core.builder.CalculaHandlerFactory;
 import kr.simula.calcula.core.builder.RootBuildContext;
+import kr.simula.calcula.core.factory.helper.BinaryOperatorHelper;
+import kr.simula.calcula.core.factory.helper.BlockHelper;
+import kr.simula.calcula.core.factory.helper.FunctionCallHelper;
+import kr.simula.calcula.core.factory.helper.LiteralHelper;
+import kr.simula.calcula.core.factory.helper.MethodCallHelper;
+import kr.simula.calcula.core.factory.helper.RefHelper;
+import kr.simula.calcula.core.factory.helper.UnaryOperatorHelper;
 
 /**
  * <pre>
@@ -34,19 +41,40 @@ import kr.simula.calcula.core.builder.RootBuildContext;
  * @author Ikchan Kwon
  *
  */
-public class ExpressionBuilder implements CalculaBuilder {
+public class ExpressionBuilder extends CalculaHandlerFactory implements CalculaBuilder {
+
+	protected BlockHelper blockHelper;
+	protected LiteralHelper literalHelper = new DefaultLiteralHelper();
+	protected RefHelper refHelper;
+	protected BinaryOperatorHelper binaryOperatorHelper = new DefaultBinaryOperatorHelper();
+	protected UnaryOperatorHelper unaryOperatorHelper = new DefaultUnaryOperatorHelper();
+	protected FunctionCallHelper functionCallHelper = new DefaultFunctionCallHelper();
+	protected MethodCallHelper methodCallHelper ;
 	
-	private CalculaHandlerFactory handlerFactory = new ExpressionHandlerFactory();
+	
+	@Override
+	public CalculaHandler newHandler(RootBuildContext rootContext) {
+		return new ExpressionHandler(rootContext, 
+				blockHelper, literalHelper, refHelper, binaryOperatorHelper, unaryOperatorHelper, 
+				functionCallHelper, methodCallHelper);
+	}
+	
+	@Override
+	public CalculaHandler newHandler() {
+		return newHandler(new RootBuildContext() );
+	}
+
+	
 	
 	@Override
 	public Node buildExpression(String expression) {
-		CalculaHandler handler = handlerFactory.newHandler();
+		CalculaHandler handler = newHandler();
 		return buildExpression(handler, expression);
 	}
 	
 	@Override
 	public Node buildExpression(String expression, RootBuildContext rootContext) {
-		CalculaHandler handler = handlerFactory.newHandler(rootContext);
+		CalculaHandler handler = newHandler(rootContext);
 		return buildExpression(handler, expression);
 	}
 

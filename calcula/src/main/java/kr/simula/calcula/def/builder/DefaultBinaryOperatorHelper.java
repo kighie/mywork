@@ -18,7 +18,10 @@ import java.math.BigDecimal;
 
 import kr.simula.calcula.core.Operator.Binary;
 import kr.simula.calcula.core.factory.helper.BinaryOperatorHelper;
+import kr.simula.calcula.core.factory.impl.CompareBinaryOperatorFactory;
 import kr.simula.calcula.core.factory.impl.DecimalBinaryOperatorFactory;
+import kr.simula.calcula.core.factory.impl.LogicalBinaryOperatorFactory;
+import kr.simula.calcula.core.factory.impl.StringBinaryOperatorFactory;
 import kr.simula.calcula.def.ExprTokens;
 
 /**
@@ -37,6 +40,15 @@ public class DefaultBinaryOperatorHelper extends BinaryOperatorHelper {
 		setFactory(ExprTokens.OP_MOD, new DecimalBinaryOperatorFactory(MOD));
 		setFactory(ExprTokens.OP_PLUS, new DecimalBinaryOperatorFactory(ADD));
 		setFactory(ExprTokens.OP_MINUS, new DecimalBinaryOperatorFactory(SUBTRACT));
+		setFactory(ExprTokens.OP_EQ, new CompareBinaryOperatorFactory(EQUALS));
+		setFactory(ExprTokens.OP_NOT_EQ, new CompareBinaryOperatorFactory(NOT_EQUALS));
+		setFactory(ExprTokens.OP_EQ_GT, new CompareBinaryOperatorFactory(EQUALS_GT));
+		setFactory(ExprTokens.OP_GT, new CompareBinaryOperatorFactory(GT));
+		setFactory(ExprTokens.OP_EQ_LT, new CompareBinaryOperatorFactory(EQUALS_LT));
+		setFactory(ExprTokens.OP_LT, new CompareBinaryOperatorFactory(LT));
+		setFactory(ExprTokens.OP_AND, new LogicalBinaryOperatorFactory(AND));
+		setFactory(ExprTokens.OP_OR, new LogicalBinaryOperatorFactory(OR));
+		setFactory(ExprTokens.OP_CONCAT, new StringBinaryOperatorFactory(CONCAT));
 	}
 
 	public static final Binary<BigDecimal,BigDecimal,BigDecimal> MULTIFLY 
@@ -96,5 +108,120 @@ public class DefaultBinaryOperatorHelper extends BinaryOperatorHelper {
 		public String toString() { return "SUBTRACT";};
 	};
 	
+
+	public static final Binary<Boolean, Comparable<?>, Comparable<?>> EQUALS = new Binary<Boolean, Comparable<?>, Comparable<?>>() {
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		public Boolean eval(Comparable<?> val1, Comparable<?> val2) {
+			return val1.equals(val2);
+		};
+		
+		public String toString() { return "EQUALS";}
+
+	};
+
+	public static final Binary<Boolean, Comparable<?>, Comparable<?>> NOT_EQUALS = new Binary<Boolean, Comparable<?>, Comparable<?>>() {
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		public Boolean eval(Comparable<?> val1, Comparable<?> val2) {
+			return !val1.equals(val2);
+		};
+		
+		public String toString() { return "NOT_EQUALS";}
+
+	};
+
+	public static final Binary<Boolean, Comparable<?>, Comparable<?>> EQUALS_GT = new Binary<Boolean, Comparable<?>, Comparable<?>>() {
+		private static final long serialVersionUID = 1L;
+
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		@Override
+		public Boolean eval(Comparable val1, Comparable val2) {
+			return (val1.compareTo(val2) >= 0);
+		};
+		
+		public String toString() { return "EQUALS_GT";}
+
+	};
+
+	public static final Binary<Boolean, Comparable<?>, Comparable<?>> GT = new Binary<Boolean, Comparable<?>, Comparable<?>>() {
+		private static final long serialVersionUID = 1L;
+
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		@Override
+		public Boolean eval(Comparable val1, Comparable val2) {
+			return (val1.compareTo(val2) > 0);
+		};
+		
+		public String toString() { return "GT";}
+
+	};
+	public static final Binary<Boolean, Comparable<?>, Comparable<?>> EQUALS_LT = new Binary<Boolean, Comparable<?>, Comparable<?>>() {
+		private static final long serialVersionUID = 1L;
+
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		@Override
+		public Boolean eval(Comparable val1, Comparable val2) {
+			return (val1.compareTo(val2) <= 0);
+		};
+		
+		public String toString() { return "EQUALS_LT";}
+
+	};
+
+	public static final Binary<Boolean, Comparable<?>, Comparable<?>> LT = new Binary<Boolean, Comparable<?>, Comparable<?>>() {
+		private static final long serialVersionUID = 1L;
+
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		@Override
+		public Boolean eval(Comparable val1, Comparable val2) {
+			return (val1.compareTo(val2) < 0);
+		};
+		
+		public String toString() { return "LT";}
+
+	};
 	
+
+	public static final Binary<Boolean, Boolean, Boolean> AND = new Binary<Boolean, Boolean, Boolean>() {
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		public Boolean eval(Boolean val1, Boolean val2) {
+			return val1 && val2;
+		};
+		
+		public String toString() { return "AND";}
+
+	};
+	
+
+	public static final Binary<Boolean, Boolean, Boolean> OR = new Binary<Boolean, Boolean, Boolean>() {
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		public Boolean eval(Boolean val1, Boolean val2) {
+			return val1 || val2;
+		};
+		
+		public String toString() { return "OR";}
+
+	};
+	
+
+	public static final Binary<String, Object, Object> CONCAT = new Binary<String, Object, Object>() {
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		public String eval(Object val1, Object val2) {
+			StringBuilder buf = new StringBuilder();
+			buf.append(val1).append(val2);
+			return buf.toString();
+		};
+		
+		public String toString() { return "CONCAT";}
+
+	};
 }

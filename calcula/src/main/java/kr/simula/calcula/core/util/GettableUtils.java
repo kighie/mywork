@@ -51,7 +51,16 @@ public class GettableUtils {
 		}
 		throw new BuildException(node + " is not Gettable<" + type.getName() + ">");
 	}
-	
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static Gettable<Comparable<?>> checkComparableGettable(Node node){
+		if(node instanceof Gettable
+				&& Comparable.class.isAssignableFrom( ((Gettable) node).type() )){
+			return (Gettable<Comparable<?>>)node;
+		}
+		throw new BuildException(node + " is not Gettable<Comparable>.");
+	}
+
 	public static BigDecimal getDecimal(Object value){
 		if(value instanceof BigDecimal){
 			return (BigDecimal)value;

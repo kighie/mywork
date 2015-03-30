@@ -22,7 +22,7 @@ import kr.simula.calcula.core.Operator.Binary;
  * @author kighie@gmail.com
  * @since 1.0
  */
-public class CompareBinaryOperatorGettable extends BinaryOperatorGettable<Boolean, Object, Object> {
+public class CompareBinaryOperatorGettable extends BinaryOperatorGettable<Boolean, Comparable<?>, Comparable<?>> {
 
 
 	/**
@@ -31,9 +31,9 @@ public class CompareBinaryOperatorGettable extends BinaryOperatorGettable<Boolea
 	 * @param operand2
 	 */
 	public CompareBinaryOperatorGettable(
-			Binary<Boolean, Object, Object> operator,
-			Gettable<?> operand1,
-			Gettable<?> operand2) {
+			Binary<Boolean, Comparable<?>, Comparable<?>> operator,
+			Gettable<Comparable<?>> operand1,
+			Gettable<Comparable<?>> operand2) {
 		super(operator, operand1, operand2);
 	}
 
