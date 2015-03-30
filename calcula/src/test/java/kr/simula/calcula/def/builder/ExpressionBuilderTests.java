@@ -18,6 +18,7 @@ import kr.simula.calcula.antlr.CalculaLexer;
 import kr.simula.calcula.antlr.CalculaParser;
 import kr.simula.calcula.antlr.CalculaParser.FormulaExpressionContext;
 import kr.simula.calcula.antlr.CalculaParser.OperatorExpressionContext;
+import kr.simula.calcula.core.Gettable;
 import kr.simula.calcula.core.Node;
 import kr.simula.calcula.core.builder.CalculaHandler;
 
@@ -72,14 +73,22 @@ public class ExpressionBuilderTests {
 		Node exprNode = builder.buildExpression(literalExpr1);
 		System.out.println();
 		System.out.println(exprNode);
+		
+		Gettable<?> gettable = (Gettable<?>)exprNode;
+		
+		System.out.println(gettable.get(null));
 	}
 
 
 	@Test
 	public void buildLiteralExpr2(){
-		CalculaHandler builder = buildExpression(literalExpr2);
+		Node exprNode = builder.buildExpression(literalExpr2);
 		System.out.println();
-		System.out.println(builder.getRootNode());
+		System.out.println(exprNode);
+		
+		Gettable<?> gettable = (Gettable<?>)exprNode;
+		
+		System.out.println(gettable.get(null));
 	}
 	
 	@Test
