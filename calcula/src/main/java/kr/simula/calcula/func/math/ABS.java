@@ -14,8 +14,10 @@
  */
 package kr.simula.calcula.func.math;
 
-import kr.simula.calcula.func.MathFunctions;
-import kr.simula.calcula.func.NumberFunction;
+import java.math.BigDecimal;
+
+import kr.simula.calcula.func.NumericFunction;
+import kr.simula.calcula.func.base.MathFunctions;
 
 /**
  * <pre>
@@ -23,11 +25,11 @@ import kr.simula.calcula.func.NumberFunction;
  * @author Ikchan Kwon
  *
  */
-public class ABS extends NumberFunction{
+public class ABS extends NumericFunction{
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public Number eval(Object... args) {
+	public BigDecimal eval(Object... args) {
 		checkArgCount(args, 1);
 		return MathFunctions.abs(toDecimal(args[0]));
 	}

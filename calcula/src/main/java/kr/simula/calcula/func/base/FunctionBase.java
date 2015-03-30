@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package kr.simula.calcula.func;
+package kr.simula.calcula.func.base;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;

@@ -16,6 +16,7 @@ package kr.simula.calcula.func;
 
 import java.math.BigDecimal;
 
+import kr.simula.calcula.core.RtException;
 import kr.simula.calcula.def.AbstractFunction;
 
 /**
@@ -25,22 +26,15 @@ import kr.simula.calcula.def.AbstractFunction;
  *
  */
 @SuppressWarnings("serial")
-public abstract class NumberFunction extends AbstractFunction<Number>{
+public abstract class NumericFunction extends AbstractFunction<BigDecimal>{
 
 	/**
 	 * @param returnType
 	 */
-	public NumberFunction() {
+	public NumericFunction() {
 		super(BigDecimal.class);
 	}
 	
-	/**
-	 * @param returnType
-	 */
-	public NumberFunction(Class<? extends Number> returnType) {
-		super(returnType);
-	}
-
 	protected static BigDecimal toDecimal(Object value){
 		if(value == null){
 			return null;
@@ -51,7 +45,7 @@ public abstract class NumberFunction extends AbstractFunction<Number>{
 		} else if(value instanceof Number){
 			return new BigDecimal(value.toString());
 		} else {
-			return new BigDecimal(value.toString());
+			throw new RtException("Argument is not numeric value; " + value);
 		}
 	}
 }

@@ -21,6 +21,8 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 
+import kr.simula.calcula.func.base.MathFunctions;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -74,7 +76,7 @@ public class MathFunctionsTests {
 	
 	@Test
 	public void test(){
-		System.out.println(NumberFunction.toDecimal(11));
+		System.out.println(NumericFunction.toDecimal(11));
 		System.out.println(new BigDecimal(1));
 		System.out.println(new BigDecimal(1.0));
 		System.out.println(new BigDecimal("1"));

@@ -15,7 +15,8 @@
  * limitations under the License.
  */
 
-package kr.simula.calcula.func;
+package kr.simula.calcula.func.base;
+
 
 /**
  * @author kighie@gmail.com

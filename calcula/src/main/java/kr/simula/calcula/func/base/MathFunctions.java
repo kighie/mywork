@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package kr.simula.calcula.func;
+package kr.simula.calcula.func.base;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -26,6 +26,7 @@ import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.linalg.Algebra;
 import kr.simula.calcula.CalculaException;
+import kr.simula.calcula.func.FunctionNotImplementedException;
 
 /**
  * @author kighie@gmail.com
