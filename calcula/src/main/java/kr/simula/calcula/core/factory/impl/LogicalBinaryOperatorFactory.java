@@ -17,6 +17,7 @@ package kr.simula.calcula.core.factory.impl;
 import kr.simula.calcula.core.Gettable;
 import kr.simula.calcula.core.Node;
 import kr.simula.calcula.core.Operator.Binary;
+import kr.simula.calcula.core.builder.BuildContext;
 import kr.simula.calcula.core.factory.BinaryOperatorFactory;
 import kr.simula.calcula.core.util.GettableUtils;
 import kr.simula.calcula.core.wrapper.LogicalBinaryOperatorGettable;
@@ -39,7 +40,7 @@ public class LogicalBinaryOperatorFactory implements BinaryOperatorFactory {
 	}
 	
 	@Override
-	public Gettable<Boolean> create(Node operand1, Node operand2) {
+	public Gettable<Boolean> create(BuildContext context, String exprToken, Node operand1, Node operand2) {
 		Gettable<Boolean> gettable1 = GettableUtils.checkGettable(operand1, Boolean.class);
 		Gettable<Boolean> gettable2 = GettableUtils.checkGettable(operand2, Boolean.class);
 		

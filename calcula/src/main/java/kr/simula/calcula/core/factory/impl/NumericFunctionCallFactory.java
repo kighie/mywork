@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 
 import kr.simula.calcula.core.Gettable;
 import kr.simula.calcula.core.Node;
+import kr.simula.calcula.core.builder.BuildContext;
 import kr.simula.calcula.core.factory.FunctionCallFactory;
 
 /**
@@ -28,7 +29,7 @@ import kr.simula.calcula.core.factory.FunctionCallFactory;
 public class NumericFunctionCallFactory implements FunctionCallFactory<BigDecimal> {
 
 	@Override
-	public Gettable<BigDecimal> create(Node... args) {
+	public Gettable<BigDecimal> create(BuildContext context, String fnName, Node... args) {
 		// TODO Auto-generated method stub
 		return null;
 	}

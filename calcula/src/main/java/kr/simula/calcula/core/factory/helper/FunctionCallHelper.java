@@ -16,6 +16,7 @@ package kr.simula.calcula.core.factory.helper;
 
 import kr.simula.calcula.core.Gettable;
 import kr.simula.calcula.core.Node;
+import kr.simula.calcula.core.builder.BuildContext;
 import kr.simula.calcula.core.builder.BuildException;
 import kr.simula.calcula.core.factory.FunctionCallFactory;
 
@@ -26,11 +27,11 @@ import kr.simula.calcula.core.factory.FunctionCallFactory;
  */
 public class FunctionCallHelper extends AbstractHelper<FunctionCallFactory<?>> {
 
-	public Gettable<?> create(String name , Node ... args){
+	public Gettable<?> create(BuildContext context,  String name , Node ... args){
 		FunctionCallFactory<?> factory = factories.get(name);
 		if(factory == null){
 			throw new BuildException("FunctionCallFactory for " + name + " is not registered.");
 		}
-		return factory.create(args);
+		return factory.create(context, name, args);
 	}
 }

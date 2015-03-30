@@ -15,6 +15,7 @@
 package kr.simula.calcula.core.factory;
 
 import kr.simula.calcula.core.Node;
+import kr.simula.calcula.core.builder.BuildContext;
 
 
 /**
@@ -24,5 +25,5 @@ import kr.simula.calcula.core.Node;
  */
 public interface UnaryOperatorFactory {
 	
-	Node create(Node operand);
+	Node create(BuildContext context, String exprToken, Node operand);
 }

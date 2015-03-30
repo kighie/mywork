@@ -15,6 +15,7 @@
 package kr.simula.calcula.core.factory;
 
 import kr.simula.calcula.core.Node;
+import kr.simula.calcula.core.builder.BuildContext;
 
 /**
  * <pre></pre>
@@ -22,5 +23,5 @@ import kr.simula.calcula.core.Node;
  * @since 1.0
  */
 public interface BinaryOperatorFactory {
-	Node create(Node operand1, Node operand2);
+	Node create(BuildContext context, String exprToken, Node operand1, Node operand2);
 }

@@ -15,6 +15,7 @@
 package kr.simula.calcula.core.factory.helper;
 
 import kr.simula.calcula.core.Node;
+import kr.simula.calcula.core.builder.BuildContext;
 import kr.simula.calcula.core.builder.BuildException;
 import kr.simula.calcula.core.factory.UnaryOperatorFactory;
 
@@ -25,11 +26,11 @@ import kr.simula.calcula.core.factory.UnaryOperatorFactory;
  */
 public class UnaryOperatorHelper extends AbstractHelper<UnaryOperatorFactory> {
 
-	public Node create(String expToken , Node operand){
-		UnaryOperatorFactory factory = factories.get(expToken);
+	public Node create(BuildContext context, String exprToken, Node operand){
+		UnaryOperatorFactory factory = factories.get(exprToken);
 		if(factory == null){
-			throw new BuildException("UnaryOperatorFactory for " + expToken + " is not registered.");
+			throw new BuildException("UnaryOperatorFactory for " + exprToken + " is not registered.");
 		}
-		return factory.create(operand);
+		return factory.create(context, exprToken, operand);
 	}
 }

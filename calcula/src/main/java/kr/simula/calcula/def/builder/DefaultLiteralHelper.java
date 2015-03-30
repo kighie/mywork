@@ -19,6 +19,7 @@ import java.text.ParseException;
 import java.util.Date;
 
 import kr.simula.calcula.core.Literal;
+import kr.simula.calcula.core.builder.BuildContext;
 import kr.simula.calcula.core.builder.BuildException;
 import kr.simula.calcula.core.factory.LiteralFactory;
 import kr.simula.calcula.core.factory.helper.LiteralHelper;
@@ -38,14 +39,14 @@ public class DefaultLiteralHelper extends LiteralHelper{
 	protected final void initDefaults(){
 		factories.put(ExprTokens.LIT_STRING, new LiteralFactory<String>() {
 			@Override
-			public Literal<String> create(String value) {
+			public Literal<String> create(BuildContext context, String exprToken, String value) {
 				return new AbstractLiteral.StringLiteral(value);
 			}
 		} );
 		
 		factories.put(ExprTokens.LIT_NUMBER, new LiteralFactory<BigDecimal>() {
 			@Override
-			public Literal<BigDecimal> create(String value) {
+			public Literal<BigDecimal> create(BuildContext context, String exprToken, String value) {
 				return new AbstractLiteral.NumberLiteral(new BigDecimal(value));
 			}
 		} );
@@ -53,7 +54,7 @@ public class DefaultLiteralHelper extends LiteralHelper{
 
 		factories.put(ExprTokens.LIT_BOOLEAN, new LiteralFactory<Boolean>() {
 			@Override
-			public Literal<Boolean> create(String value) {
+			public Literal<Boolean> create(BuildContext context, String exprToken, String value) {
 				if("true".equals(value) ||"TRUE".equals(value) ){
 					return AbstractLiteral.BooleanLiteral.TRUE;
 				} else {
@@ -65,7 +66,7 @@ public class DefaultLiteralHelper extends LiteralHelper{
 		
 		factories.put(ExprTokens.LIT_DATE, new LiteralFactory<Date>() {
 			@Override
-			public Literal<Date> create(String value) {
+			public Literal<Date> create(BuildContext context, String exprToken, String value) {
 				try {
 					return new AbstractLiteral.DateLiteral(value);
 				} catch (ParseException e) {

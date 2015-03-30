@@ -15,6 +15,7 @@
 package kr.simula.calcula.core.factory.helper;
 
 import kr.simula.calcula.core.Literal;
+import kr.simula.calcula.core.builder.BuildContext;
 import kr.simula.calcula.core.builder.BuildException;
 import kr.simula.calcula.core.factory.LiteralFactory;
 
@@ -28,11 +29,11 @@ import kr.simula.calcula.core.factory.LiteralFactory;
 public class LiteralHelper extends AbstractHelper<LiteralFactory<?>> {
 	
 	@SuppressWarnings("rawtypes")
-	public Literal create(String expToken , String value){
-		LiteralFactory factory = factories.get(expToken);
+	public Literal create(BuildContext context, String exprToken , String value){
+		LiteralFactory factory = factories.get(exprToken);
 		if(factory == null){
-			throw new BuildException("LiteralFacotry for " + expToken + " is not registered.");
+			throw new BuildException("LiteralFacotry for " + exprToken + " is not registered.");
 		}
-		return factory.create(value);
+		return factory.create(context, exprToken, value);
 	}
 }

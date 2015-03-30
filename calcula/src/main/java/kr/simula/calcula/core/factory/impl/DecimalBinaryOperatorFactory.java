@@ -20,6 +20,7 @@ import kr.simula.calcula.core.Gettable;
 import kr.simula.calcula.core.Literal;
 import kr.simula.calcula.core.Node;
 import kr.simula.calcula.core.Operator.Binary;
+import kr.simula.calcula.core.builder.BuildContext;
 import kr.simula.calcula.core.factory.BinaryOperatorFactory;
 import kr.simula.calcula.core.util.GettableUtils;
 import kr.simula.calcula.core.wrapper.DecimalBinaryOperatorGettable;
@@ -44,7 +45,7 @@ public class DecimalBinaryOperatorFactory implements BinaryOperatorFactory {
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public Gettable<BigDecimal> create(Node operand1, Node operand2) {
+	public Gettable<BigDecimal> create(BuildContext context, String exprToken, Node operand1, Node operand2) {
 		Gettable<BigDecimal> gettable1 = GettableUtils.getDecimalGettable(operand1);
 		Gettable<BigDecimal> gettable2 = GettableUtils.getDecimalGettable(operand2);
 		

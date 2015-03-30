@@ -20,6 +20,7 @@ import kr.simula.calcula.core.Gettable;
 import kr.simula.calcula.core.Literal;
 import kr.simula.calcula.core.Node;
 import kr.simula.calcula.core.Operator.Unary;
+import kr.simula.calcula.core.builder.BuildContext;
 import kr.simula.calcula.core.factory.UnaryOperatorFactory;
 import kr.simula.calcula.core.util.GettableUtils;
 import kr.simula.calcula.core.wrapper.DecimalConstantExpr;
@@ -43,7 +44,7 @@ public class DecimalUnaryOperatorFactory implements UnaryOperatorFactory {
 	
 	@SuppressWarnings("rawtypes")
 	@Override
-	public Gettable<BigDecimal> create(Node operand) {
+	public Gettable<BigDecimal> create(BuildContext context, String exprToken, Node operand) {
 		Gettable<BigDecimal> gettable = GettableUtils.getDecimalGettable(operand);
 		
 		if( gettable instanceof Literal){

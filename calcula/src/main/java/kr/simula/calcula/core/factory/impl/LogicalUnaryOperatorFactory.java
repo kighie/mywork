@@ -18,6 +18,7 @@ import kr.simula.calcula.core.Gettable;
 import kr.simula.calcula.core.Literal;
 import kr.simula.calcula.core.Node;
 import kr.simula.calcula.core.Operator.Unary;
+import kr.simula.calcula.core.builder.BuildContext;
 import kr.simula.calcula.core.factory.UnaryOperatorFactory;
 import kr.simula.calcula.core.util.GettableUtils;
 import kr.simula.calcula.core.wrapper.BooleanConstantExpr;
@@ -41,7 +42,7 @@ public class LogicalUnaryOperatorFactory implements UnaryOperatorFactory {
 	
 
 	@Override
-	public Gettable<Boolean> create(Node operand) {
+	public Gettable<Boolean> create(BuildContext context, String exprToken, Node operand) {
 		Gettable<Boolean> gettable = GettableUtils.checkGettable(operand, Boolean.class);
 		
 		if( gettable instanceof Literal){

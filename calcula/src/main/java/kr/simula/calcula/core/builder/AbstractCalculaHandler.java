@@ -88,7 +88,7 @@ public abstract class AbstractCalculaHandler implements CalculaHandler {
 	
 	@Override
 	public Block block(String token){
-		Block block = blockHelper.create(token);
+		Block block = blockHelper.create(current, token);
 		
 		return block;
 	}
@@ -100,36 +100,36 @@ public abstract class AbstractCalculaHandler implements CalculaHandler {
 	
 	@Override
 	public Node operator(String token, Node node) {
-		return unaryOperatorHelper.create(token, node);
+		return unaryOperatorHelper.create(current, token, node);
 	}
 
 
 	@Override
 	public Node operator(String token, Node left, Node right) {
-		return binaryOperatorHelper.create(token, left, right);
+		return binaryOperatorHelper.create(current, token, left, right);
 	}
 
 	@SuppressWarnings("rawtypes")
 	@Override
 	public Literal literal(String token, String value) {
-		return literalHelper.create(token, value);
+		return literalHelper.create(current, token, value);
 	}
 
 	@Override
 	public Ref reference(String token, String exp) {
-		return refHelper.create(token, exp);
+		return refHelper.create(current, token, exp);
 	}
 
 
 	@SuppressWarnings("rawtypes")
 	@Override
 	public Gettable functionCall(String name, Node... args) {
-		return functionCallHelper.create(name, args);
+		return functionCallHelper.create(current, name, args);
 	}
 
 	@Override
 	public Node methodCall(Ref parent, String name, Node... args) {
-		return methodCallHelper.create(parent, name, args);
+		return methodCallHelper.create(current, parent, name, args);
 	}
 
 }

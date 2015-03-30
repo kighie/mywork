@@ -16,6 +16,7 @@ package kr.simula.calcula.core.factory;
 
 import kr.simula.calcula.core.Node;
 import kr.simula.calcula.core.Ref;
+import kr.simula.calcula.core.builder.BuildContext;
 
 /**
  * <pre></pre>
@@ -24,5 +25,5 @@ import kr.simula.calcula.core.Ref;
  */
 public interface MethodCallFactory {
 
-	Node create(Ref parent, String name, Node ... args);
+	Node create(BuildContext context, Ref parent, String name, Node ... args);
 }

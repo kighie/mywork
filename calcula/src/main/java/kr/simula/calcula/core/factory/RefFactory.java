@@ -16,6 +16,7 @@ package kr.simula.calcula.core.factory;
 
 import kr.simula.calcula.core.QName;
 import kr.simula.calcula.core.Ref;
+import kr.simula.calcula.core.builder.BuildContext;
 
 /**
  * <pre>
@@ -31,13 +32,6 @@ public interface RefFactory {
 	 * @param qname
 	 * @return
 	 */
-	Ref create(QName qname);
+	Ref create(BuildContext context, String exprToken, QName qname);
 	
-	/**
-	 * <pre>
-	 * </pre>
-	 * @param qname
-	 * @return
-	 */
-	Ref create(String qname);
 }

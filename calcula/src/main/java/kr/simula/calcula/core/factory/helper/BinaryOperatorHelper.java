@@ -15,6 +15,7 @@
 package kr.simula.calcula.core.factory.helper;
 
 import kr.simula.calcula.core.Node;
+import kr.simula.calcula.core.builder.BuildContext;
 import kr.simula.calcula.core.builder.BuildException;
 import kr.simula.calcula.core.factory.BinaryOperatorFactory;
 
@@ -25,11 +26,11 @@ import kr.simula.calcula.core.factory.BinaryOperatorFactory;
  */
 public class BinaryOperatorHelper extends AbstractHelper<BinaryOperatorFactory> {
 	
-	public Node create(String expToken , Node operand1, Node operand2){
+	public Node create(BuildContext context, String expToken , Node operand1, Node operand2){
 		BinaryOperatorFactory factory = factories.get(expToken);
 		if(factory == null){
 			throw new BuildException("BinaryOperatorFactory for " + expToken + " is not registered.");
 		}
-		return factory.create(operand1, operand2);
+		return factory.create(context, expToken, operand1, operand2);
 	}
 }

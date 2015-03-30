@@ -15,6 +15,7 @@
 package kr.simula.calcula.core.factory.helper;
 
 import kr.simula.calcula.core.Block;
+import kr.simula.calcula.core.builder.BuildContext;
 import kr.simula.calcula.core.builder.BuildException;
 import kr.simula.calcula.core.factory.BlockFactory;
 
@@ -27,11 +28,11 @@ import kr.simula.calcula.core.factory.BlockFactory;
  */
 public class BlockHelper extends AbstractHelper<BlockFactory> {
 	
-	public Block create(String expToken){
+	public Block create(BuildContext context,  String expToken){
 		BlockFactory factory = factories.get(expToken);
 		if(factory == null){
 			throw new BuildException("BlockFactory for " + expToken + " is not registered.");
 		}
-		return factory.create(expToken);
+		return factory.create(context, expToken);
 	}
 }

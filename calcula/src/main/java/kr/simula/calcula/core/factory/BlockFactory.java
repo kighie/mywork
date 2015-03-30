@@ -15,6 +15,7 @@
 package kr.simula.calcula.core.factory;
 
 import kr.simula.calcula.core.Block;
+import kr.simula.calcula.core.builder.BuildContext;
 
 /**
  * <pre>
@@ -24,6 +25,6 @@ import kr.simula.calcula.core.Block;
  */
 public interface BlockFactory {
 	
-	Block create(String expToken);
+	Block create(BuildContext context, String expToken);
 	
 }

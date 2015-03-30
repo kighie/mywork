@@ -14,7 +14,9 @@
  */
 package kr.simula.calcula.core.factory.helper;
 
+import kr.simula.calcula.core.QName;
 import kr.simula.calcula.core.Ref;
+import kr.simula.calcula.core.builder.BuildContext;
 import kr.simula.calcula.core.builder.BuildException;
 import kr.simula.calcula.core.factory.RefFactory;
 
@@ -27,11 +29,24 @@ import kr.simula.calcula.core.factory.RefFactory;
  */
 public class RefHelper extends AbstractHelper<RefFactory> {
 	
-	public Ref create(String expToken , String qname){
-		RefFactory factory = factories.get(expToken);
+	public Ref create(BuildContext context, String exprToken,  String qname){
+		RefFactory factory = factories.get(exprToken);
 		if(factory == null){
-			throw new BuildException("RefFactory for " + expToken + " is not registered.");
+			throw new BuildException("RefFactory for " + exprToken + " is not registered.");
 		}
-		return factory.create(qname);
+		return factory.create(context, exprToken, makeQName(context, exprToken, qname));
+	}
+	
+	/**
+	 * TODO 
+	 * <pre>
+	 * </pre>
+	 * @param context
+	 * @param exprToken
+	 * @param qname
+	 * @return
+	 */
+	protected QName makeQName(BuildContext context, String exprToken,  String qname) {
+		return null;
 	}
 }

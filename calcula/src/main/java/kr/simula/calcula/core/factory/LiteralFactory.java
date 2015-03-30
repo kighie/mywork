@@ -15,6 +15,7 @@
 package kr.simula.calcula.core.factory;
 
 import kr.simula.calcula.core.Literal;
+import kr.simula.calcula.core.builder.BuildContext;
 
 /**
  * <pre></pre>
@@ -28,5 +29,5 @@ public interface LiteralFactory<T> {
 	 * @param value
 	 * @return
 	 */
-	Literal<T> create(String value);
+	Literal<T> create(BuildContext context, String exprToken, String value);
 }
