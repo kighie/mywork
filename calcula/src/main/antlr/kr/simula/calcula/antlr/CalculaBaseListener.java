@@ -38,18 +38,6 @@ public class CalculaBaseListener implements CalculaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterNegation(@NotNull CalculaParser.NegationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitNegation(@NotNull CalculaParser.NegationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterComparison(@NotNull CalculaParser.ComparisonContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -201,6 +189,18 @@ public class CalculaBaseListener implements CalculaListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitArguments(@NotNull CalculaParser.ArgumentsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFormulaExpressionBase(@NotNull CalculaParser.FormulaExpressionBaseContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFormulaExpressionBase(@NotNull CalculaParser.FormulaExpressionBaseContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

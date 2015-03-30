@@ -54,6 +54,10 @@ public abstract class AbstractLiteral<T> implements Literal<T>{
 		return value.toString();
 	}
 	
+	@Override
+	public String toString() {
+		return getExpression();
+	}
 	
 	public static class StringLiteral extends AbstractLiteral<String> {
 		public StringLiteral(String value) {

@@ -31,7 +31,7 @@ import kr.simula.calcula.core.factory.helper.UnaryOperatorHelper;
  * @author kighie@gmail.com
  *
  */
-public abstract class AbstractCalculaBuilder implements CalculaBuilder {
+public abstract class AbstractCalculaHandler implements CalculaHandler {
 	protected final RootBuildContext rootContext;
 
 	
@@ -58,7 +58,7 @@ public abstract class AbstractCalculaBuilder implements CalculaBuilder {
 	 * @param functionCallHelper
 	 * @param methodCallHelper
 	 */
-	public AbstractCalculaBuilder(RootBuildContext rootContext,
+	public AbstractCalculaHandler(RootBuildContext rootContext,
 			BlockHelper blockHelper, LiteralHelper literalHelper,
 			RefHelper refHelper, BinaryOperatorHelper binaryOperatorHelper,
 			UnaryOperatorHelper unaryOperatorHelper,

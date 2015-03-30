@@ -28,16 +28,6 @@ public interface CalculaListener extends ParseTreeListener {
 	 */
 	void exitFormulaTerm(@NotNull CalculaParser.FormulaTermContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link CalculaParser#negation}.
-	 * @param ctx the parse tree
-	 */
-	void enterNegation(@NotNull CalculaParser.NegationContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link CalculaParser#negation}.
-	 * @param ctx the parse tree
-	 */
-	void exitNegation(@NotNull CalculaParser.NegationContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link CalculaParser#comparison}.
 	 * @param ctx the parse tree
 	 */
@@ -167,4 +157,14 @@ public interface CalculaListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitArguments(@NotNull CalculaParser.ArgumentsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link CalculaParser#formulaExpressionBase}.
+	 * @param ctx the parse tree
+	 */
+	void enterFormulaExpressionBase(@NotNull CalculaParser.FormulaExpressionBaseContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CalculaParser#formulaExpressionBase}.
+	 * @param ctx the parse tree
+	 */
+	void exitFormulaExpressionBase(@NotNull CalculaParser.FormulaExpressionBaseContext ctx);
 }

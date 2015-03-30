@@ -29,6 +29,7 @@ public interface ExprTokens {
 	String OP_PLUS 			= "OP_PLUS";
 	String OP_MULTI 		= "OP_MULTI";
 	String OP_DIVIDE 		= "OP_DIVIDE";
+	String OP_MOD 			= "OP_MOD";
 	String OP_NOT	 		= "OP_NOT";
 	String OP_AND	 		= "OP_AND";
 	String OP_OR	 		= "OP_OR";

@@ -65,4 +65,8 @@ public class DecimalConstantExpr implements Gettable<BigDecimal>{
 		return value;
 	}
 
+	@Override
+	public String toString() {
+		return getExpression();
+	}
 }

@@ -24,7 +24,7 @@ import kr.simula.calcula.core.Ref;
  * @author kighie@gmail.com
  *
  */
-public interface CalculaBuilder {
+public interface CalculaHandler {
 	
 	/**
 	 * <pre>

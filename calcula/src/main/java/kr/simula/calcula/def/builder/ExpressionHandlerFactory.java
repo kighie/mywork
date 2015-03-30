@@ -14,9 +14,8 @@
  */
 package kr.simula.calcula.def.builder;
 
-import kr.simula.calcula.core.Block;
-import kr.simula.calcula.core.builder.AbstractCalculaBuilder;
-import kr.simula.calcula.core.builder.BuildException;
+import kr.simula.calcula.core.builder.CalculaHandler;
+import kr.simula.calcula.core.builder.CalculaHandlerFactory;
 import kr.simula.calcula.core.builder.RootBuildContext;
 import kr.simula.calcula.core.factory.helper.BinaryOperatorHelper;
 import kr.simula.calcula.core.factory.helper.BlockHelper;
@@ -25,43 +24,29 @@ import kr.simula.calcula.core.factory.helper.LiteralHelper;
 import kr.simula.calcula.core.factory.helper.MethodCallHelper;
 import kr.simula.calcula.core.factory.helper.RefHelper;
 import kr.simula.calcula.core.factory.helper.UnaryOperatorHelper;
-import kr.simula.calcula.def.ExprTokens;
 
 /**
+ * <pre></pre>
  * @author kighie@gmail.com
- *
+ * @since 1.0
  */
-public class ExpressionBuilder extends AbstractCalculaBuilder implements ExprTokens {
+public class ExpressionHandlerFactory extends CalculaHandlerFactory {
 	
-
-	/**
-	 * @param rootContext
-	 * @param blockHelper
-	 * @param literalHelper
-	 * @param refHelper
-	 * @param binaryOperatorHelper
-	 * @param unaryOperatorHelper
-	 * @param functionCallHelper
-	 * @param methodCallHelper
-	 */
-	public ExpressionBuilder(RootBuildContext rootContext,
-			BlockHelper blockHelper, LiteralHelper literalHelper,
-			RefHelper refHelper, BinaryOperatorHelper binaryOperatorHelper,
-			UnaryOperatorHelper unaryOperatorHelper,
-			FunctionCallHelper functionCallHelper,
-			MethodCallHelper methodCallHelper) {
-		super(rootContext, blockHelper, literalHelper, refHelper, binaryOperatorHelper,
-				unaryOperatorHelper, functionCallHelper, methodCallHelper);
-	}
-
-	@Override
-	public Block block(String token){
-		throw new BuildException("New block is not supported.");
-	}
+	
+	protected BlockHelper blockHelper;
+	protected LiteralHelper literalHelper = new DefaultLiteralHelper();
+	protected RefHelper refHelper;
+	protected BinaryOperatorHelper binaryOperatorHelper = new DefaultBinaryOperatorHelper();
+	protected UnaryOperatorHelper unaryOperatorHelper ;
+	protected FunctionCallHelper functionCallHelper = new DefaultFunctionCallHelper();
+	protected MethodCallHelper methodCallHelper ;
+	
 	
 	@Override
-	public Block endBlock() {
-		return null;
+	public CalculaHandler newBuilder() {
+		return new ExpressionHandler(new RootBuildContext(), 
+				blockHelper, literalHelper, refHelper, binaryOperatorHelper, unaryOperatorHelper, 
+				functionCallHelper, methodCallHelper);
 	}
-	
+
 }

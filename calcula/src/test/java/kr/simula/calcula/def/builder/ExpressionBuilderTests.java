@@ -18,7 +18,7 @@ import kr.simula.calcula.antlr.CalculaLexer;
 import kr.simula.calcula.antlr.CalculaParser;
 import kr.simula.calcula.antlr.CalculaParser.FormulaExpressionContext;
 import kr.simula.calcula.antlr.CalculaParser.OperatorExpressionContext;
-import kr.simula.calcula.core.builder.CalculaBuilder;
+import kr.simula.calcula.core.builder.CalculaHandler;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CharStream;
@@ -34,20 +34,57 @@ import org.junit.Test;
  */
 public class ExpressionBuilderTests {
 
+	static final String literalExpr1 = "=(1+3 * (4 + 15) - 30 / 10)";
+	static final String literalExpr2 = "=(1+3 * 4 + 15 - 30 / 10)";
 	static final String FormulaExpression1 = "=(1+3 * 4 + 15 / (fn4(1,2,3) + fn2() ) * aa.bb.meth())";
 	static final String OperatorExpression1 = "1+3 * 4 + 15 / (fn4(1,2,3) + fn2() ) * aa.bb.meth()";
 	
 	
-	protected ExpressionBuilderFactory builderFactory = new ExpressionBuilderFactory();
-	
+	protected ExpressionHandlerFactory builderFactory = new ExpressionHandlerFactory();
+
 	private CalculaParser createExpressionParser(String expression){
-		CalculaBuilder calculaBuilder = builderFactory.newBuilder();
-		CharStream input = new ANTLRInputStream(FormulaExpression1);
+		CalculaHandler calculaBuilder = builderFactory.newBuilder();
+		CharStream input = new ANTLRInputStream(expression);
 		CalculaLexer lexer = new CalculaLexer(input);
 		TokenStream tokenStream = new CommonTokenStream(lexer);
 		CalculaParser parser =new CalculaParser(tokenStream, calculaBuilder);
 		
 		return parser;
+	}
+
+	private CalculaHandler buildExpression(String expression){
+		CalculaHandler calculaBuilder = builderFactory.newBuilder();
+		CharStream input = new ANTLRInputStream(expression);
+		CalculaLexer lexer = new CalculaLexer(input);
+		TokenStream tokenStream = new CommonTokenStream(lexer);
+		CalculaParser parser =new CalculaParser(tokenStream, calculaBuilder);
+		FormulaExpressionContext ctx = parser.formulaExpression();
+		System.out.println();
+		System.out.println(ctx.result);
+		return calculaBuilder;
+	}
+
+	@Test
+	public void buildLiteralExpr1(){
+		CalculaHandler builder = buildExpression(literalExpr1);
+		System.out.println();
+		System.out.println(builder.getRootNode());
+	}
+
+
+	@Test
+	public void buildLiteralExpr2(){
+		CalculaHandler builder = buildExpression(literalExpr2);
+		System.out.println();
+		System.out.println(builder.getRootNode());
+	}
+	
+	@Test
+	public void literalExpr(){
+		CalculaParser parser = createExpressionParser(literalExpr1);
+		FormulaExpressionContext ctx = parser.formulaExpression();
+		System.out.println();
+		System.out.println(ctx.children);
 	}
 	
 	@Test

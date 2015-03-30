@@ -14,8 +14,9 @@
  */
 package kr.simula.calcula.def.builder;
 
-import kr.simula.calcula.core.builder.CalculaBuilder;
-import kr.simula.calcula.core.builder.CalculaBuilderFactory;
+import kr.simula.calcula.core.Block;
+import kr.simula.calcula.core.builder.AbstractCalculaHandler;
+import kr.simula.calcula.core.builder.BuildException;
 import kr.simula.calcula.core.builder.RootBuildContext;
 import kr.simula.calcula.core.factory.helper.BinaryOperatorHelper;
 import kr.simula.calcula.core.factory.helper.BlockHelper;
@@ -24,27 +25,43 @@ import kr.simula.calcula.core.factory.helper.LiteralHelper;
 import kr.simula.calcula.core.factory.helper.MethodCallHelper;
 import kr.simula.calcula.core.factory.helper.RefHelper;
 import kr.simula.calcula.core.factory.helper.UnaryOperatorHelper;
+import kr.simula.calcula.def.ExprTokens;
 
 /**
- * <pre></pre>
  * @author kighie@gmail.com
- * @since 1.0
+ *
  */
-public class ExpressionBuilderFactory extends CalculaBuilderFactory {
-	protected BlockHelper blockHelper;
-	protected LiteralHelper literalHelper = new DefaultLiteralHelper();
-	protected RefHelper refHelper;
-	protected BinaryOperatorHelper binaryOperatorHelper = new DefaultBinaryOperatorHelper();
-	protected UnaryOperatorHelper unaryOperatorHelper ;
-	protected FunctionCallHelper functionCallHelper ;
-	protected MethodCallHelper methodCallHelper ;
+public class ExpressionHandler extends AbstractCalculaHandler implements ExprTokens {
 	
-	
-	@Override
-	public CalculaBuilder newBuilder() {
-		return new ExpressionBuilder(new RootBuildContext(), 
-				blockHelper, literalHelper, refHelper, binaryOperatorHelper, unaryOperatorHelper, 
-				functionCallHelper, methodCallHelper);
+
+	/**
+	 * @param rootContext
+	 * @param blockHelper
+	 * @param literalHelper
+	 * @param refHelper
+	 * @param binaryOperatorHelper
+	 * @param unaryOperatorHelper
+	 * @param functionCallHelper
+	 * @param methodCallHelper
+	 */
+	public ExpressionHandler(RootBuildContext rootContext,
+			BlockHelper blockHelper, LiteralHelper literalHelper,
+			RefHelper refHelper, BinaryOperatorHelper binaryOperatorHelper,
+			UnaryOperatorHelper unaryOperatorHelper,
+			FunctionCallHelper functionCallHelper,
+			MethodCallHelper methodCallHelper) {
+		super(rootContext, blockHelper, literalHelper, refHelper, binaryOperatorHelper,
+				unaryOperatorHelper, functionCallHelper, methodCallHelper);
 	}
 
+	@Override
+	public Block block(String token){
+		throw new BuildException("New block is not supported.");
+	}
+	
+	@Override
+	public Block endBlock() {
+		return null;
+	}
+	
 }
