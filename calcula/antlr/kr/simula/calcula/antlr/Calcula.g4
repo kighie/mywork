@@ -31,15 +31,15 @@ options {
 }
 
 @parser::members {
-  	private CalculaBuilder builder;
+  	private CalculaHandler handler;
   	
-  	public CalculaParser(TokenStream input, CalculaBuilder calculaBuilder){
+  	public CalculaParser(TokenStream input, CalculaHandler calculaHandler){
   		this(input);
-  		setBuilder(calculaBuilder);
+  		setBuilder(calculaHandler);
   	}
   	
-  	public void setBuilder(CalculaBuilder calculaBuilder){
-  		this.builder = calculaBuilder;
+  	public void setBuilder(CalculaHandler calculaHandler){
+  		this.handler = calculaHandler;
   	}
   	
 
@@ -96,7 +96,7 @@ formulaExpressionBase returns [Node result]
 
 funcCallExp returns [Gettable result]
 	: IDENT '(' arguments? ')' 
-		{ $result = builder.functionCall($IDENT.text, $arguments.result) ;}
+		{ $result = handler.functionCall($IDENT.text, $arguments.result) ;}
 	;
 
 methodCallExp returns [Node result]
@@ -108,9 +108,9 @@ arguments  returns [Node[] result]
 	;
 
 formulaTerm returns [Node result]
-	: BOOLEAN 			{ $result = builder.literal( ExprTokens.LIT_BOOLEAN, $BOOLEAN.text); }
-	| STRING_LITERAL	{ $result = builder.literal( ExprTokens.LIT_STRING,  strip($STRING_LITERAL.text)); }
-	| NUMBER			{ $result = builder.literal( ExprTokens.LIT_NUMBER, $NUMBER.text); }
+	: BOOLEAN 			{ $result = handler.literal( ExprTokens.LIT_BOOLEAN, $BOOLEAN.text); }
+	| STRING_LITERAL	{ $result = handler.literal( ExprTokens.LIT_STRING,  strip($STRING_LITERAL.text)); }
+	| NUMBER			{ $result = handler.literal( ExprTokens.LIT_NUMBER, $NUMBER.text); }
 	| IDENT
 	| qualifiedName
 	| funcCallExp
@@ -133,7 +133,7 @@ unary  returns [Node result]
 		) 
 		{ 
 			if(negative){
-				$result = builder.operator(ExprTokens.OP_NUM_NEGATION, $result );
+				$result = handler.operator(ExprTokens.OP_NUM_NEGATION, $result );
 			} 
 		}
 	;
@@ -141,17 +141,17 @@ unary  returns [Node result]
 multiplicative returns [Node result]
     :	unary 	{ $result = $unary.result;  }
     	(
-    		'*' 		op2 = unary 	{$result = builder.operator(ExprTokens.OP_MULTI, $result, $op2.result); }
-    		| '/' 		op2 = unary  	{$result = builder.operator(ExprTokens.OP_DIVIDE, $result, $op2.result); }
-    		| '%'		op2 = unary  	{$result = builder.operator(ExprTokens.OP_MOD, $result, $op2.result); }
+    		'*' 		op2 = unary 	{$result = handler.operator(ExprTokens.OP_MULTI, $result, $op2.result); }
+    		| '/' 		op2 = unary  	{$result = handler.operator(ExprTokens.OP_DIVIDE, $result, $op2.result); }
+    		| '%'		op2 = unary  	{$result = handler.operator(ExprTokens.OP_MOD, $result, $op2.result); }
     	)*
     ;
     
 additiveExpression returns [Node result]
     :   multiplicative { $result = $multiplicative.result;  }
     ( 
-    	'+' 	op2 = multiplicative	{$result = builder.operator(ExprTokens.OP_PLUS, $result, $op2.result); }
-    	| '-' 	op2 = multiplicative	{$result = builder.operator(ExprTokens.OP_MINUS, $result, $op2.result); }
+    	'+' 	op2 = multiplicative	{$result = handler.operator(ExprTokens.OP_PLUS, $result, $op2.result); }
+    	| '-' 	op2 = multiplicative	{$result = handler.operator(ExprTokens.OP_MINUS, $result, $op2.result); }
     )*
     ;
     
@@ -162,7 +162,7 @@ additiveExpression returns [Node result]
 stringExpression returns [Node result]
     :   additiveExpression { $result = $additiveExpression.result;  }
     ( 
-    	'&' op2 = additiveExpression {$result = builder.operator(ExprTokens.OP_CONCAT, $result, $op2.result); }
+    	'&' op2 = additiveExpression {$result = handler.operator(ExprTokens.OP_CONCAT, $result, $op2.result); }
     )* 
     ;
   
@@ -172,13 +172,13 @@ stringExpression returns [Node result]
 comparison returns [Node result]
 	: stringExpression  { $result = $stringExpression.result;  }
 	( 
-		'='  op2 = stringExpression {$result = builder.operator(ExprTokens.OP_EQ, $result, $op2.result); }
-		|'!=' op2 = stringExpression {$result = builder.operator(ExprTokens.OP_NOT_EQ, $result, $op2.result); }
-		|'<>' op2 = stringExpression {$result = builder.operator(ExprTokens.OP_NOT_EQ, $result, $op2.result); }
-		|'>'  op2 = stringExpression {$result = builder.operator(ExprTokens.OP_GT, $result, $op2.result); }
-		|'>=' op2 = stringExpression {$result = builder.operator(ExprTokens.OP_EQ_GT, $result, $op2.result); }
-		|'<'  op2 = stringExpression {$result = builder.operator(ExprTokens.OP_LT, $result, $op2.result); }
-		|'<=' op2 = stringExpression {$result = builder.operator(ExprTokens.OP_EQ_LT, $result, $op2.result); }
+		'='  op2 = stringExpression {$result = handler.operator(ExprTokens.OP_EQ, $result, $op2.result); }
+		|'!=' op2 = stringExpression {$result = handler.operator(ExprTokens.OP_NOT_EQ, $result, $op2.result); }
+		|'<>' op2 = stringExpression {$result = handler.operator(ExprTokens.OP_NOT_EQ, $result, $op2.result); }
+		|'>'  op2 = stringExpression {$result = handler.operator(ExprTokens.OP_GT, $result, $op2.result); }
+		|'>=' op2 = stringExpression {$result = handler.operator(ExprTokens.OP_EQ_GT, $result, $op2.result); }
+		|'<'  op2 = stringExpression {$result = handler.operator(ExprTokens.OP_LT, $result, $op2.result); }
+		|'<=' op2 = stringExpression {$result = handler.operator(ExprTokens.OP_EQ_LT, $result, $op2.result); }
 	)*
 	;
 	
@@ -186,8 +186,8 @@ notExpression returns [Node result]
 	: 
 	(
 		comparison { $result = $comparison.result;  }
-		| 'not' comparison {$result = builder.operator(ExprTokens.OP_NOT, $comparison.result); }
-		| 'NOT' comparison {$result = builder.operator(ExprTokens.OP_NOT, $comparison.result); }
+		| 'not' comparison {$result = handler.operator(ExprTokens.OP_NOT, $comparison.result); }
+		| 'NOT' comparison {$result = handler.operator(ExprTokens.OP_NOT, $comparison.result); }
 		
 	)
 	;
@@ -195,10 +195,10 @@ notExpression returns [Node result]
 logicalExpression returns [Node result]
 	: notExpression { $result = $notExpression.result;  }
 	( 
-		'and' 	op2 = operatorExpression {$result = builder.operator(ExprTokens.OP_AND, $result, $op2.result); }
-		| 'AND'	op2 = operatorExpression {$result = builder.operator(ExprTokens.OP_AND, $result, $op2.result); }
-		|'or' 	op2 = operatorExpression {$result = builder.operator(ExprTokens.OP_OR, $result, $op2.result); }
-		| 'OR' 	op2 = operatorExpression {$result = builder.operator(ExprTokens.OP_OR, $result, $op2.result); } 
+		'and' 	op2 = operatorExpression {$result = handler.operator(ExprTokens.OP_AND, $result, $op2.result); }
+		| 'AND'	op2 = operatorExpression {$result = handler.operator(ExprTokens.OP_AND, $result, $op2.result); }
+		|'or' 	op2 = operatorExpression {$result = handler.operator(ExprTokens.OP_OR, $result, $op2.result); }
+		| 'OR' 	op2 = operatorExpression {$result = handler.operator(ExprTokens.OP_OR, $result, $op2.result); } 
 		
 	)*
 	;

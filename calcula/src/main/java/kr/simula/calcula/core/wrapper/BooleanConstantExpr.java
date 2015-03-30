@@ -62,5 +62,9 @@ public class BooleanConstantExpr implements Gettable<Boolean>{
 	public Boolean get(Context context) {
 		return value;
 	}
-
+	
+	@Override
+	public String toString() {
+		return value.toString();
+	}
 }

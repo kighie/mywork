@@ -63,4 +63,9 @@ public class DecimalGettableWrapper implements Gettable<BigDecimal>{
 		
 		return converter.convert(value);
 	}
+
+	@Override
+	public String toString() {
+		return original.toString();
+	}
 }

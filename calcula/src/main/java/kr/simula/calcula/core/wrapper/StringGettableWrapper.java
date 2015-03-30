@@ -55,5 +55,9 @@ public class StringGettableWrapper implements Gettable<String> {
 		
 		return value.toString();
 	}
-	
+
+	@Override
+	public String toString() {
+		return original.toString();
+	}
 }

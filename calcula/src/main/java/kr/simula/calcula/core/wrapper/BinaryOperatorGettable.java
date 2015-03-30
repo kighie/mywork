@@ -46,7 +46,8 @@ public abstract class BinaryOperatorGettable<T, O1, O2> implements Gettable<T> {
 	@Override
 	public String getExpression() {
 		StringBuilder buf = new StringBuilder();
-		buf.append("(").append(operator).append(" ").append(operand1).append(" ").append(operand2).append(")");
+		buf.append("(").append(operator).append(" ").append(operand1.getExpression())
+			.append(" ").append(operand2.getExpression()).append(")");
 		return buf.toString();
 	}
 	
@@ -57,6 +58,8 @@ public abstract class BinaryOperatorGettable<T, O1, O2> implements Gettable<T> {
 	
 	@Override
 	public String toString() {
-		return getExpression();
+		StringBuilder buf = new StringBuilder();
+		buf.append("(").append(operator).append(" ").append(operand1).append(" ").append(operand2).append(")");
+		return buf.toString();
 	}
 }

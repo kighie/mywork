@@ -54,7 +54,7 @@ public class DecimalBinaryOperatorFactory implements BinaryOperatorFactory {
 			
 			StringBuilder buf = new StringBuilder();
 			buf.append("(").append(operator).append(" ");
-			buf.append(val1).append(" ").append(val2).append(")");
+			buf.append(gettable1.getExpression()).append(" ").append(gettable2.getExpression()).append(")");
 			return new DecimalConstantExpr(operator.eval(val1, val2), buf.toString()) ;
 		}
 		

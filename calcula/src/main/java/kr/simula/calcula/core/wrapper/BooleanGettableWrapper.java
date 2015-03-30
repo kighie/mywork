@@ -60,4 +60,8 @@ public class BooleanGettableWrapper implements Gettable<Boolean> {
 		throw new RtException(original + " is not logical term");
 	}
 	
+	@Override
+	public String toString() {
+		return original.toString();
+	}
 }

@@ -48,7 +48,7 @@ public class LogicalUnaryOperatorFactory implements UnaryOperatorFactory {
 			Boolean val = ((Literal<Boolean>)gettable).getValue();
 			StringBuilder buf = new StringBuilder();
 			buf.append("(").append(operator).append(" ");
-			buf.append(val).append(")");
+			buf.append(gettable.getExpression()).append(")");
 			return new BooleanConstantExpr(operator.eval(val), buf.toString()) ;
 		}
 		

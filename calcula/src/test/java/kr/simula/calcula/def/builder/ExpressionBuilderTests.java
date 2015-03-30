@@ -14,18 +14,9 @@
  */
 package kr.simula.calcula.def.builder;
 
-import kr.simula.calcula.antlr.CalculaLexer;
-import kr.simula.calcula.antlr.CalculaParser;
-import kr.simula.calcula.antlr.CalculaParser.FormulaExpressionContext;
-import kr.simula.calcula.antlr.CalculaParser.OperatorExpressionContext;
 import kr.simula.calcula.core.Gettable;
 import kr.simula.calcula.core.Node;
-import kr.simula.calcula.core.builder.CalculaHandler;
 
-import org.antlr.v4.runtime.ANTLRInputStream;
-import org.antlr.v4.runtime.CharStream;
-import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.TokenStream;
 import org.junit.Test;
 
 /**
@@ -46,32 +37,11 @@ public class ExpressionBuilderTests {
 
 	protected ExpressionBuilder builder = new ExpressionBuilder();
 	
-	private CalculaParser createExpressionParser(String expression){
-		CalculaHandler calculaBuilder = builderFactory.newHandler();
-		CharStream input = new ANTLRInputStream(expression);
-		CalculaLexer lexer = new CalculaLexer(input);
-		TokenStream tokenStream = new CommonTokenStream(lexer);
-		CalculaParser parser =new CalculaParser(tokenStream, calculaBuilder);
-		
-		return parser;
-	}
-
-	private CalculaHandler buildExpression(String expression){
-		CalculaHandler calculaBuilder = builderFactory.newHandler();
-		CharStream input = new ANTLRInputStream(expression);
-		CalculaLexer lexer = new CalculaLexer(input);
-		TokenStream tokenStream = new CommonTokenStream(lexer);
-		CalculaParser parser =new CalculaParser(tokenStream, calculaBuilder);
-		FormulaExpressionContext ctx = parser.formulaExpression();
-		System.out.println();
-		System.out.println(ctx.result);
-		return calculaBuilder;
-	}
-
 	@Test
 	public void buildLiteralExpr1(){
 		Node exprNode = builder.buildExpression(literalExpr1);
 		System.out.println();
+		System.out.println(exprNode.getExpression());
 		System.out.println(exprNode);
 		
 		Gettable<?> gettable = (Gettable<?>)exprNode;
@@ -84,34 +54,11 @@ public class ExpressionBuilderTests {
 	public void buildLiteralExpr2(){
 		Node exprNode = builder.buildExpression(literalExpr2);
 		System.out.println();
+		System.out.println(exprNode.getExpression());
 		System.out.println(exprNode);
 		
 		Gettable<?> gettable = (Gettable<?>)exprNode;
 		
 		System.out.println(gettable.get(null));
-	}
-	
-	@Test
-	public void literalExpr(){
-		CalculaParser parser = createExpressionParser(literalExpr1);
-		FormulaExpressionContext ctx = parser.formulaExpression();
-		System.out.println();
-		System.out.println(ctx.children);
-	}
-	
-	@Test
-	public void testFormulaExpression(){
-		CalculaParser parser = createExpressionParser(FormulaExpression1);
-		FormulaExpressionContext ctx = parser.formulaExpression();
-		System.out.println();
-		System.out.println(ctx.children);
-	}
-	
-	@Test
-	public void testOperatorExpression1(){
-		CalculaParser parser = createExpressionParser(OperatorExpression1);
-		OperatorExpressionContext ctx = parser.operatorExpression();
-		System.out.println();
-		System.out.println(ctx.toStringTree());
 	}
 }

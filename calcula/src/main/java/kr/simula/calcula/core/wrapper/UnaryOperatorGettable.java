@@ -40,14 +40,16 @@ public abstract class UnaryOperatorGettable<T, O1> implements Gettable<T> {
 	
 	@Override
 	public String toString() {
-		return getExpression();
+		StringBuilder buf = new StringBuilder();
+		buf.append("(").append(operator).append(" ").append(operand).append(")");
+		return buf.toString();
 	}
 	
 
 	@Override
 	public String getExpression() {
 		StringBuilder buf = new StringBuilder();
-		buf.append("(").append(operator).append(" ").append(operand).append(")");
+		buf.append("(").append(operator).append(" ").append(operand.getExpression()).append(")");
 		return buf.toString();
 	}
 }

@@ -17,14 +17,14 @@ package kr.simula.calcula.core.wrapper;
 import java.math.BigDecimal;
 
 import kr.simula.calcula.core.Context;
-import kr.simula.calcula.core.Gettable;
+import kr.simula.calcula.core.Literal;
 
 /**
  * <pre></pre>
  * @author kighie@gmail.com
  * @since 1.0
  */
-public class DecimalConstantExpr implements Gettable<BigDecimal>{
+public class DecimalConstantExpr implements Literal<BigDecimal>{
 	private BigDecimal value;
 	private String exprStr;
 	
@@ -59,7 +59,12 @@ public class DecimalConstantExpr implements Gettable<BigDecimal>{
 	public Class<BigDecimal> type() {
 		return BigDecimal.class;
 	}
-
+	
+	@Override
+	public BigDecimal getValue() {
+		return value;
+	}
+	
 	@Override
 	public BigDecimal get(Context context) {
 		return value;
@@ -67,6 +72,6 @@ public class DecimalConstantExpr implements Gettable<BigDecimal>{
 
 	@Override
 	public String toString() {
-		return getExpression();
+		return "{opt:" + value + "}";
 	}
 }

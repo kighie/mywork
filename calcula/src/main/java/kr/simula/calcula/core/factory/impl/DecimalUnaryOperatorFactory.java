@@ -50,7 +50,7 @@ public class DecimalUnaryOperatorFactory implements UnaryOperatorFactory {
 			BigDecimal val = GettableUtils.getDecimalValue(((Literal)gettable));
 			StringBuilder buf = new StringBuilder();
 			buf.append("(").append(operator).append(" ");
-			buf.append(val).append(")");
+			buf.append(gettable.getExpression()).append(")");
 			return new DecimalConstantExpr(operator.eval(val), buf.toString()) ;
 		}
 		
