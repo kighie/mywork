@@ -43,10 +43,15 @@ public class ExpressionHandlerFactory extends CalculaHandlerFactory {
 	
 	
 	@Override
-	public CalculaHandler newBuilder() {
-		return new ExpressionHandler(new RootBuildContext(), 
+	public CalculaHandler newHandler(RootBuildContext rootContext) {
+		return new ExpressionHandler(rootContext, 
 				blockHelper, literalHelper, refHelper, binaryOperatorHelper, unaryOperatorHelper, 
 				functionCallHelper, methodCallHelper);
+	}
+	
+	@Override
+	public CalculaHandler newHandler() {
+		return newHandler(new RootBuildContext() );
 	}
 
 }

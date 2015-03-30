@@ -1,4 +1,4 @@
-/* 
+/* ******************************************************************************
  * Copyright (c) 2012 IkChan Kwon kighie@gmail.com
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,19 @@
  */
 package kr.simula.calcula.core.builder;
 
+import kr.simula.calcula.core.Node;
+
 /**
- * <pre></pre>
- * @author kighie@gmail.com
- * @since 1.0
+ * <pre>
+ * </pre>
+ * @author Ikchan Kwon
+ *
  */
-public abstract class CalculaHandlerFactory {
+public interface CalculaBuilder {
 
-	public abstract CalculaHandler newHandler(RootBuildContext rootContext) ;
+	Node buildExpression(String expression);
 
-	public abstract CalculaHandler newHandler() ;
+	Node buildExpression(String expression, RootBuildContext rootContext);
+	
 	
 }

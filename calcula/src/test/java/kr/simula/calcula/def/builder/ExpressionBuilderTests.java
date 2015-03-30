@@ -18,6 +18,7 @@ import kr.simula.calcula.antlr.CalculaLexer;
 import kr.simula.calcula.antlr.CalculaParser;
 import kr.simula.calcula.antlr.CalculaParser.FormulaExpressionContext;
 import kr.simula.calcula.antlr.CalculaParser.OperatorExpressionContext;
+import kr.simula.calcula.core.Node;
 import kr.simula.calcula.core.builder.CalculaHandler;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
@@ -39,11 +40,13 @@ public class ExpressionBuilderTests {
 	static final String FormulaExpression1 = "=(1+3 * 4 + 15 / (fn4(1,2,3) + fn2() ) * aa.bb.meth())";
 	static final String OperatorExpression1 = "1+3 * 4 + 15 / (fn4(1,2,3) + fn2() ) * aa.bb.meth()";
 	
-	
+
 	protected ExpressionHandlerFactory builderFactory = new ExpressionHandlerFactory();
 
+	protected ExpressionBuilder builder = new ExpressionBuilder();
+	
 	private CalculaParser createExpressionParser(String expression){
-		CalculaHandler calculaBuilder = builderFactory.newBuilder();
+		CalculaHandler calculaBuilder = builderFactory.newHandler();
 		CharStream input = new ANTLRInputStream(expression);
 		CalculaLexer lexer = new CalculaLexer(input);
 		TokenStream tokenStream = new CommonTokenStream(lexer);
@@ -53,7 +56,7 @@ public class ExpressionBuilderTests {
 	}
 
 	private CalculaHandler buildExpression(String expression){
-		CalculaHandler calculaBuilder = builderFactory.newBuilder();
+		CalculaHandler calculaBuilder = builderFactory.newHandler();
 		CharStream input = new ANTLRInputStream(expression);
 		CalculaLexer lexer = new CalculaLexer(input);
 		TokenStream tokenStream = new CommonTokenStream(lexer);
@@ -66,9 +69,9 @@ public class ExpressionBuilderTests {
 
 	@Test
 	public void buildLiteralExpr1(){
-		CalculaHandler builder = buildExpression(literalExpr1);
+		Node exprNode = builder.buildExpression(literalExpr1);
 		System.out.println();
-		System.out.println(builder.getRootNode());
+		System.out.println(exprNode);
 	}
 
 
