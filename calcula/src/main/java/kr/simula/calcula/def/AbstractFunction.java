@@ -47,7 +47,7 @@ public abstract class AbstractFunction<O> implements Function<O> {
 
         if (args.length != count)
             throw new CalculaException(getClass().getSimpleName() +
-                    " function takes " + count + " arguments");
+                    " function needs " + count + " arguments, but " + args.length);
     }
 	
 	protected void checkArgCountMoreThan(Object[] args, int count) throws CalculaException {

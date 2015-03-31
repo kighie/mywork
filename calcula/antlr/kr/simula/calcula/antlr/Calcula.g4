@@ -113,7 +113,7 @@ formulaTerm returns [Node result]
 	| NUMBER			{ $result = handler.literal( ExprTokens.LIT_NUMBER, $NUMBER.text); }
 	| IDENT
 	| qualifiedName
-	| funcCallExp
+	| funcCallExp		{ $result = $funcCallExp.result; }
 	| methodCallExp
 	;
 

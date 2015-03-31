@@ -29,7 +29,9 @@ public class DefaultFunctionCallHelper extends FunctionCallHelper {
 	@Override
 	protected final void initDefaults() {
 		super.initDefaults();
-
+		
+		initValidators();
+		
 		loadAndRegisterFunctions(this.getClass().getClassLoader(), FUNC_CLASSPATH);
 		
 		initCustomFunctions();

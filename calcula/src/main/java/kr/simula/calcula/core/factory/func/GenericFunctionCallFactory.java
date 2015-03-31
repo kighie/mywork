@@ -54,7 +54,7 @@ public abstract class GenericFunctionCallFactory implements FunctionCallFactory 
 	}
 	
 	protected Gettable<?>[] validateArgs(Node... args) {
-		int length = args.length;
+		int length = (args != null) ? args.length : 0;
 		
 		if(length<requiredArgCount){
 			throw new BuildException("Function " + functionName() + " needs " + requiredArgCount + " args, but " + length);

@@ -46,11 +46,18 @@ public class FunctionCallHelper extends AbstractHelper<FunctionCallFactory> {
 
 	private static Logger logger = Logger.getLogger(FunctionLoader.class.getName());
 
-	protected final Class<?>[] EMPTY_CLASS_ARRAY = new Class<?>[0];
-	protected final Node[] EMPTY_NODE_ARRAY = new Node[0];
-	protected final ArgumentValidator<?>[] EMPTY_VALIDATOR_ARRAY = new ArgumentValidator<?>[0];
+	protected static final Class<?>[] EMPTY_CLASS_ARRAY = new Class<?>[0];
+	protected static final Node[] EMPTY_NODE_ARRAY = new Node[0];
+	protected static final ArgumentValidator<?>[] EMPTY_VALIDATOR_ARRAY = new ArgumentValidator<?>[0];
 	
-	protected final Map<Class<?>, ArgumentValidator<?>> validatorMap = new HashMap<Class<?>, ArgumentValidator<?>>();
+	protected Map<Class<?>, ArgumentValidator<?>> validatorMap;
+	
+	/**
+	 * 
+	 */
+	public FunctionCallHelper() {
+		super();
+	}
 	
 	@Override
 	protected void initDefaults() {
@@ -59,6 +66,7 @@ public class FunctionCallHelper extends AbstractHelper<FunctionCallFactory> {
 	}
 	
 	protected void initValidators(){
+		validatorMap = new HashMap<Class<?>, ArgumentValidator<?>>();
 		setValidator(BigDecimal.class, ArgumentValidator.DECIMAL_VALIDATOR);
 		setValidator(String.class, ArgumentValidator.STRING_VALIDATOR);
 		setValidator(Boolean.class, ArgumentValidator.BOOLEAN_VALIDATOR);
