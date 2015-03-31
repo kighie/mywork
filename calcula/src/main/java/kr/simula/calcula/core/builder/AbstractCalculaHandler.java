@@ -86,16 +86,32 @@ public abstract class AbstractCalculaHandler implements CalculaHandler {
 		return current;
 	}
 	
+
+	protected void beginScope(){
+		ScopeBuildContext scope = new ScopeBuildContext(current);
+		current = scope;
+	}
+	
+	protected void endScope(){
+		BuildContext parent = current.getParent();
+		if(parent == null){
+			throw new BuildException("Current step exceeds BuildScope.");
+		}
+		
+		current = parent;
+	}
+	
+	
 	@Override
 	public Block block(String token){
 		Block block = blockHelper.create(current, token);
-		
+		beginScope();
 		return block;
 	}
 	
 	@Override
-	public Block endBlock() {
-		return null;
+	public void endBlock() {
+		endScope();
 	}
 	
 	@Override

@@ -60,8 +60,8 @@ public class ExpressionHandler extends AbstractCalculaHandler implements ExprTok
 	}
 	
 	@Override
-	public Block endBlock() {
-		return null;
+	public void endBlock() {
+		throw new BuildException("End block is not supported.");
 	}
 	
 }

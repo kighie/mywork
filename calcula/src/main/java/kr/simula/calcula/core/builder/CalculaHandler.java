@@ -55,9 +55,8 @@ public interface CalculaHandler {
 	 * <pre>
 	 * End building block.
 	 * </pre>
-	 * @return
 	 */
-	Block endBlock();
+	void endBlock();
 	
 	/**
 	 * <pre>
