@@ -59,6 +59,9 @@ public abstract class FunctionCallWrapper<T> implements Gettable<T>{
 	}
 	
 
+	/**
+	 * TODO Change arguments manipulating (using bytecode engineering)
+	 */
 	@Override
 	public T get(Context context) {
 		Object[] argArr = new Object[args.length];
@@ -80,7 +83,24 @@ public abstract class FunctionCallWrapper<T> implements Gettable<T>{
 		return buf.toString();
 	}
 	
-	public class NumericFunctionCallWrapper extends FunctionCallWrapper<BigDecimal> {
+	public static class ObjectFunctionCallWrapper extends FunctionCallWrapper<Object> {
+		/**
+		 * @param function
+		 * @param args
+		 */
+		public ObjectFunctionCallWrapper(Function<Object> function,
+				Gettable<?>[] args) {
+			super(function, args);
+		}
+		
+		@Override
+		public ValueType valueType() {
+			return ValueType.OBJECT;
+		}
+		
+	}
+	
+	public static class NumericFunctionCallWrapper extends FunctionCallWrapper<BigDecimal> {
 		/**
 		 * @param function
 		 * @param args
@@ -98,7 +118,7 @@ public abstract class FunctionCallWrapper<T> implements Gettable<T>{
 	}
 	
 
-	public class StringFunctionCallWrapper extends FunctionCallWrapper<String> {
+	public static class StringFunctionCallWrapper extends FunctionCallWrapper<String> {
 		/**
 		 * @param function
 		 * @param args
@@ -115,7 +135,7 @@ public abstract class FunctionCallWrapper<T> implements Gettable<T>{
 		
 	}
 	
-	public class BooleanFunctionCallWrapper extends FunctionCallWrapper<Boolean> {
+	public static class BooleanFunctionCallWrapper extends FunctionCallWrapper<Boolean> {
 		/**
 		 * @param function
 		 * @param args
@@ -132,7 +152,7 @@ public abstract class FunctionCallWrapper<T> implements Gettable<T>{
 		
 	}
 
-	public class DateFunctionCallWrapper extends FunctionCallWrapper<Date> {
+	public static class DateFunctionCallWrapper extends FunctionCallWrapper<Date> {
 		/**
 		 * @param function
 		 * @param args

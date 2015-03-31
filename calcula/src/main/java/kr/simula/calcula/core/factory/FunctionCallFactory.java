@@ -23,7 +23,7 @@ import kr.simula.calcula.core.builder.BuildContext;
  * @author kighie@gmail.com
  * @since 1.0
  */
-public interface FunctionCallFactory<T> {
+public interface FunctionCallFactory {
 
-	Gettable<T> create(BuildContext context, String fnName, Node ... args);
+	Gettable<?> create(BuildContext context, String fnName, Node ... args);
 }

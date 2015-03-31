@@ -1,4 +1,4 @@
-/* 
+/* ******************************************************************************
  * Copyright (c) 2012 IkChan Kwon kighie@gmail.com
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,26 +12,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package kr.simula.calcula.core.factory.impl;
+package kr.simula.calcula.def.builder;
 
 import java.math.BigDecimal;
 
-import kr.simula.calcula.core.Gettable;
-import kr.simula.calcula.core.Node;
-import kr.simula.calcula.core.builder.BuildContext;
-import kr.simula.calcula.core.factory.FunctionCallFactory;
+import org.junit.Test;
 
 /**
- * <pre></pre>
- * @author kighie@gmail.com
- * @since 1.0
+ * <pre>
+ * </pre>
+ * @author Ikchan Kwon
+ *
  */
-public class NumericFunctionCallFactory implements FunctionCallFactory<BigDecimal> {
+public class FunctionBuilderTests extends AbstractBuilderTests {
 
-	@Override
-	public Gettable<BigDecimal> create(BuildContext context, String fnName, Node... args) {
-		// TODO Auto-generated method stub
-		return null;
+	
+	@Test
+	public void buildLiteralNumeric(){
+		testExpression("=ABS(1+3 * (4 - 15) - 31.5 / 10)", new BigDecimal("54.85"));
 	}
 
 }

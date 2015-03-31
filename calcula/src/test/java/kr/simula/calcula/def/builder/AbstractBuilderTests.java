@@ -12,13 +12,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package kr.simula.calcula.func.math;
+package kr.simula.calcula.def.builder;
 
-import java.math.BigDecimal;
+import kr.simula.calcula.core.Gettable;
+import kr.simula.calcula.core.Node;
 
-import kr.simula.calcula.core.annotation.Arguments;
-import kr.simula.calcula.func.NumericFunction;
-import kr.simula.calcula.func.base.MathFunctions;
+import org.junit.Assert;
 
 /**
  * <pre>
@@ -26,15 +25,22 @@ import kr.simula.calcula.func.base.MathFunctions;
  * @author Ikchan Kwon
  *
  */
+public abstract class AbstractBuilderTests {
 
-public class ABS extends NumericFunction{
-	private static final long serialVersionUID = 1L;
-
-	@Override
-	@Arguments(BigDecimal.class)
-	public BigDecimal eval(Object... args) {
-		checkArgCount(args, 1);
-		return MathFunctions.abs(toDecimal(args[0]));
+	protected ExpressionBuilder builder = new ExpressionBuilder();
+	
+	protected void testExpression(String expr, Object expected){
+		Node exprNode = builder.buildExpression(expr);
+		System.out.println();
+		System.out.println(exprNode.getExpression());
+		System.out.println(exprNode);
+		
+		Gettable<?> gettable = (Gettable<?>)exprNode;
+		
+		Object result = gettable.get(null);
+		System.out.println(result);
+		
+		Assert.assertEquals(expected, result);
 	}
-
+	
 }

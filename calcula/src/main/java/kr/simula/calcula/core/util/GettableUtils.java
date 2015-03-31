@@ -15,12 +15,14 @@
 package kr.simula.calcula.core.util;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import kr.simula.calcula.core.Gettable;
 import kr.simula.calcula.core.Literal;
 import kr.simula.calcula.core.Node;
 import kr.simula.calcula.core.builder.BuildException;
 import kr.simula.calcula.core.wrapper.DecimalGettableWrapper;
+import kr.simula.calcula.core.wrapper.StringGettableWrapper;
 
 /**
  * <pre></pre>
@@ -96,6 +98,7 @@ public class GettableUtils {
 		throw new BuildException(node + " is not numeric node.");
 	}
 	
+	
 	public static BigDecimal getDecimalValue(Literal<?> literal){
 		Object value = literal.getValue();
 
@@ -107,4 +110,66 @@ public class GettableUtils {
 			throw new BuildException("Numeric binary operator needs numeric operand. But literal operand=" + literal);
 		}
 	}
+
+
+	public static Gettable<String> getStringGettable(Node node){
+		if(node instanceof Gettable){
+			return getStringGettable((Gettable<?>)node);
+		}
+		throw new BuildException(node + " is not Gettable.");
+	}
+
+	@SuppressWarnings("unchecked")
+	public static Gettable<String> getStringGettable(Gettable<?> node){
+		Class<?> type = node.type();
+		
+		if(String.class.isAssignableFrom(type) ){
+			return (Gettable<String>)node;
+		} else {
+			return new StringGettableWrapper(node);
+		}
+	}
+	
+	/**<pre>
+	 * </pre>
+	 * @param node
+	 * @return
+	 */
+	public static Gettable<Boolean> getBooleanGettable(Node node) {
+		if(node instanceof Gettable){
+			return getBooleanGettable((Gettable<?>)node);
+		}
+		throw new BuildException(node + " is not Gettable.");
+	}
+	
+
+	@SuppressWarnings("unchecked")
+	public static Gettable<Boolean> getBooleanGettable(Gettable<?> node) {
+		if(Boolean.class.isAssignableFrom(node.type()) ){
+			return (Gettable<Boolean>)node;
+		} 
+		throw new BuildException(node + " is not Gettable<Boolean>.");
+	}
+
+	/**<pre>
+	 * </pre>
+	 * @param node
+	 * @return
+	 */
+	public static Gettable<Date> getDateGettable(Node node) {
+		if(node instanceof Gettable){
+			return getDateGettable((Gettable<?>)node);
+		}
+		throw new BuildException(node + " is not Gettable.");
+	}
+	
+
+	@SuppressWarnings("unchecked")
+	public static Gettable<Date> getDateGettable(Gettable<?> node) {
+		if(Date.class.isAssignableFrom(node.type()) ){
+			return (Gettable<Date>)node;
+		} 
+		throw new BuildException(node + " is not Gettable<Date>.");
+	}
+
 }

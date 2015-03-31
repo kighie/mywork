@@ -26,6 +26,14 @@ public class StringGettableWrapper implements Gettable<String> {
 
 	private Gettable<?> original;
 	
+	
+	/**
+	 * @param original
+	 */
+	public StringGettableWrapper(Gettable<?> original) {
+		this.original = original;
+	}
+
 	/**
 	 * @return ValueType#TEXT
 	 */

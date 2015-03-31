@@ -16,10 +16,6 @@ package kr.simula.calcula.def.builder;
 
 import java.math.BigDecimal;
 
-import kr.simula.calcula.core.Gettable;
-import kr.simula.calcula.core.Node;
-
-import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -28,29 +24,8 @@ import org.junit.Test;
  * @author Ikchan Kwon
  *
  */
-public class ExpressionBuilderTests {
+public class ExpressionBuilderTests extends AbstractBuilderTests {
 
-	static final String FormulaExpression1 = "=(1+3 * 4 + 15 / (fn4(1,2,3) + fn2() ) * aa.bb.meth())";
-	static final String OperatorExpression1 = "1+3 * 4 + 15 / (fn4(1,2,3) + fn2() ) * aa.bb.meth()";
-	
-
-	protected ExpressionBuilder builder = new ExpressionBuilder();
-	
-	protected void testExpression(String expr, Object expected){
-		Node exprNode = builder.buildExpression(expr);
-		System.out.println();
-		System.out.println(exprNode.getExpression());
-		System.out.println(exprNode);
-		
-		Gettable<?> gettable = (Gettable<?>)exprNode;
-		
-		Object result = gettable.get(null);
-		System.out.println(result);
-		
-		Assert.assertEquals(expected, result);
-	}
-	
-	
 	@Test
 	public void buildLiteralNumeric(){
 		testExpression("=1+3 * (4 + 15) - 31.5 / 10", new BigDecimal("54.85"));

@@ -12,24 +12,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package kr.simula.calcula.core.factory.impl;
+package kr.simula.calcula.core.annotation;
 
-import kr.simula.calcula.core.Gettable;
-import kr.simula.calcula.core.Node;
-import kr.simula.calcula.core.builder.BuildContext;
-import kr.simula.calcula.core.factory.FunctionCallFactory;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * <pre></pre>
  * @author kighie@gmail.com
  * @since 1.0
  */
-public class AbstractFunctionCallFactory<T> implements FunctionCallFactory<T> {
+@Retention(RetentionPolicy.CLASS)
+@Target({ElementType.TYPE,ElementType.METHOD})
+public @interface Arguments {
 
-	@Override
-	public Gettable<T> create(BuildContext context, String fnName, Node... args) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	Class<?>[] value();
 }

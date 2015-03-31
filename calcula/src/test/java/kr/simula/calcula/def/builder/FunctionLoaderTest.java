@@ -1,4 +1,4 @@
-/* ******************************************************************************
+/* 
  * Copyright (c) 2012 IkChan Kwon kighie@gmail.com
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,29 +12,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package kr.simula.calcula.func.math;
+package kr.simula.calcula.def.builder;
 
-import java.math.BigDecimal;
+import java.io.IOException;
+import java.util.List;
 
-import kr.simula.calcula.core.annotation.Arguments;
-import kr.simula.calcula.func.NumericFunction;
-import kr.simula.calcula.func.base.MathFunctions;
+import kr.simula.calcula.core.Function;
+import kr.simula.calcula.core.factory.helper.FunctionLoader;
+
+import org.junit.Test;
 
 /**
- * <pre>
- * </pre>
- * @author Ikchan Kwon
- *
+ * <pre></pre>
+ * @author kighie@gmail.com
+ * @since 1.0
  */
+public class FunctionLoaderTest {
 
-public class ABS extends NumericFunction{
-	private static final long serialVersionUID = 1L;
-
-	@Override
-	@Arguments(BigDecimal.class)
-	public BigDecimal eval(Object... args) {
-		checkArgCount(args, 1);
-		return MathFunctions.abs(toDecimal(args[0]));
+	@Test
+	public void load() throws IOException{
+		FunctionLoader loader = new FunctionLoader(getClass().getClassLoader(), "kr.simula.calcula.func");
+		
+		List<Function<?>> list = loader.loadFunctions();
+		
+		for(Function<?> fc : list){
+			System.out.println(fc);
+		}
 	}
-
 }
