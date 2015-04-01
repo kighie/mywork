@@ -14,6 +14,8 @@
  */
 package kr.simula.calcula.core.builder;
 
+import java.util.List;
+
 import kr.simula.calcula.core.Block;
 import kr.simula.calcula.core.Gettable;
 import kr.simula.calcula.core.Literal;
@@ -139,12 +141,12 @@ public abstract class AbstractCalculaHandler implements CalculaHandler {
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public Gettable functionCall(String name, Node... args) {
+	public Gettable functionCall(String name, List<Node> args) {
 		return functionCallHelper.create(current, name, args);
 	}
 
 	@Override
-	public Node methodCall(Ref parent, String name, Node... args) {
+	public Node methodCall(Ref parent, String name, List<Node> args) {
 		return methodCallHelper.create(current, parent, name, args);
 	}
 

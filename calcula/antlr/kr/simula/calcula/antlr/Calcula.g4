@@ -96,15 +96,18 @@ formulaExpressionBase returns [Node result]
 
 funcCallExp returns [Gettable result]
 	: IDENT '(' arguments? ')' 
-		{ $result = handler.functionCall($IDENT.text, $arguments.result) ;}
+		{ $result = handler.functionCall($IDENT.text, $arguments.nodeList) ;}
 	;
 
 methodCallExp returns [Node result]
 	: qualifiedName '.' IDENT '(' arguments? ')'
 	;
 
-arguments  returns [Node[] result]
-	: ( operatorExpression (',' operatorExpression )*  )?
+arguments  returns [List<Node> nodeList]
+	: { $nodeList = new LinkedList<Node>(); }
+	( operatorExpression { $nodeList.add($operatorExpression.result); } 
+		(',' operatorExpression { $nodeList.add($operatorExpression.result); })*
+	)?
 	;
 
 formulaTerm returns [Node result]

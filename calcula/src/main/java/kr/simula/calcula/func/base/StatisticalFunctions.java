@@ -17,6 +17,8 @@
 
 package kr.simula.calcula.func.base;
 
+import java.math.BigDecimal;
+
 
 /**
  * @author kighie@gmail.com
@@ -41,9 +43,18 @@ public final class StatisticalFunctions extends FunctionBase {
 	 * @return
 	 */
 	public static final Number AVERAGE(Number ... numbers){
-		int len = numbers.length;
-		
-		return null;
+		int len = numbers!= null ? numbers.length : 0;
+		if(len == 1){
+			return new BigDecimal(numbers[0].toString());
+		} else if(len>0){
+			BigDecimal sum = BigDecimal.ZERO;
+			for(Number n : numbers){
+				sum = sum.add(new BigDecimal(n.toString()));
+			}
+			return sum.divide(BigDecimal.valueOf(len));
+		} else {
+			return BigDecimal.ZERO;
+		}
 	}
 /*
 

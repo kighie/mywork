@@ -14,6 +14,8 @@
  */
 package kr.simula.calcula.core.builder;
 
+import java.util.List;
+
 import kr.simula.calcula.core.Block;
 import kr.simula.calcula.core.Gettable;
 import kr.simula.calcula.core.Literal;
@@ -109,7 +111,7 @@ public interface CalculaHandler {
 	 * @return
 	 */
 	@SuppressWarnings("rawtypes")
-	Gettable functionCall(String name, Node ... args);
+	Gettable functionCall(String name, List<Node> args);
 
 	/**
 	 * <pre>
@@ -120,7 +122,7 @@ public interface CalculaHandler {
 	 * @param args
 	 * @return
 	 */
-	Node methodCall(Ref parent, String name, Node ... args);
+	Node methodCall(Ref parent, String name, List<Node> args);
 	
 	
 }

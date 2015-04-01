@@ -14,6 +14,8 @@
  */
 package kr.simula.calcula.core.factory.helper;
 
+import java.util.List;
+
 import kr.simula.calcula.core.Node;
 import kr.simula.calcula.core.Ref;
 import kr.simula.calcula.core.builder.BuildContext;
@@ -27,7 +29,7 @@ import kr.simula.calcula.core.factory.MethodCallFactory;
  */
 public class MethodCallHelper extends AbstractHelper<MethodCallFactory> {
 
-	public Node create(BuildContext context, Ref parent, String name, Node ... args){
+	public Node create(BuildContext context, Ref parent, String name, List<Node> args){
 		MethodCallFactory factory = factories.get(name);
 		if(factory == null){
 			throw new BuildException("MethodCallFactory for " + name + " is not registered.");

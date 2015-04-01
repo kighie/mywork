@@ -15,6 +15,8 @@
 package kr.simula.calcula.core.factory.helper;
 
 import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
@@ -47,6 +49,7 @@ public class FunctionCallHelper extends AbstractHelper<FunctionCallFactory> {
 	private static Logger logger = Logger.getLogger(FunctionLoader.class.getName());
 
 	protected static final Class<?>[] EMPTY_CLASS_ARRAY = new Class<?>[0];
+
 	protected static final Node[] EMPTY_NODE_ARRAY = new Node[0];
 	protected static final ArgumentValidator<?>[] EMPTY_VALIDATOR_ARRAY = new ArgumentValidator<?>[0];
 	
@@ -128,6 +131,46 @@ public class FunctionCallHelper extends AbstractHelper<FunctionCallFactory> {
 		return loader.loadFunctions();
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	protected Class<?>[] getArgTypes(Function<?> function) {
+		Class<Function> fnClz = (Class<Function>)function.getClass();
+		Class<?>[] argTypes;
+		Arguments args = null;
+		args = fnClz.getAnnotation(Arguments.class);
+		
+		if(args != null){
+			argTypes = args.value();
+		} else {
+			try {
+				Method method = fnClz.getDeclaredMethod("eval", Object[].class);
+				Method method2 = fnClz.getMethod("eval", Object[].class);
+				
+				Annotation[] annotations = method.getDeclaredAnnotations();
+				
+				for(Annotation anno : annotations) {
+					if(anno instanceof Arguments) {
+						args = (Arguments)anno;
+					}
+				}
+//				args = method.getAnnotation(Arguments.class);
+				
+				if(args != null){
+					argTypes = args.value();
+				} else {
+					argTypes = EMPTY_CLASS_ARRAY;
+				}
+			} catch (SecurityException e) {
+				logger.log(Level.SEVERE, "Cannot find Function.eval method args.", e);
+				argTypes = EMPTY_CLASS_ARRAY;
+			} catch (NoSuchMethodException e) {
+				logger.log(Level.SEVERE, "Cannot find Function.eval method args.", e);
+				argTypes = EMPTY_CLASS_ARRAY;
+			}
+		}
+		
+		
+		return argTypes;
+	}
 	/**
 	 * <pre>
 	 * Creates FunctionCallFactory for function and register it.
@@ -137,13 +180,7 @@ public class FunctionCallHelper extends AbstractHelper<FunctionCallFactory> {
 	public void registerFunction(Function<?> function) {
 		String fnName = function.getClass().getSimpleName();
 		Class<?> returnType = function.getReturnType();
-		Arguments args = function.getClass().getAnnotation(Arguments.class);
-		Class<?>[] argTypes;
-		if(args != null){
-			argTypes = args.value();
-		} else {
-			argTypes = EMPTY_CLASS_ARRAY;
-		}
+		Class<?>[] argTypes = getArgTypes(function);
 		
 		FunctionCallFactory factory = createFactory(returnType, function, argTypes);
 		
@@ -175,7 +212,7 @@ public class FunctionCallHelper extends AbstractHelper<FunctionCallFactory> {
 		}
 	}
 
-	public Gettable<?> create(BuildContext context,  String name , Node ... args){
+	public Gettable<?> create(BuildContext context,  String name , List<Node> args){
 		FunctionCallFactory factory = factories.get(name);
 		if(factory == null){
 			throw new BuildException("FunctionCallFactory for " + name + " is not registered.");

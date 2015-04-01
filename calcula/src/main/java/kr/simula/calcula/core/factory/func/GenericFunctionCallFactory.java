@@ -14,6 +14,8 @@
  */
 package kr.simula.calcula.core.factory.func;
 
+import java.util.List;
+
 import kr.simula.calcula.core.Function;
 import kr.simula.calcula.core.Gettable;
 import kr.simula.calcula.core.Node;
@@ -53,8 +55,8 @@ public abstract class GenericFunctionCallFactory implements FunctionCallFactory 
 		return function.getClass().getSimpleName();
 	}
 	
-	protected Gettable<?>[] validateArgs(Node... args) {
-		int length = (args != null) ? args.length : 0;
+	protected Gettable<?>[] validateArgs(List<Node> args) {
+		int length = (args != null) ? args.size() : 0;
 		
 		if(length<requiredArgCount){
 			throw new BuildException("Function " + functionName() + " needs " + requiredArgCount + " args, but " + length);
@@ -64,14 +66,14 @@ public abstract class GenericFunctionCallFactory implements FunctionCallFactory 
 		
 		Gettable<?>[] gettables = new Gettable<?>[length];
 		for(int i = 0 ; i<length ; i++){
-			gettables[i] = validators[i].validate(args[i]);
+			gettables[i] = validators[i].validate(args.get(i));
 		}
 		
 		return gettables;
 	}
 
 	@Override
-	public Gettable<?> create(BuildContext context, String fnName, Node... args) {
+	public Gettable<?> create(BuildContext context, String fnName, List<Node> args) {
 		Gettable<?>[] gettables = validateArgs(args);
 		return createImpl(function,gettables);
 	}
