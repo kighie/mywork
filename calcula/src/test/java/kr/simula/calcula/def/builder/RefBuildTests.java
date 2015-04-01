@@ -1,4 +1,4 @@
-/* ******************************************************************************
+/* 
  * Copyright (c) 2012 IkChan Kwon kighie@gmail.com
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,35 +16,23 @@ package kr.simula.calcula.def.builder;
 
 import java.math.BigDecimal;
 
-import kr.simula.calcula.core.Gettable;
-
 import org.junit.Test;
 
+import kr.simula.calcula.ExpressionTests;
+import kr.simula.calcula.core.SimpleContext;
+
 /**
- * <pre>
- * </pre>
- * @author Ikchan Kwon
- *
+ * <pre></pre>
+ * @author kighie@gmail.com
+ * @since 1.0
  */
-public class FunctionBuilderTests extends AbstractBuilderTests {
+public class RefBuildTests extends ExpressionTests {
 
 	@Test
-	public void performance(){
-		for( int i =0;i<1000;i++){
-			testExpression("=COMBIN( ABS(83/5) ,2)", new BigDecimal("120"));
-		}
+	public void basic(){
+		SimpleContext context = new SimpleContext();
+		context.setReference("A1", new BigDecimal(30));
+		testExpression("=A1 + 1", context, new BigDecimal("31"));
 	}
 
-	@Test
-	public void performance2(){
-		Gettable<?> expression = (Gettable<?>)buildExpression("=COMBIN( ABS(83/5) ,2)");
-		System.out.println();
-		System.out.println(expression.getExpression());
-		System.out.println(expression);
-		
-		for( int i =0;i<1000;i++){
-			System.out.println(expression.get(null));
-		}
-	}
-	
 }

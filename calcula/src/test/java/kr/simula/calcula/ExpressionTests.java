@@ -14,6 +14,7 @@
  */
 package kr.simula.calcula;
 
+import kr.simula.calcula.core.Context;
 import kr.simula.calcula.core.Gettable;
 import kr.simula.calcula.core.Node;
 import kr.simula.calcula.def.builder.ExpressionBuilder;
@@ -38,8 +39,12 @@ public class ExpressionTests {
 		Node exprNode = builder.buildExpression(expr);
 		return exprNode;
 	}
-	
+
 	protected void testExpression(String expr, Object expected){
+		testExpression(expr, null, expected);
+	}
+	
+	protected void testExpression(String expr, Context context, Object expected){
 		Node exprNode = builder.buildExpression(expr);
 		System.out.println();
 		System.out.println(exprNode.getExpression());
@@ -47,7 +52,7 @@ public class ExpressionTests {
 		
 		Gettable<?> gettable = (Gettable<?>)exprNode;
 		
-		Object result = gettable.get(null);
+		Object result = gettable.get(context);
 		System.out.println(result);
 		
 		Assert.assertEquals(expected, result);

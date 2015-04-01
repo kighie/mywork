@@ -16,6 +16,8 @@ package kr.simula.calcula.def.builder;
 
 import java.math.BigDecimal;
 
+import kr.simula.calcula.ExpressionTests;
+
 import org.junit.Test;
 
 /**
@@ -24,7 +26,7 @@ import org.junit.Test;
  * @author Ikchan Kwon
  *
  */
-public class ExpressionBuilderTests extends AbstractBuilderTests {
+public class ExpressionBuilderTests extends ExpressionTests {
 
 	@Test
 	public void buildLiteralNumeric(){

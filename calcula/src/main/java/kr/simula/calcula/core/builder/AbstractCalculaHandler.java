@@ -67,7 +67,8 @@ public abstract class AbstractCalculaHandler implements CalculaHandler {
 			FunctionCallHelper functionCallHelper,
 			MethodCallHelper methodCallHelper) {
 		super();
-		this.rootContext = rootContext;
+		current = this.rootContext = rootContext;
+		
 		this.blockHelper = blockHelper;
 		this.literalHelper = literalHelper;
 		this.refHelper = refHelper;
@@ -134,11 +135,15 @@ public abstract class AbstractCalculaHandler implements CalculaHandler {
 	}
 
 	@Override
-	public Ref reference(String token, String exp) {
-		return refHelper.create(current, token, exp);
+	public Ref reference(String name) {
+		return refHelper.create(current,name);
 	}
-
-
+	
+	@Override
+	public Ref reference(Ref parent, String name) {
+		return refHelper.create(current, parent, name);
+	}
+	
 	@SuppressWarnings("rawtypes")
 	@Override
 	public Gettable functionCall(String name, List<Node> args) {

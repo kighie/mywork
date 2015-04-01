@@ -14,11 +14,12 @@
  */
 package kr.simula.calcula.def.builder;
 
-import kr.simula.calcula.core.Gettable;
-import kr.simula.calcula.core.Node;
+import java.math.BigDecimal;
 
-import org.junit.Assert;
-import org.junit.BeforeClass;
+import kr.simula.calcula.ExpressionTests;
+import kr.simula.calcula.core.Gettable;
+
+import org.junit.Test;
 
 /**
  * <pre>
@@ -26,32 +27,25 @@ import org.junit.BeforeClass;
  * @author Ikchan Kwon
  *
  */
-public abstract class AbstractBuilderTests {
+public class FunctionBuildTests extends ExpressionTests {
 
-	protected static ExpressionBuilder builder;
-	
-	@BeforeClass
-	public static void setUp(){
-		builder = new ExpressionBuilder();
+	@Test
+	public void performance(){
+		for( int i =0;i<1000;i++){
+			testExpression("=COMBIN( ABS(83/5) ,2)", new BigDecimal("120"));
+		}
 	}
 
-	protected Node buildExpression(String expr ){
-		Node exprNode = builder.buildExpression(expr);
-		return exprNode;
-	}
-	
-	protected void testExpression(String expr, Object expected){
-		Node exprNode = builder.buildExpression(expr);
+	@Test
+	public void performance2(){
+		Gettable<?> expression = (Gettable<?>)buildExpression("=COMBIN( ABS(83/5) ,2)");
 		System.out.println();
-		System.out.println(exprNode.getExpression());
-		System.out.println(exprNode);
+		System.out.println(expression.getExpression());
+		System.out.println(expression);
 		
-		Gettable<?> gettable = (Gettable<?>)exprNode;
-		
-		Object result = gettable.get(null);
-		System.out.println(result);
-		
-		Assert.assertEquals(expected, result);
+		for( int i =0;i<1000;i++){
+			System.out.println(expression.get(null));
+		}
 	}
 	
 }

@@ -26,44 +26,39 @@ import java.util.Map.Entry;
  * @date 2012. 10. 19.
  * @since	1.0
  */
-public class Scope implements Context {
-	private Context parent;
+public class SimpleContext implements Context {
 	private Map<String, Object> variables = new HashMap<String, Object>();
 	
-	public Scope(Context parent) {
-		this.parent = parent;
-	}
-
 	/**
 	 * @return the parent
 	 */
 	public Context getParent() {
-		return parent;
+		return null;
 	}
 	
 	/**
 	 * parent's setAttribute
 	 */
 	public void setAttribute(String name, Object value) {
-		parent.setAttribute(name, value);
+		
 	}
 
 	/**
 	 * parent's getAttribute
 	 */
 	public Object getAttribute(String name) {
-		return parent.getAttribute(name);
+		return null;
 	}
 
 	/**
 	 * @see net.kighie.dsl.core.Context#getReference(net.kighie.dsl.core.QName)
 	 */
 	public Object getReference(String path) {
-		return parent.getReference(path);
+		return variables.get(path);
 	}
 
 	public void setReference(String name, Object ref) {
-		parent.setReference(name, ref);
+		variables.put(name, ref);
 	}
 	
 	/**
@@ -71,9 +66,6 @@ public class Scope implements Context {
 	 */
 	public Object getVariable(String name) {
 		Object value = variables.get(name);
-		if(value == null){
-			value = parent.getVariable(name);
-		}
 		return value;
 	}
 
@@ -82,7 +74,7 @@ public class Scope implements Context {
 	}
 
 	public Iterable<Entry<String, Object>> attributes() {
-		return parent.attributes();
+		return null;
 	}
 
 	/**
@@ -93,7 +85,7 @@ public class Scope implements Context {
 	}
 
 	public Iterable<Entry<String, Object>> references() {
-		return parent.references();
+		return variables.entrySet();
 	}
 
 //	public Object getInput(String name) {

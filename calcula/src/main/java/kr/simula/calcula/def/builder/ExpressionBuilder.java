@@ -45,7 +45,7 @@ public class ExpressionBuilder extends CalculaHandlerFactory implements CalculaB
 
 	protected BlockHelper blockHelper;
 	protected LiteralHelper literalHelper = new DefaultLiteralHelper();
-	protected RefHelper refHelper;
+	protected RefHelper refHelper = new DefaultRefHelper();
 	protected BinaryOperatorHelper binaryOperatorHelper = new DefaultBinaryOperatorHelper();
 	protected UnaryOperatorHelper unaryOperatorHelper = new DefaultUnaryOperatorHelper();
 	protected FunctionCallHelper functionCallHelper = new DefaultFunctionCallHelper();

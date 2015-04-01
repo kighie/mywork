@@ -17,9 +17,7 @@ package kr.simula.calcula.func;
 import java.math.BigDecimal;
 
 import kr.simula.calcula.ExpressionTests;
-import mondrian.olap.fun.vba.Excel;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 /**

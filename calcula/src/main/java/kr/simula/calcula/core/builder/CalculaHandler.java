@@ -100,7 +100,18 @@ public interface CalculaHandler {
 	 * @param exp
 	 * @return
 	 */
-	Ref reference(String token, String exp);
+	Ref reference(String name);
+	
+	/**
+	 * <pre>
+	 * Builds Reference
+	 * </pre>
+	 * @param token
+	 * @param parent
+	 * @param name
+	 * @return
+	 */
+	Ref reference(Ref parent, String name);
 	
 	/**
 	 * <pre>

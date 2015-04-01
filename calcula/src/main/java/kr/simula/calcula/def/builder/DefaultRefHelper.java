@@ -1,4 +1,4 @@
-/* ******************************************************************************
+/* 
  * Copyright (c) 2012 IkChan Kwon kighie@gmail.com
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,26 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package kr.simula.calcula.core.factory;
+package kr.simula.calcula.def.builder;
 
-import kr.simula.calcula.core.QName;
-import kr.simula.calcula.core.Ref;
-import kr.simula.calcula.core.builder.BuildContext;
+import kr.simula.calcula.core.factory.helper.RefHelper;
 
 /**
- * <pre>
- * </pre>
- * @author Ikchan Kwon
- *
+ * <pre></pre>
+ * @author kighie@gmail.com
+ * @since 1.0
  */
-public interface RefFactory {
+public class DefaultRefHelper extends RefHelper {
 
-	/**
-	 * <pre>
-	 * </pre>
-	 * @param qname
-	 * @return
-	 */
-	Ref create(BuildContext context, String exprToken, QName qname);
 	
 }

@@ -17,8 +17,6 @@ package kr.simula.calcula.core.factory.helper;
 import kr.simula.calcula.core.QName;
 import kr.simula.calcula.core.Ref;
 import kr.simula.calcula.core.builder.BuildContext;
-import kr.simula.calcula.core.builder.BuildException;
-import kr.simula.calcula.core.factory.RefFactory;
 
 /**
  * <pre>
@@ -27,16 +25,63 @@ import kr.simula.calcula.core.factory.RefFactory;
  * @author kighie@gmail.com
  * @since 1.0
  */
-public class RefHelper extends AbstractHelper<RefFactory> {
-	
-	public Ref create(BuildContext context, String exprToken,  String qname){
-		RefFactory factory = factories.get(exprToken);
-		if(factory == null){
-			throw new BuildException("RefFactory for " + exprToken + " is not registered.");
+public abstract class RefHelper {
+
+	/**
+	 * TODO
+	 * <pre>
+	 * </pre>
+	 * @param context
+	 * @param name
+	 * @return
+	 */
+	public Ref create(BuildContext context, String name){
+		QName qname = makeQName(context, name);
+		Ref ref = context.getRef(qname);
+		
+		System.out.println(qname);
+		if(ref == null){
+			
 		}
-		return factory.create(context, exprToken, makeQName(context, exprToken, qname));
+		return create(context, qname);
+	}
+
+	/**
+	 * TODO
+	 * <pre>
+	 * </pre>
+	 * @param context
+	 * @param parent
+	 * @param name
+	 * @return
+	 */
+	public Ref create(BuildContext context, Ref parent, String name){
+		QName qname = makeQName(context, parent, name);
+		return create(context, parent , qname );
 	}
 	
+
+	public Ref create(BuildContext context, QName qname) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public Ref create(BuildContext context, Ref parent, QName qname) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+	/**<pre>
+	 * </pre>
+	 * @param context
+	 * @param parent
+	 * @param name
+	 */
+	protected QName makeQName(BuildContext context, Ref parent, String name) {
+		return new QName(parent.qualifiedName(), name);
+	}
+
 	/**
 	 * TODO 
 	 * <pre>
@@ -46,7 +91,7 @@ public class RefHelper extends AbstractHelper<RefFactory> {
 	 * @param qname
 	 * @return
 	 */
-	protected QName makeQName(BuildContext context, String exprToken,  String qname) {
-		return null;
+	protected QName makeQName(BuildContext context, String name) {
+		return new QName(name);
 	}
 }

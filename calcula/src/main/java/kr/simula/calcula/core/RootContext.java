@@ -22,7 +22,7 @@ import java.util.Map.Entry;
  * @author kighie@gmail.com
  *
  */
-public class DefaultContext implements Context {
+public class RootContext implements Context {
 
 	private Map<String, Object> attributes = new HashMap<String, Object>();
 	private Map<String, Object> refMap = new HashMap<String, Object>();
@@ -58,8 +58,8 @@ public class DefaultContext implements Context {
 	}
 
 	
-	public Object getReference(String name) {
-		return refMap.get(name);
+	public Object getReference(String path) {
+		return refMap.get(path);
 	}
 	
 
