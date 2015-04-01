@@ -15,6 +15,7 @@
 package kr.simula.calcula.func;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.math.RoundingMode;
 
 import kr.simula.calcula.core.RtException;
@@ -31,6 +32,8 @@ public abstract class NumericFunction extends AbstractFunction<BigDecimal>{
 
 	public static final int DEFAULT_SCALE = 9;
 	public static final RoundingMode DEFAULT_ROUND = RoundingMode.HALF_UP;
+	public static final MathContext REAL_MATH_CONTEXT = new MathContext(10, RoundingMode.HALF_UP);
+	public static final MathContext INT_MATH_CONTEXT = new MathContext(10, RoundingMode.HALF_UP);
 	
 	/**
 	 * @param returnType
@@ -39,7 +42,7 @@ public abstract class NumericFunction extends AbstractFunction<BigDecimal>{
 		super(BigDecimal.class);
 	}
 	
-	protected static BigDecimal toDecimal(Object value){
+	public static BigDecimal toDecimal(Object value){
 		if(value == null){
 			return null;
 		}

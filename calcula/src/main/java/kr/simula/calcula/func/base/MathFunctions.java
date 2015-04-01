@@ -109,9 +109,16 @@ public final class MathFunctions extends FunctionBase {
        throw new RtException("acos(..) argument must be in range -1 to 1" );
     }
 
-    public static BigDecimal acos(final BigDecimal number, int scale, RoundingMode rounding) {
+    public static BigDecimal acos(final BigDecimal number, final MathContext mc) {
     	if(NEGAT_ONE.compareTo(number) <= 0 && ONE.compareTo(number) >= 0) {
-    		 return BigDecimal.valueOf( Math.acos(number.doubleValue()) ).setScale(scale, rounding);
+    		 return new BigDecimal( Math.acos(number.doubleValue()) , mc);
+    	}
+       throw new RtException("acos(..) argument must be in range -1 to 1" );
+    }
+
+    public static BigDecimal acos(final BigDecimal number, final int scale, final RoundingMode rounding) {
+    	if(NEGAT_ONE.compareTo(number) <= 0 && ONE.compareTo(number) >= 0) {
+    		 return new BigDecimal( Math.acos(number.doubleValue())).setScale(scale, rounding);
     	}
        throw new RtException("acos(..) argument must be in range -1 to 1" );
     }
@@ -476,6 +483,28 @@ public final class MathFunctions extends FunctionBase {
     public static double exp(final double number) {
     	return Math.exp(number);
     }
+
+    /**
+     * <pre>
+     * Returns e raised to the power of a given number
+     * </pre>
+     * @param number
+     * @return
+     */
+    public static BigDecimal exp(final BigDecimal number) {
+    	return new BigDecimal(Math.exp(number.doubleValue()));
+    }
+
+    /**
+     * <pre>
+     * Returns e raised to the power of a given number
+     * </pre>
+     * @param number
+     * @return
+     */
+    public static BigDecimal exp(final BigDecimal number, MathContext mc) {
+    	return new BigDecimal(Math.exp(number.doubleValue()), mc);
+    }
     
 
     /**
@@ -488,8 +517,24 @@ public final class MathFunctions extends FunctionBase {
     public static BigInteger fact(final int number) {
 		return factorial( number );
     }
+
+    /**
+     * <pre>
+     * Returns the factorial of a number
+     * </pre>
+     * @param number
+     * @return
+     */
+    public static BigDecimal fact(final BigDecimal number) {
+		return new BigDecimal(factorial( number.intValue()));
+    }
     
 
+    public static BigDecimal fact(final BigDecimal number, MathContext mc) {
+		return new BigDecimal(factorial( number.intValue()), mc);
+    }
+    
+    
     /**
      * <pre>
      * Rounds number down, toward zero, to the nearest multiple of significance.

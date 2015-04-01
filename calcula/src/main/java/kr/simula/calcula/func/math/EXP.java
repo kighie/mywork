@@ -27,15 +27,14 @@ import kr.simula.calcula.func.base.MathFunctions;
  *
  */
 
-public class ACOS extends NumericFunction{
+public class EXP extends NumericFunction{
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	@Arguments(BigDecimal.class)
+	@Arguments({BigDecimal.class})
 	public BigDecimal eval(Object... args) {
 		checkArgCount(args, 1);
-		BigDecimal value = toDecimal(args[0]);
-		return MathFunctions.acos(value, DEFAULT_SCALE, DEFAULT_ROUND);
+		return MathFunctions.exp(toDecimal(args[0]), REAL_MATH_CONTEXT);
 	}
 
 }

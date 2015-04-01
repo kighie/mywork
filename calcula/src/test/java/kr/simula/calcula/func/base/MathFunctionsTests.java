@@ -15,13 +15,12 @@
  * limitations under the License.
  */
 
-package kr.simula.calcula.func;
+package kr.simula.calcula.func.base;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.math.RoundingMode;
 
-import kr.simula.calcula.func.base.MathFunctions;
+import kr.simula.calcula.func.NumericFunction;
 
 import org.junit.Assert;
 import org.junit.Test;
