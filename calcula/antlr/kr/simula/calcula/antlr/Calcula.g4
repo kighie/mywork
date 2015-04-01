@@ -106,7 +106,7 @@ methodCallExp returns [Node result]
 arguments  returns [List<Node> nodeList]
 	: { $nodeList = new LinkedList<Node>(); }
 	( operatorExpression { $nodeList.add($operatorExpression.result); } 
-		(',' operatorExpression { $nodeList.add($operatorExpression.result); })*
+		(',' arg2 = operatorExpression { $nodeList.add($arg2.result); })*
 	)?
 	;
 

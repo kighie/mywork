@@ -26,6 +26,7 @@ import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.linalg.Algebra;
 import kr.simula.calcula.CalculaException;
+import kr.simula.calcula.core.RtException;
 import kr.simula.calcula.func.FunctionNotImplementedException;
 
 /**
@@ -65,7 +66,7 @@ public final class MathFunctions extends FunctionBase {
      * The arccosine is the angle whose cosine is number. 
      * The returned angle is given in radians in the range 0 (zero) to pi.
      * </pre>
-     * @param number
+     * @param number The cosine of the angle you want and must be from -1 to 1.
      * @return
      */
     public static double acos(final double number) {
@@ -78,12 +79,16 @@ public final class MathFunctions extends FunctionBase {
      * The arccosine is the angle whose cosine is number. 
      * The returned angle is given in radians in the range 0 (zero) to pi.
      * </pre>
-     * @param number
+     * @param number The cosine of the angle you want and must be from -1 to 1.
      * @param scale
      * @param rounding
      * @return
      */
     public static BigDecimal acos(final double number, int scale, RoundingMode rounding) {
+
+    	if(number >=-1 && number <= 1) {
+    		 return BigDecimal.valueOf( Math.acos(number) );
+    	}
     	double ret = Math.acos(number);
         return new BigDecimal(ret).setScale(scale, rounding);
     }
@@ -94,13 +99,23 @@ public final class MathFunctions extends FunctionBase {
      * The arccosine is the angle whose cosine is number. 
      * The returned angle is given in radians in the range 0 (zero) to pi.
      * </pre>
-     * @param number
+     * @param number The cosine of the angle you want and must be from -1 to 1.
      * @return
      */
     public static BigDecimal acos(final BigDecimal number) {
-        return BigDecimal.valueOf( Math.acos(number.doubleValue()) ).setScale(number.scale());
+    	if(NEGAT_ONE.compareTo(number) <= 0 && ONE.compareTo(number) >= 0) {
+    		 return BigDecimal.valueOf( Math.acos(number.doubleValue()) );
+    	}
+       throw new RtException("acos(..) argument must be in range -1 to 1" );
     }
 
+    public static BigDecimal acos(final BigDecimal number, int scale, RoundingMode rounding) {
+    	if(NEGAT_ONE.compareTo(number) <= 0 && ONE.compareTo(number) >= 0) {
+    		 return BigDecimal.valueOf( Math.acos(number.doubleValue()) ).setScale(scale, rounding);
+    	}
+       throw new RtException("acos(..) argument must be in range -1 to 1" );
+    }
+    
     /**
      * <pre>
      * Returns the inverse hyperbolic cosine of a number. 
@@ -108,7 +123,7 @@ public final class MathFunctions extends FunctionBase {
      * The inverse hyperbolic cosine is the value whose hyperbolic cosine is number, 
      * so ACOSH(COSH(number)) equals number.
      * </pre>
-     * @param number
+     * @param number 
      * @return
      */
     public static double acosh(final double number) {
@@ -319,12 +334,10 @@ public final class MathFunctions extends FunctionBase {
 		return roundUp( ret ) * significance;
     }
 
-
-    public static BigDecimal ceiling(final double number, final double significance, 
-    		int scale, RoundingMode rounding) {
-    	check(number);
-    	double ret = ceiling(number, significance);
-    	return decimal(ret, scale, rounding);
+    public static BigDecimal ceiling(final BigDecimal number, final BigDecimal significance) {
+    	double ret = ceiling(number.doubleValue(), significance.doubleValue());
+    	
+    	return decimal(ret, significance.scale(), RoundingMode.HALF_DOWN);
     }
     
 
@@ -344,6 +357,24 @@ public final class MathFunctions extends FunctionBase {
                 factorial(number_chosen).multiply(factorial(number - number_chosen))).doubleValue();
     }
     
+
+    /**
+     * <pre>
+     * Returns the number of combinations for a given number of items. 
+     * Use COMBIN to determine the total possible number of groups for a given number of items.
+     * 
+     * =COMBIN(8,2) : Possible two-person teams that can be formed from 8 candidates - 28
+     * </pre>
+     * @param number The number of items.
+     * @param number_chosen  The number of items in each combination.
+     * @return
+     */
+    public static BigDecimal combin(final BigDecimal number, final BigDecimal number_chosen) {
+    	if( number.compareTo(number_chosen) < 0){
+    		throw new RtException("combin(number,number_chosen) number must be greater than number_chosen");
+    	}
+    	return new BigDecimal(combin(number.intValue(), number_chosen.intValue()));
+    }
     
 
     /**

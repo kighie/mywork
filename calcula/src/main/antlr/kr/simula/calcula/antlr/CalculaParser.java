@@ -331,6 +331,7 @@ public class CalculaParser extends Parser {
 	public static class ArgumentsContext extends ParserRuleContext {
 		public List<Node> nodeList;
 		public OperatorExpressionContext operatorExpression;
+		public OperatorExpressionContext arg2;
 		public OperatorExpressionContext operatorExpression(int i) {
 			return getRuleContext(OperatorExpressionContext.class,i);
 		}
@@ -372,8 +373,8 @@ public class CalculaParser extends Parser {
 					{
 					{
 					setState(73); match(T__2);
-					setState(74); ((ArgumentsContext)_localctx).operatorExpression = operatorExpression();
-					 _localctx.nodeList.add(((ArgumentsContext)_localctx).operatorExpression.result); 
+					setState(74); ((ArgumentsContext)_localctx).arg2 = ((ArgumentsContext)_localctx).operatorExpression = operatorExpression();
+					 _localctx.nodeList.add(((ArgumentsContext)_localctx).arg2.result); 
 					}
 					}
 					setState(81);

@@ -15,6 +15,7 @@
 package kr.simula.calcula.func;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import kr.simula.calcula.core.RtException;
 import kr.simula.calcula.def.AbstractFunction;
@@ -28,6 +29,9 @@ import kr.simula.calcula.def.AbstractFunction;
 @SuppressWarnings("serial")
 public abstract class NumericFunction extends AbstractFunction<BigDecimal>{
 
+	public static final int DEFAULT_SCALE = 9;
+	public static final RoundingMode DEFAULT_ROUND = RoundingMode.HALF_UP;
+	
 	/**
 	 * @param returnType
 	 */

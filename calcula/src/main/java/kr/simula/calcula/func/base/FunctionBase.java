@@ -38,6 +38,7 @@ public abstract class FunctionBase {
 	
 	public static final BigDecimal PI = BigDecimal.valueOf( Math.PI );
 	public static final BigDecimal ONE = BigDecimal.ONE;
+	public static final BigDecimal NEGAT_ONE = BigDecimal.ONE.negate();
 	public static final BigDecimal TWO = BigDecimal.valueOf( 2 );
 	public static final BigDecimal TEN = BigDecimal.TEN;
 	

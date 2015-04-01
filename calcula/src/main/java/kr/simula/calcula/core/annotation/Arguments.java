@@ -24,7 +24,7 @@ import java.lang.annotation.Target;
  * @author kighie@gmail.com
  * @since 1.0
  */
-@Retention(RetentionPolicy.CLASS)
+@Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE,ElementType.METHOD})
 public @interface Arguments {
 

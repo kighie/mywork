@@ -29,6 +29,7 @@ public abstract class AbstractBuilderTests {
 
 	protected ExpressionBuilder builder = new ExpressionBuilder();
 	
+	
 	protected void testExpression(String expr, Object expected){
 		Node exprNode = builder.buildExpression(expr);
 		System.out.println();

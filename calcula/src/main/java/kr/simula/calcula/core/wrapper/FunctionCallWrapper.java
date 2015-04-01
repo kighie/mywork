@@ -44,7 +44,7 @@ public abstract class FunctionCallWrapper<T> implements Gettable<T>{
 	@Override
 	public String getExpression() {
 		StringBuilder buf = new StringBuilder();
-		buf.append("(").append(function.getClass().getName());
+		buf.append("(").append(function.getClass().getSimpleName());
 		for(Gettable<?> n : args){
 			buf.append(" ").append(n.getExpression());
 		}

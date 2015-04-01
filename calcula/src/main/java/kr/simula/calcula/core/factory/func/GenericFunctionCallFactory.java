@@ -59,7 +59,10 @@ public abstract class GenericFunctionCallFactory implements FunctionCallFactory 
 		int length = (args != null) ? args.size() : 0;
 		
 		if(length<requiredArgCount){
-			throw new BuildException("Function " + functionName() + " needs " + requiredArgCount + " args, but " + length);
+			throw new BuildException("Function " + function + " needs " + requiredArgCount + " args, but " + length);
+		}
+		if(length>validators.length) {
+			throw new BuildException("Function " + function + " ArgumentsValidator is insufficient; needs " + length + ", but " + validators.length );
 		}
 		
 		length = Math.min(length, validators.length);

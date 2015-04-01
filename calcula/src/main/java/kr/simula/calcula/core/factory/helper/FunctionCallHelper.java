@@ -15,7 +15,6 @@
 package kr.simula.calcula.core.factory.helper;
 
 import java.io.IOException;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -143,16 +142,7 @@ public class FunctionCallHelper extends AbstractHelper<FunctionCallFactory> {
 		} else {
 			try {
 				Method method = fnClz.getDeclaredMethod("eval", Object[].class);
-				Method method2 = fnClz.getMethod("eval", Object[].class);
-				
-				Annotation[] annotations = method.getDeclaredAnnotations();
-				
-				for(Annotation anno : annotations) {
-					if(anno instanceof Arguments) {
-						args = (Arguments)anno;
-					}
-				}
-//				args = method.getAnnotation(Arguments.class);
+				args = method.getAnnotation(Arguments.class);
 				
 				if(args != null){
 					argTypes = args.value();
