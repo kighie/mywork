@@ -16,6 +16,8 @@ package kr.simula.calcula.def.builder;
 
 import java.math.BigDecimal;
 
+import kr.simula.calcula.core.Gettable;
+
 import org.junit.Test;
 
 /**
@@ -66,9 +68,22 @@ public class FunctionBuilderTests extends AbstractBuilderTests {
 	
 
 	@Test
-	public void combination(){
-		testExpression("=COMBIN( ABS(83/5) ,2)", new BigDecimal("120"));
+	public void performance(){
+		for( int i =0;i<1000;i++){
+			testExpression("=COMBIN( ABS(83/5) ,2)", new BigDecimal("120"));
+		}
 	}
 
+	@Test
+	public void performance2(){
+		Gettable<?> expression = (Gettable<?>)buildExpression("=COMBIN( ABS(83/5) ,2)");
+		System.out.println();
+		System.out.println(expression.getExpression());
+		System.out.println(expression);
+		
+		for( int i =0;i<1000;i++){
+			System.out.println(expression.get(null));
+		}
+	}
 	
 }

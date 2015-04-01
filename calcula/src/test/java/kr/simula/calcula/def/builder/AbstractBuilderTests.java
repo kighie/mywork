@@ -18,6 +18,7 @@ import kr.simula.calcula.core.Gettable;
 import kr.simula.calcula.core.Node;
 
 import org.junit.Assert;
+import org.junit.BeforeClass;
 
 /**
  * <pre>
@@ -27,8 +28,17 @@ import org.junit.Assert;
  */
 public abstract class AbstractBuilderTests {
 
-	protected ExpressionBuilder builder = new ExpressionBuilder();
+	protected static ExpressionBuilder builder;
 	
+	@BeforeClass
+	public static void setUp(){
+		builder = new ExpressionBuilder();
+	}
+
+	protected Node buildExpression(String expr ){
+		Node exprNode = builder.buildExpression(expr);
+		return exprNode;
+	}
 	
 	protected void testExpression(String expr, Object expected){
 		Node exprNode = builder.buildExpression(expr);
