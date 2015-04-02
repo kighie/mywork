@@ -21,6 +21,7 @@ import kr.simula.calcula.core.Gettable;
 import kr.simula.calcula.core.Literal;
 import kr.simula.calcula.core.Node;
 import kr.simula.calcula.core.builder.BuildException;
+import kr.simula.calcula.core.ref.ExternalRef;
 import kr.simula.calcula.core.wrapper.DecimalGettableWrapper;
 import kr.simula.calcula.core.wrapper.StringGettableWrapper;
 
@@ -86,6 +87,11 @@ public class GettableUtils {
 	@SuppressWarnings("unchecked")
 	public static Gettable<BigDecimal> getDecimalGettable(Gettable<?> node){
 		Class<?> type = node.type();
+		
+		if(type == null && (node instanceof ExternalRef)){
+			((ExternalRef)node).setRequiredType(type);
+			return new DecimalGettableWrapper(NUMBER_TO_DECIMAL,node);
+		}
 		
 		if(BigDecimal.class.isAssignableFrom(type) ){
 			return (Gettable<BigDecimal>)node;

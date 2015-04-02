@@ -5,73 +5,89 @@ import java.util.Iterator;
 
 @SuppressWarnings("serial")
 public class QName implements Serializable {
-	private String[] pathArray;
-
+	private QName parent;
+	private QName root;
+	private String qname;
+	private String name;
+	
 	public QName(QName parent, String name){
-		int plen = parent.pathArray.length;
-		String[] newArray = new String[plen+1];
-		System.arraycopy(parent.pathArray, 0, newArray, 0, plen);
-		newArray[plen] = name;
-		pathArray = newArray;
+		this.name = name;
+		this.parent = parent;
+		this.root = (parent != null) ? parent.root:this;
+		this.qname = toString(".").intern();
 	}
 
 	public QName(String name){
-		pathArray = new String[]{name};
+		this(null,name);
 	}
 
-	public QName(String[] paths){
-		pathArray = paths;
-	}
-
-	public int getPathLength(){
-		return pathArray.length;
-	}
-
-	public String getFirstPath(){
-		return pathArray[0];
-	}
-
-	public String getLastPath(){
-		return pathArray[pathArray.length-1];
+	/**
+	 * @return the root
+	 */
+	public QName getRoot() {
+		return root;
 	}
 	
-	public Iterable<String> getPaths(){
-		return new PathIterable();
+	/**
+	 * @return the parent
+	 */
+	public QName getParent() {
+		return parent;
+	}
+
+	/**<pre>
+	 * </pre>
+	 * @return
+	 */
+	public String getName() {
+		return name;
 	}
 	
-	private class PathIterable implements Iterable<String> {
-		public Iterator<String> iterator() {
-			return new PathIterator();
-		}
-	}
-
-	private class PathIterator implements Iterator<String> {
-		int cursor = 0;
-		
-		public boolean hasNext() {
-			return cursor < pathArray.length;
-		}
-
-		public String next() {
-			return pathArray[cursor++];
-		}
-
-		public void remove() {
-			throw new RtException("Path in qname cannot be removed.");
-		}
+	
+	public String getFullName() {
+		return qname;
 	}
 	
 	@Override
+	public int hashCode() {
+		return qname.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if( this == obj ){
+			return true;
+		} else if(obj instanceof QName){
+			return this.qname.equals(((QName)obj).qname);
+		} else if (obj instanceof String){
+			return this.qname.equals(obj);
+		}
+		
+		return false;
+	}
+	
+	public boolean equals(QName obj) {
+		return (this.hashCode() == obj.hashCode());
+	}
+
+	public boolean equals(String obj) {
+		return (obj.equals(this));
+	}
+	
+	
+	@Override
 	public String toString() {
-		return toString(".");
+		return qname;
 	}
 	
 	public String toString(String pathDelimiter) {
 		StringBuilder buf = new StringBuilder();
-		for(String p : pathArray){
-			buf.append(p).append(pathDelimiter);
+		if(parent != null){
+			buf.append(parent).append(pathDelimiter);
 		}
-		buf.deleteCharAt(buf.length()-1);
+		
+		buf.append(name);
 		return buf.toString();
 	}
+
 }

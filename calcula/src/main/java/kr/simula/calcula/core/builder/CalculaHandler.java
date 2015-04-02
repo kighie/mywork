@@ -100,7 +100,7 @@ public interface CalculaHandler {
 	 * @param exp
 	 * @return
 	 */
-	Ref reference(String name);
+	Ref refer(String name);
 	
 	/**
 	 * <pre>
@@ -111,7 +111,7 @@ public interface CalculaHandler {
 	 * @param name
 	 * @return
 	 */
-	Ref reference(Ref parent, String name);
+	Ref refer(Ref parent, String name);
 	
 	/**
 	 * <pre>

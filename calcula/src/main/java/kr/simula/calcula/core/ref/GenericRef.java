@@ -12,27 +12,49 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package kr.simula.calcula.def.builder;
+package kr.simula.calcula.core.ref;
 
-import java.math.BigDecimal;
-
-import kr.simula.calcula.ExpressionTests;
-import kr.simula.calcula.core.RootContext;
-
-import org.junit.Test;
+import kr.simula.calcula.core.QName;
+import kr.simula.calcula.core.Ref;
 
 /**
  * <pre></pre>
  * @author kighie@gmail.com
  * @since 1.0
  */
-public class RefBuildTests extends ExpressionTests {
+public abstract class GenericRef implements Ref{
 
-	@Test
-	public void basic(){
-		RootContext context = new RootContext();
-		context.setParameter("A1", new BigDecimal(30));
-		testExpression("=A1 + 3", context, new BigDecimal("33"));
+	protected final QName qname;
+	
+	
+	/**
+	 * @param qname
+	 */
+	public GenericRef(QName qname) {
+		this.qname = qname;
+	}
+
+	/**
+	 * @return {@link ValueType#UNKNOWN}
+	 */
+	@Override
+	public ValueType valueType() {
+		return ValueType.UNKNOWN;
+	}
+
+	@Override
+	public String getExpression() {
+		return qname.toString();
+	}
+
+	@Override
+	public QName qualifiedName() {
+		return qname;
+	}
+	
+	@Override
+	public String toString() {
+		return "{param:" + getExpression() + "}";
 	}
 
 }

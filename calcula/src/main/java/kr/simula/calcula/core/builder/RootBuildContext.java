@@ -28,77 +28,24 @@ import kr.simula.calcula.core.Ref;
  * @since	1.0
  */
 public class RootBuildContext implements BuildContext {
-	private boolean typeChecked = true;
-
-	private Map<String, QName> qnameMap = new HashMap<String, QName>();
 	private Map<QName, Ref> referenceMap = new HashMap<QName, Ref>();
-	private Map<String, Ref> variableMap = new HashMap<String, Ref>();
-	private Map<String, Ref> constMap = new HashMap<String, Ref>();
 	
-	/**
-	 * @return the parent
-	 */
+
+	@Override
 	public BuildContext getParent() {
 		return null;
 	}
 	
-	/**
-	 * if typeChecked is false, variable type will not be checked in compile time.  
-	 * @return typeChecked
-	 */
-	public boolean isTypeChecked() {
-		return typeChecked;
+	@Override
+	public void registerRef(QName qname, Ref ref) {
+		referenceMap.put(qname, ref);
 	}
-	
-	/**
-	 * 
-	 * @param typeChecked the typeChecked to set
-	 */
-	public void setTypeChecked(boolean typeChecked) {
-		this.typeChecked = typeChecked;
-	}
-	
-	public void registerVariable(String name, Ref ref){
-		variableMap.put(name, ref);
-	}
-	
-	public Ref getVariable(String name){
-		Ref ref = variableMap.get(name);
-		return ref;
-	}
-
-	public Iterable<Entry<String, Ref>> variables() {
-		return variableMap.entrySet();
-	}
-
-	public QName getQName(String name){
-		return qnameMap.get(name);
-	}
-
-	public void registerQName(String name, QName qname){
-		qnameMap.put(name,qname);
-	}
-	
-	public Ref getRef(QName qname){
+	@Override
+	public Ref getRef(QName qname) {
 		return referenceMap.get(qname);
 	}
-
+	@Override
 	public Iterable<Entry<QName, Ref>> references() {
 		return referenceMap.entrySet();
 	}
-
-	public void registerRef(QName qname, Ref ref){
-		referenceMap.put(qname, ref);
-	}
-	
-	public void registerConstant(String name, Ref ref){
-		constMap.put(name, ref);
-		
-	}
-	
-	public Ref getConstant(String name) {
-		return constMap.get(name);
-	}
-	
-	
 }

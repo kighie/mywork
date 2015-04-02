@@ -14,9 +14,12 @@
  */
 package kr.simula.calcula.core.factory.helper;
 
+import kr.simula.calcula.core.Gettable;
 import kr.simula.calcula.core.QName;
 import kr.simula.calcula.core.Ref;
 import kr.simula.calcula.core.builder.BuildContext;
+import kr.simula.calcula.core.ref.FieldRef;
+import kr.simula.calcula.core.ref.ParameterRef;
 
 /**
  * <pre>
@@ -25,7 +28,7 @@ import kr.simula.calcula.core.builder.BuildContext;
  * @author kighie@gmail.com
  * @since 1.0
  */
-public abstract class RefHelper {
+public class RefHelper {
 
 	/**
 	 * TODO
@@ -35,17 +38,19 @@ public abstract class RefHelper {
 	 * @param name
 	 * @return
 	 */
-	public Ref create(BuildContext context, String name){
+	public Ref get(BuildContext context, String name){
 		QName qname = makeQName(context, name);
 		Ref ref = context.getRef(qname);
 		
-		System.out.println(qname);
-		if(ref == null){
-			
+		if(ref != null){
+			return ref;
 		}
-		return create(context, qname);
+		
+		ref = newRef(context, null, qname);
+		return ref;
 	}
 
+	
 	/**
 	 * TODO
 	 * <pre>
@@ -55,22 +60,31 @@ public abstract class RefHelper {
 	 * @param name
 	 * @return
 	 */
-	public Ref create(BuildContext context, Ref parent, String name){
+	public Ref get(BuildContext context, Ref parent, String name){
 		QName qname = makeQName(context, parent, name);
-		return create(context, parent , qname );
+		Ref ref = context.getRef(qname);
+		
+		if(ref != null){
+			return ref;
+		}
+		
+		ref = newRef(context, parent, qname);
+		return ref;
 	}
 	
-
-	public Ref create(BuildContext context, QName qname) {
-		// TODO Auto-generated method stub
-		return null;
+	protected Ref newRef(BuildContext context, Ref parent, QName qname) {
+		Ref ref = create(parent, qname);
+		context.registerRef(qname, ref);
+		return ref;
 	}
 	
-	public Ref create(BuildContext context, Ref parent, QName qname) {
-		// TODO Auto-generated method stub
-		return null;
+	protected Ref create(Ref parent, QName qname){
+		if(parent != null){
+			return new FieldRef(qname, (Gettable<?>)parent);
+		} else {
+			return new ParameterRef(qname);
+		}
 	}
-	
 	
 	/**<pre>
 	 * </pre>

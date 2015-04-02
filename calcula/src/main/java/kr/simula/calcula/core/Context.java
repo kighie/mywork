@@ -16,6 +16,7 @@ package kr.simula.calcula.core;
 
 import java.util.Map.Entry;
 
+
 /**
  * 
  * @author IkChan Kwon
@@ -24,21 +25,15 @@ import java.util.Map.Entry;
  */
 public interface Context {
 
-	void setAttribute(String name, Object value);
-
 	Object getAttribute(String name);
 
-	Object getVariable(String name);
+	Object getReference(QName name);
 	
-	void setVariable(String name, Object value);
+	void setReference(QName name, Object value);
 	
-	Iterable<Entry<String, Object>> attributes();
-
-	Iterable<Entry<String, Object>> variables();
-	
-	Object getReference(String name);
-	
-	void setReference(String name, Object ref);
-	
-	Iterable<Entry<String, Object>> references();
+//	Object getVariable(QName name);
+//	
+//	void setVariable(QName name, Object value);
+//	
+//	Iterable<Entry<QName, Object>> variables() ;
 }

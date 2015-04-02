@@ -114,15 +114,15 @@ formulaTerm returns [Node result]
 	: BOOLEAN 			{ $result = handler.literal( ExprTokens.LIT_BOOLEAN, $BOOLEAN.text); }
 	| STRING_LITERAL	{ $result = handler.literal( ExprTokens.LIT_STRING,  strip($STRING_LITERAL.text)); }
 	| NUMBER			{ $result = handler.literal( ExprTokens.LIT_NUMBER, $NUMBER.text); }
-	| IDENT				{ $result = handler.reference( $IDENT.text); }
+	| IDENT				{ $result = handler.refer( $IDENT.text); }
 	| qualifiedName		{ $result = $qualifiedName.result; }
 	| funcCallExp		{ $result = $funcCallExp.result; }
 	| methodCallExp
 	;
 
 qualifiedName returns [Ref result]
-	: IDENT 	{ $result = handler.reference( $IDENT.text); }
-	('.' IDENT	{ $result = handler.reference( $result, $IDENT.text); } )* 
+	: IDENT 	{ $result = handler.refer( $IDENT.text); }
+	('.' IDENT	{ $result = handler.refer( $result, $IDENT.text); } )* 
 	;
 
 /* *****************************

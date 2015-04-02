@@ -463,7 +463,7 @@ public class CalculaParser extends Parser {
 				enterOuterAlt(_localctx, 4);
 				{
 				setState(90); ((FormulaTermContext)_localctx).IDENT = match(IDENT);
-				 ((FormulaTermContext)_localctx).result =  handler.reference( (((FormulaTermContext)_localctx).IDENT!=null?((FormulaTermContext)_localctx).IDENT.getText():null)); 
+				 ((FormulaTermContext)_localctx).result =  handler.refer( (((FormulaTermContext)_localctx).IDENT!=null?((FormulaTermContext)_localctx).IDENT.getText():null)); 
 				}
 				break;
 			case 5:
@@ -528,7 +528,7 @@ public class CalculaParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(101); ((QualifiedNameContext)_localctx).IDENT = match(IDENT);
-			 ((QualifiedNameContext)_localctx).result =  handler.reference( (((QualifiedNameContext)_localctx).IDENT!=null?((QualifiedNameContext)_localctx).IDENT.getText():null)); 
+			 ((QualifiedNameContext)_localctx).result =  handler.refer( (((QualifiedNameContext)_localctx).IDENT!=null?((QualifiedNameContext)_localctx).IDENT.getText():null)); 
 			setState(108);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,7,_ctx);
@@ -538,7 +538,7 @@ public class CalculaParser extends Parser {
 					{
 					setState(103); match(T__0);
 					setState(104); ((QualifiedNameContext)_localctx).IDENT = match(IDENT);
-					 ((QualifiedNameContext)_localctx).result =  handler.reference( _localctx.result, (((QualifiedNameContext)_localctx).IDENT!=null?((QualifiedNameContext)_localctx).IDENT.getText():null)); 
+					 ((QualifiedNameContext)_localctx).result =  handler.refer( _localctx.result, (((QualifiedNameContext)_localctx).IDENT!=null?((QualifiedNameContext)_localctx).IDENT.getText():null)); 
 					}
 					} 
 				}

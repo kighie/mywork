@@ -22,7 +22,7 @@ package kr.simula.calcula.core;
  */
 public interface Settable<T> extends Node {
 
-	Class<T> type();
+	Class<? extends T> type();
 	
 	void set(Context context, T value);
 	

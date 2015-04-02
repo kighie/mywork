@@ -12,27 +12,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package kr.simula.calcula.def.builder;
+package kr.simula.calcula.core.factory;
 
-import java.math.BigDecimal;
-
-import kr.simula.calcula.ExpressionTests;
-import kr.simula.calcula.core.RootContext;
-
-import org.junit.Test;
+import kr.simula.calcula.core.QName;
+import kr.simula.calcula.core.Ref;
+import kr.simula.calcula.core.builder.BuildContext;
 
 /**
  * <pre></pre>
  * @author kighie@gmail.com
  * @since 1.0
  */
-public class RefBuildTests extends ExpressionTests {
+public interface VariableFactory {
 
-	@Test
-	public void basic(){
-		RootContext context = new RootContext();
-		context.setParameter("A1", new BigDecimal(30));
-		testExpression("=A1 + 3", context, new BigDecimal("33"));
-	}
+	/**
+	 * <pre>
+	 * </pre>
+	 * @param context
+	 * @param parent
+	 * @param qname
+	 * @return
+	 */
+	Ref create(BuildContext context, Ref parent, QName qname);
+	
 
+	/**
+	 * <pre>
+	 * </pre>
+	 * @param context
+	 * @param qname
+	 * @return
+	 */
+	Ref create(BuildContext context, QName qname);
+	
+	
 }

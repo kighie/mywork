@@ -25,8 +25,8 @@ import java.util.Map.Entry;
 public class RootContext implements Context {
 
 	private Map<String, Object> attributes = new HashMap<String, Object>();
-	private Map<String, Object> refMap = new HashMap<String, Object>();
-	private Map<String, Object> variables = new HashMap<String, Object>();
+	private Map<QName, Object> refMap = new HashMap<QName, Object>();
+//	private Map<QName, Object> variables = new HashMap<QName, Object>();
 
 	
 	public void setAttribute(String name, Object value) {
@@ -38,38 +38,49 @@ public class RootContext implements Context {
 	}
 
 	public Object getReference(QName qname) {
-		return refMap.get(qname);
+		Object value = refMap.get(qname);
+//		if(value == null){
+//			value = refMap.get(qname.toString());
+//			refMap.put(qname, value);
+//		}
+		System.out.println(qname + " = " + value);
+		if(value == null){
+			System.out.println(refMap);
+		}
+		return value;
+	}
+	
+	public Object getParameter(String name) {
+		return refMap.get(new QName(name));
 	}
 
-	public Object getVariable(String name) {
-		return variables.get(name);
+	public void setReference(QName qname, Object value) {
+		refMap.put(qname, value);
 	}
-
-	public void setVariable(String name, Object value) {
-		variables.put(name, value);
+	
+	public void setParameter(String name, Object value) {
+		refMap.put(new QName(name), value);
 	}
-
+	
 	public Iterable<Entry<String, Object>> attributes() {
 		return attributes.entrySet();
 	}
 
-	public Iterable<Entry<String, Object>> variables() {
-		return variables.entrySet();
-	}
-
-	
-	public Object getReference(String path) {
-		return refMap.get(path);
-	}
-	
-
-	public void setReference(String name, Object ref) {
-		refMap.put(name, ref);
-	}
-	
-	public Iterable<Entry<String, Object>> references() {
+	public Iterable<Entry<QName, Object>> references() {
 		return refMap.entrySet();
 	}
+
+//	public Object getVariable(QName name) {
+//		return variables.get(name);
+//	}
+//
+//	public void setVariable(QName name, Object value) {
+//		variables.put(name, value);
+//	}
+//
+//	public Iterable<Entry<QName, Object>> variables() {
+//		return variables.entrySet();
+//	}
 
 	
 }

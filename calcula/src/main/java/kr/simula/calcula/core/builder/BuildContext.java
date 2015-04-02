@@ -29,32 +29,11 @@ import kr.simula.calcula.core.Ref;
 public interface BuildContext {
 	
 	BuildContext getParent() ;
-	
-	/**
-	 * if typeChecked is false, variable type will not be checked in compile time.  
-	 * @return typeChecked
-	 */
-	boolean isTypeChecked() ;
-	
-	void registerVariable(String name, Ref ref);
-	
-	Ref getVariable(String name);
 
-	Iterable<Entry<String, Ref>> variables();
-	
-	QName getQName(String name);
-
-	void registerQName(String name, QName qname);
+	void registerRef(QName qname, Ref ref);
 	
 	Ref getRef(QName qname);
 
 	Iterable<Entry<QName, Ref>> references();
 
-	void registerRef(QName qname, Ref ref);
-	
-	void registerConstant(String name, Ref ref);
-	
-	Ref getConstant(String name);
-	
-	
 }

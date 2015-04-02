@@ -135,13 +135,13 @@ public abstract class AbstractCalculaHandler implements CalculaHandler {
 	}
 
 	@Override
-	public Ref reference(String name) {
-		return refHelper.create(current,name);
+	public Ref refer(String name) {
+		return refHelper.get(current,name);
 	}
 	
 	@Override
-	public Ref reference(Ref parent, String name) {
-		return refHelper.create(current, parent, name);
+	public Ref refer(Ref parent, String name) {
+		return refHelper.get(current, parent, name);
 	}
 	
 	@SuppressWarnings("rawtypes")

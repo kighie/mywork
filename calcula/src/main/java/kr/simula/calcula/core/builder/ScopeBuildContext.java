@@ -15,10 +15,10 @@
 package kr.simula.calcula.core.builder;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import kr.simula.calcula.CalculaException;
 import kr.simula.calcula.core.QName;
 import kr.simula.calcula.core.Ref;
 
@@ -31,7 +31,7 @@ import kr.simula.calcula.core.Ref;
 public class ScopeBuildContext implements BuildContext {
 	private BuildContext parent;
 	
-	private Map<String, Ref> variableMap = new HashMap<String, Ref>();
+	private Map<QName, Ref> referenceMap = new HashMap<QName, Ref>();
 	
 	public ScopeBuildContext(BuildContext parent) {
 		this.parent = parent;
@@ -44,60 +44,63 @@ public class ScopeBuildContext implements BuildContext {
 		return parent;
 	}
 	
-	/**
-	 * if typeChecked is false, variable type will not be checked in compile time.  
-	 * @return typeChecked
-	 */
-	public boolean isTypeChecked() {
-		return parent.isTypeChecked();
-	}
-	
-	public void registerVariable(String name, Ref ref){
-		variableMap.put(name, ref);
-	}
-	
-	public Ref getVariable(String name){
-		Ref ref = variableMap.get(name);
+	public Ref getRef(QName qname){
+		Ref ref = referenceMap.get(qname);
 		if(ref == null){
 			if( parent != null ){
-				ref = parent.getVariable(name);
+				ref = parent.getRef(qname);
 			}
 		}
-		
 		return ref;
 	}
 
-	public Iterable<Entry<String, Ref>> variables() {
-		return variableMap.entrySet();
-	}
-
-	public QName getQName(String name){
-		return parent.getQName(name);
-	}
-
-	public void registerQName(String name, QName qname){
-		parent.registerQName(name,qname);
-	}
-	
-	public Ref getRef(QName qname){
-		return parent.getRef(qname);
-	}
-
 	public Iterable<Entry<QName, Ref>> references() {
-		return parent.references();
+		return new Refs();
 	}
 
 	public void registerRef(QName qname, Ref ref){
-		parent.registerRef(qname, ref);
+		referenceMap.put(qname, ref);
 	}
 	
-	public void registerConstant(String name, Ref ref){
-		throw new CalculaException("Declaring constant is no allowed. ");
+	protected class Refs implements Iterable<Entry<QName, Ref>> {
+		@Override
+		public Iterator<Entry<QName, Ref>> iterator() {
+			return new RefIterator(ScopeBuildContext.this);
+		}
 	}
-	
-	public Ref getConstant(String name) {
-		return parent.getConstant(name);
+
+	protected static class RefIterator implements Iterator<Entry<QName, Ref>> {
+		
+		private BuildContext context;
+		private Iterator<Entry<QName, Ref>> iterator;
+		
+		/**
+		 * @param context
+		 */
+		public RefIterator(BuildContext context) {
+			this.context = context;
+			iterator = context.references().iterator();
+		}
+
+		@Override
+		public boolean hasNext() {
+			boolean b = iterator.hasNext();
+			if(!b && context.getParent() != null){
+				context = context.getParent();
+				iterator = context.references().iterator();
+				b = iterator.hasNext();
+			}
+			return b;
+		}
+		
+		@Override
+		public Entry<QName, Ref> next() {
+			return iterator.next();
+		}
+
+		@Override
+		public void remove() {
+			iterator.remove();
+		}
 	}
-	
-	
 }
