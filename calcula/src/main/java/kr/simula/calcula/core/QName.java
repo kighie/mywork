@@ -1,7 +1,6 @@
 package kr.simula.calcula.core;
 
 import java.io.Serializable;
-import java.util.Iterator;
 
 @SuppressWarnings("serial")
 public class QName implements Serializable {

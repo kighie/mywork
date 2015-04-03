@@ -16,24 +16,43 @@ package kr.simula.calcula.core.factory.helper;
 
 import java.util.List;
 
+import kr.simula.calcula.core.Gettable;
 import kr.simula.calcula.core.Node;
+import kr.simula.calcula.core.QName;
 import kr.simula.calcula.core.Ref;
 import kr.simula.calcula.core.builder.BuildContext;
-import kr.simula.calcula.core.builder.BuildException;
-import kr.simula.calcula.core.factory.MethodCallFactory;
+import kr.simula.calcula.core.ref.MethodRef;
+import kr.simula.calcula.core.util.GettableUtils;
 
 /**
  * <pre></pre>
  * @author kighie@gmail.com
  * @since 1.0
  */
-public class MethodCallHelper extends AbstractHelper<MethodCallFactory> {
+public class MethodCallHelper {
 
-	public Node create(BuildContext context, Ref parent, String name, List<Node> args){
-		MethodCallFactory factory = factories.get(name);
-		if(factory == null){
-			throw new BuildException("MethodCallFactory for " + name + " is not registered.");
-		}
-		return factory.create(context, parent, name, args);
+	
+	public Ref create(BuildContext context, Ref parent, String name, List<Node> args){
+		QName qname = new QName(parent.qualifiedName(), name);
+		
+		MethodRef<?> methodRef = newMethodRef(context, parent, qname, args);
+		
+		context.registerRef(qname, methodRef);
+		return methodRef;
 	}
+	
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	protected MethodRef newMethodRef(BuildContext context, Ref parent, QName qname, List<Node> args) {
+		Gettable<?>[] gettables = new Gettable[args.size()];
+
+		for(int i = 0; i<gettables.length ; i++){
+			gettables[i] = GettableUtils.checkGettable(args.get(i)) ;
+		}
+		
+		MethodRef methodRef = new MethodRef(qname, (Gettable<?>)parent, gettables);
+		
+		return methodRef;
+	}
+
 }

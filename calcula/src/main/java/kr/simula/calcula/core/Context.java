@@ -14,7 +14,6 @@
  */
 package kr.simula.calcula.core;
 
-import java.util.Map.Entry;
 
 
 /**

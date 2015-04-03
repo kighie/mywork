@@ -16,7 +16,6 @@ package kr.simula.calcula.core.ref;
 
 import kr.simula.calcula.core.Gettable;
 import kr.simula.calcula.core.QName;
-import kr.simula.calcula.core.Settable;
 import kr.simula.calcula.core.builder.BuildException;
 
 /**
@@ -24,7 +23,7 @@ import kr.simula.calcula.core.builder.BuildException;
  * @author kighie@gmail.com
  * @since 1.0
  */
-public abstract class ExternalRef<T> extends GenericRef implements Gettable<T>, Settable<T> {
+public abstract class ExternalRef<T> extends GenericRef implements Gettable<T> {
 
 	private Class<T> type;
 	

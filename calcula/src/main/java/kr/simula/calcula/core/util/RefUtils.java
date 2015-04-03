@@ -126,5 +126,26 @@ public class RefUtils {
 		
 	}
 	
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static MethodDelegator getMethodDelegator(Object bean, String methodName, Class[] argTypes){
+		Class<?>clz = bean.getClass();
+		
+		if(argTypes == null){
+			argTypes = EMPTY_CLASS_ARRAY;
+		}
+		
+		Method method;
+		try {
+			method = clz.getMethod(methodName,argTypes);
+		} catch ( Exception e) {
+			throw new RtException(e);
+		}
+
+		Class<?> returnType = method.getReturnType();
+		
+		return new MethodDelegatorImpl(methodName, returnType, method);
+		
+	}
 	
 }

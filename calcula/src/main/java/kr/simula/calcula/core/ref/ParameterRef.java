@@ -16,6 +16,7 @@ package kr.simula.calcula.core.ref;
 
 import kr.simula.calcula.core.Context;
 import kr.simula.calcula.core.QName;
+import kr.simula.calcula.core.Settable;
 
 /**
  * <pre>
@@ -24,7 +25,7 @@ import kr.simula.calcula.core.QName;
  * @author kighie@gmail.com
  * @since 1.0
  */
-public class ParameterRef<T> extends ExternalRef<T>{
+public class ParameterRef<T> extends ExternalRef<T> implements Settable<T>{
 	/**
 	 * @param qname
 	 */

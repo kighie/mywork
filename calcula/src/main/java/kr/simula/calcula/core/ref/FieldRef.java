@@ -18,6 +18,7 @@ import kr.simula.calcula.core.Context;
 import kr.simula.calcula.core.Gettable;
 import kr.simula.calcula.core.QName;
 import kr.simula.calcula.core.RtException;
+import kr.simula.calcula.core.Settable;
 import kr.simula.calcula.core.util.PropertyDelegator;
 import kr.simula.calcula.core.util.RefUtils;
 
@@ -26,7 +27,7 @@ import kr.simula.calcula.core.util.RefUtils;
  * @author kighie@gmail.com
  * @since 1.0
  */
-public class FieldRef<T> extends ExternalRef<T>{
+public class FieldRef<T> extends ExternalRef<T> implements Settable<T> {
 	protected final Gettable<?> parent;
 	protected PropertyDelegator<T> propertyDelegator;
 	
@@ -42,7 +43,7 @@ public class FieldRef<T> extends ExternalRef<T>{
 	@Override
 	public void set(Context context, T value) {
 		if(value == null){
-			Object bean = getParent(context);
+			Object bean = getBean(context);
 			
 			if(bean != null){
 				if(propertyDelegator == null){
@@ -61,7 +62,7 @@ public class FieldRef<T> extends ExternalRef<T>{
 		Object value = context.getReference(qname);
 		
 		if(value == null){
-			Object bean = getParent(context);
+			Object bean = getBean(context);
 			
 			if(bean != null){
 				if(propertyDelegator == null){
@@ -81,7 +82,7 @@ public class FieldRef<T> extends ExternalRef<T>{
 		return (T)value;
 	}
 
-	protected Object getParent(Context context){
+	protected Object getBean(Context context){
 		if(parent != null){
 			return parent.get(context);
 		}

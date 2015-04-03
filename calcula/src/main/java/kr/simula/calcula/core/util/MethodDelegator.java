@@ -1,4 +1,4 @@
-/* 
+/* ******************************************************************************
  * Copyright (c) 2012 IkChan Kwon kighie@gmail.com
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,20 +12,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package kr.simula.calcula.core.factory;
-
-import java.util.List;
-
-import kr.simula.calcula.core.Node;
-import kr.simula.calcula.core.Ref;
-import kr.simula.calcula.core.builder.BuildContext;
+package kr.simula.calcula.core.util;
 
 /**
- * <pre></pre>
- * @author kighie@gmail.com
- * @since 1.0
+ * <pre>
+ * </pre>
+ * @author Ikchan Kwon
+ *
  */
-public interface MethodCallFactory {
+public interface MethodDelegator<T> {
 
-	Node create(BuildContext context, Ref parent, String name, List<Node> args);
+	Class<T> returnType();
+	
+	String getName();
+	
+	T eval(Object bean, Object[] args);
+	
 }

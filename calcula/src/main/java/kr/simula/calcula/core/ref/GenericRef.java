@@ -54,7 +54,7 @@ public abstract class GenericRef implements Ref{
 	
 	@Override
 	public String toString() {
-		return "{param:" + getExpression() + "}";
+		return "{ref:" + getExpression() + "}";
 	}
 
 }

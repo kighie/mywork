@@ -15,7 +15,6 @@
 package kr.simula.calcula.def.builder;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 
 import kr.simula.calcula.ExpressionTests;
 import kr.simula.calcula.core.RootContext;
@@ -70,6 +69,7 @@ public class RefBuildTests extends ExpressionTests {
 		context.setParameter("data", data);
 
 //		System.out.println(new BigDecimal(100.0D).equals(new BigDecimal("100")));;
+		testExpression("=data.textE", context, "text value...");
 		
 		testExpression("=data.numA + data.numB + data.numD + data.numF", context, new BigDecimal("48.3"));
 		
@@ -84,4 +84,22 @@ public class RefBuildTests extends ExpressionTests {
 	}
 
 
+	@Test
+	public void methodRef(){
+		RootContext context = new RootContext();
+		
+		SampleData data = new SampleData();
+		data.setBoolC(true);
+		data.setNumA(new BigDecimal(10));
+		data.setNumB(34);
+		data.setNumD(-4.7);
+		data.setNumF(9);
+		data.setTextE("text value...");
+		
+		context.setParameter("data", data);
+		
+		
+		
+		testExpression("=data.textE & (data.addAB()/data.numD)", context, "text value...-9.361702128");
+	}
 }

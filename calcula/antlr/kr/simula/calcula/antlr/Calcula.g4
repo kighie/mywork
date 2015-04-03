@@ -100,7 +100,9 @@ funcCallExp returns [Gettable result]
 	;
 
 methodCallExp returns [Node result]
-	: qualifiedName '.' IDENT '(' arguments? ')'
+	: qualifiedName 	{ Ref parent = $qualifiedName.result; }
+	'.' IDENT 			{ String methodName = $IDENT.text; }
+	'(' (arguments 		{ $result = handler.methodCall(parent, methodName, $arguments.nodeList) ; })? ')'
 	;
 
 arguments  returns [List<Node> nodeList]
@@ -117,7 +119,7 @@ formulaTerm returns [Node result]
 	| IDENT				{ $result = handler.refer( $IDENT.text); }
 	| qualifiedName		{ $result = $qualifiedName.result; }
 	| funcCallExp		{ $result = $funcCallExp.result; }
-	| methodCallExp
+	| methodCallExp		{ $result = $methodCallExp.result; }
 	;
 
 qualifiedName returns [Ref result]

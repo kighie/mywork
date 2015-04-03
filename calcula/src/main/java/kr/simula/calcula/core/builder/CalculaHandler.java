@@ -133,7 +133,7 @@ public interface CalculaHandler {
 	 * @param args
 	 * @return
 	 */
-	Node methodCall(Ref parent, String name, List<Node> args);
+	Ref methodCall(Ref parent, String name, List<Node> args);
 	
 	
 }

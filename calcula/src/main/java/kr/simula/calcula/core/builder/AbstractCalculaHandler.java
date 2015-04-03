@@ -151,7 +151,7 @@ public abstract class AbstractCalculaHandler implements CalculaHandler {
 	}
 
 	@Override
-	public Node methodCall(Ref parent, String name, List<Node> args) {
+	public Ref methodCall(Ref parent, String name, List<Node> args) {
 		return methodCallHelper.create(current, parent, name, args);
 	}
 

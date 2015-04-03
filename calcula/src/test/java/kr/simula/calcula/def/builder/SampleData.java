@@ -15,6 +15,7 @@
 package kr.simula.calcula.def.builder;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 
 /**
  * <pre>
@@ -23,6 +24,8 @@ import java.math.BigDecimal;
  *
  */
 public class SampleData {
+	private static final MathContext MC = new MathContext(10);
+	
 	private BigDecimal numA;
 	private Integer numB;
 	private Boolean boolC;
@@ -102,6 +105,12 @@ public class SampleData {
 	public void setNumF(int numF) {
 		this.numF = numF;
 	}
+
+	public BigDecimal addAB(){
+		return numA.add(new BigDecimal(numB));
+	}
 	
-	
+	public BigDecimal divideAB(){
+		return numA.divide(new BigDecimal(numB), MC);
+	}
 }
