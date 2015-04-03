@@ -78,6 +78,7 @@ public class RefHelper {
 		return ref;
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected Ref create(Ref parent, QName qname){
 		if(parent != null){
 			return new FieldRef(qname, (Gettable<?>)parent);

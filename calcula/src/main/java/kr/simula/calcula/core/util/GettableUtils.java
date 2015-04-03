@@ -84,7 +84,7 @@ public class GettableUtils {
 		throw new BuildException(node + " is not Gettable.");
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static Gettable<BigDecimal> getDecimalGettable(Gettable<?> node){
 		Class<?> type = node.type();
 		

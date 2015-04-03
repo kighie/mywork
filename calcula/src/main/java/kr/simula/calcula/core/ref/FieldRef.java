@@ -18,7 +18,6 @@ import kr.simula.calcula.core.Context;
 import kr.simula.calcula.core.Gettable;
 import kr.simula.calcula.core.QName;
 import kr.simula.calcula.core.RtException;
-import kr.simula.calcula.core.Settable;
 import kr.simula.calcula.core.util.PropertyDelegator;
 import kr.simula.calcula.core.util.RefUtils;
 

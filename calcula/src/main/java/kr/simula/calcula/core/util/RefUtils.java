@@ -14,8 +14,6 @@
  */
 package kr.simula.calcula.core.util;
 
-import java.beans.Introspector;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URL;
@@ -87,6 +85,7 @@ public class RefUtils {
 		return null;
 	}
 
+	@SuppressWarnings({ "rawtypes" })
 	public static PropertyDelegator getPropertyDelegator(Object bean, String fieldName){
 		if( bean instanceof Map ){
 			return getMapPropertyDelegator(bean, fieldName);
@@ -95,6 +94,7 @@ public class RefUtils {
 		}
 	}
 
+	@SuppressWarnings({ "rawtypes" })
 	public static PropertyDelegator getMapPropertyDelegator(Object bean, String fieldName){
 
 		if(!(bean instanceof Map)){
@@ -104,6 +104,7 @@ public class RefUtils {
 		
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static BeanPropertyDelegator getBeanPropertyDelegator(Object bean, String fieldName){
 		StringBuilder buf = new StringBuilder(fieldName);
 		char u = Character.toUpperCase(buf.charAt(0)) ;

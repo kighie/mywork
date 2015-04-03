@@ -15,10 +15,7 @@
 package kr.simula.calcula.core.ref;
 
 import kr.simula.calcula.core.Context;
-import kr.simula.calcula.core.Gettable;
 import kr.simula.calcula.core.QName;
-import kr.simula.calcula.core.RootContext;
-import kr.simula.calcula.core.Settable;
 
 /**
  * <pre>
