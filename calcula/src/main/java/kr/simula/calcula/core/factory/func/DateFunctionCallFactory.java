@@ -32,15 +32,15 @@ public class DateFunctionCallFactory extends GenericFunctionCallFactory {
 		super(function, validators);
 	}
 
-	/**
-	 * @param function
-	 * @param validators
-	 * @param requiredArgCount
-	 */
-	public DateFunctionCallFactory(Function<?> function,
-			ArgumentValidator<?>[] validators, int requiredArgCount) {
-		super(function, validators, requiredArgCount);
-	}
+//	/**
+//	 * @param function
+//	 * @param validators
+//	 * @param requiredArgCount
+//	 */
+//	public DateFunctionCallFactory(Function<?> function,
+//			ArgumentValidator<?>[] validators, int requiredArgCount) {
+//		super(function, validators, requiredArgCount);
+//	}
 	
 	@SuppressWarnings("unchecked")
 	@Override

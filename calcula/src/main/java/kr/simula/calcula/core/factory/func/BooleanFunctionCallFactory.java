@@ -30,15 +30,15 @@ public class BooleanFunctionCallFactory extends GenericFunctionCallFactory {
 		super(function, validators);
 	}
 
-	/**
-	 * @param function
-	 * @param validators
-	 * @param requiredArgCount
-	 */
-	public BooleanFunctionCallFactory(Function<?> function,
-			ArgumentValidator<?>[] validators, int requiredArgCount) {
-		super(function, validators, requiredArgCount);
-	}
+//	/**
+//	 * @param function
+//	 * @param validators
+//	 * @param requiredArgCount
+//	 */
+//	public BooleanFunctionCallFactory(Function<?> function,
+//			ArgumentValidator<?>[] validators, int requiredArgCount) {
+//		super(function, validators, requiredArgCount);
+//	}
 	
 	@SuppressWarnings("unchecked")
 	@Override

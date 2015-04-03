@@ -56,7 +56,7 @@ public abstract class AbstractFunction<O> implements Function<O> {
                     " function takes no arguments");
         }
 
-        if (args.length < count)
+        if (args.length <= count)
             throw new CalculaException(getClass().getSimpleName() +
                     " function takes " + count + " arguments");
     }

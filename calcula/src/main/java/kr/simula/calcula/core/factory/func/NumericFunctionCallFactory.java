@@ -32,15 +32,15 @@ public class NumericFunctionCallFactory extends GenericFunctionCallFactory {
 		super(function, validators);
 	}
 
-	/**
-	 * @param function
-	 * @param validators
-	 * @param requiredArgCount
-	 */
-	public NumericFunctionCallFactory(Function<?> function,
-			ArgumentValidator<?>[] validators, int requiredArgCount) {
-		super(function, validators, requiredArgCount);
-	}
+//	/**
+//	 * @param function
+//	 * @param validators
+//	 * @param requiredArgCount
+//	 */
+//	public NumericFunctionCallFactory(Function<?> function,
+//			ArgumentValidator<?>[] validators, int requiredArgCount) {
+//		super(function, validators, requiredArgCount);
+//	}
 	
 	@SuppressWarnings("unchecked")
 	@Override

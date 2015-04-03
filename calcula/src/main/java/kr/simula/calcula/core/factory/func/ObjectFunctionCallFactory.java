@@ -14,11 +14,8 @@
  */
 package kr.simula.calcula.core.factory.func;
 
-import java.math.BigDecimal;
-
 import kr.simula.calcula.core.Function;
 import kr.simula.calcula.core.Gettable;
-import kr.simula.calcula.core.builder.BuildException;
 import kr.simula.calcula.core.wrapper.FunctionCallWrapper.ObjectFunctionCallWrapper;
 
 public class ObjectFunctionCallFactory extends GenericFunctionCallFactory {
@@ -32,22 +29,19 @@ public class ObjectFunctionCallFactory extends GenericFunctionCallFactory {
 		super(function, validators);
 	}
 
-	/**
-	 * @param function
-	 * @param validators
-	 * @param requiredArgCount
-	 */
-	public ObjectFunctionCallFactory(Function<?> function,
-			ArgumentValidator<?>[] validators, int requiredArgCount) {
-		super(function, validators, requiredArgCount);
-	}
+//	/**
+//	 * @param function
+//	 * @param validators
+//	 * @param requiredArgCount
+//	 */
+//	public ObjectFunctionCallFactory(Function<?> function,
+//			ArgumentValidator<?>[] validators, int requiredArgCount) {
+//		super(function, validators, requiredArgCount);
+//	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	protected Gettable<Object> createImpl(Function<?> function, Gettable<?>[] gettables) {
-		if( !BigDecimal.class.isAssignableFrom(function.getReturnType()) ){
-			throw new BuildException("Function " + functionName() + "'s return type must be BigDecimal.");
-		}
 		return new ObjectFunctionCallWrapper((Function<Object>)function, gettables);
 	}
 }

@@ -32,23 +32,12 @@ public abstract class GenericFunctionCallFactory implements FunctionCallFactory 
 
 	protected final Function<?> function;
 	protected final ArgumentValidator<?>[] validators;
-	protected final int requiredArgCount;
-	
-	/**
-	 * @param function
-	 * @param validators
-	 */
-	public GenericFunctionCallFactory(Function<?> function,
-			ArgumentValidator<?>[] validators, int requiredArgCount) {
-		this.function = function;
-		this.validators = validators;
-		this.requiredArgCount = requiredArgCount;
-	}
-	
+
 
 	public GenericFunctionCallFactory(Function<?> function,
 			ArgumentValidator<?>[] validators) {
-		this(function, validators, validators.length);
+		this.function = function;
+		this.validators = validators;
 	}
 	
 	public String functionName(){
@@ -58,20 +47,22 @@ public abstract class GenericFunctionCallFactory implements FunctionCallFactory 
 	protected Gettable<?>[] validateArgs(List<Node> args) {
 		int length = (args != null) ? args.size() : 0;
 		
-		if(length<requiredArgCount){
-			throw new BuildException("Function " + function + " needs " + requiredArgCount + " args, but " + length);
-		}
-		if(length>validators.length) {
-			throw new BuildException("Function " + function + " ArgumentsValidator is insufficient; needs " + length + ", but " + validators.length );
+		if(length<validators.length){
+			throw new BuildException("Function " + function + " needs " + validators.length + " args, but " + length);
 		}
 		
-		length = Math.min(length, validators.length);
+		int min = Math.min(length, validators.length);
 		
 		Gettable<?>[] gettables = new Gettable<?>[length];
-		for(int i = 0 ; i<length ; i++){
+		for(int i = 0 ; i<min ; i++){
 			gettables[i] = validators[i].validate(args.get(i));
 		}
 		
+		if(min < length){
+			for(int i = min ; i<length ; i++){
+				gettables[i] = validators[min-1].validate(args.get(i));
+			}
+		}
 		return gettables;
 	}
 

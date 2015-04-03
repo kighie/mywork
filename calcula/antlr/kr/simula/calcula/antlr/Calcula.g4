@@ -193,7 +193,6 @@ notExpression returns [Node result]
 	(
 		comparison { $result = $comparison.result;  }
 		| 'not' comparison {$result = handler.operator(ExprTokens.OP_NOT, $comparison.result); }
-		| 'NOT' comparison {$result = handler.operator(ExprTokens.OP_NOT, $comparison.result); }
 		
 	)
 	;
@@ -202,9 +201,7 @@ logicalExpression returns [Node result]
 	: notExpression { $result = $notExpression.result;  }
 	( 
 		'and' 	op2 = operatorExpression {$result = handler.operator(ExprTokens.OP_AND, $result, $op2.result); }
-		| 'AND'	op2 = operatorExpression {$result = handler.operator(ExprTokens.OP_AND, $result, $op2.result); }
 		|'or' 	op2 = operatorExpression {$result = handler.operator(ExprTokens.OP_OR, $result, $op2.result); }
-		| 'OR' 	op2 = operatorExpression {$result = handler.operator(ExprTokens.OP_OR, $result, $op2.result); } 
 		
 	)*
 	;
