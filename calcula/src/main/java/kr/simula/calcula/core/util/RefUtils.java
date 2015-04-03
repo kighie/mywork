@@ -24,6 +24,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import kr.simula.calcula.core.RtException;
+
 /**
  * <pre></pre>
  * @author kighie@gmail.com
@@ -84,8 +86,25 @@ public class RefUtils {
 		}
 		return null;
 	}
-	
+
 	public static PropertyDelegator getPropertyDelegator(Object bean, String fieldName){
+		if( bean instanceof Map ){
+			return getMapPropertyDelegator(bean, fieldName);
+		} else {
+			return getBeanPropertyDelegator(bean, fieldName);
+		}
+	}
+
+	public static PropertyDelegator getMapPropertyDelegator(Object bean, String fieldName){
+
+		if(!(bean instanceof Map)){
+			throw new RtException("MapPropertyDelegator needs map.");
+		}
+		return new MapPropertyDelegator(fieldName);
+		
+	}
+
+	public static BeanPropertyDelegator getBeanPropertyDelegator(Object bean, String fieldName){
 		StringBuilder buf = new StringBuilder(fieldName);
 		char u = Character.toUpperCase(buf.charAt(0)) ;
 		buf.setCharAt(0, u);
@@ -102,7 +121,7 @@ public class RefUtils {
 			setter = getSetter(clz, setterName, type);
 		}
 		
-		return new PropertyDelegator(fieldName, type, getter, setter);
+		return new BeanPropertyDelegator(fieldName, type, getter, setter);
 		
 	}
 	

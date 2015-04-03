@@ -14,64 +14,20 @@
  */
 package kr.simula.calcula.core.util;
 
-import java.lang.reflect.Method;
-
-import kr.simula.calcula.core.RtException;
 
 /**
  * <pre></pre>
  * @author kighie@gmail.com
  * @since 1.0
  */
-public class PropertyDelegator<T> {
+public interface PropertyDelegator<T> {
 
-	public static final Object[] EMPTY_ARRAY = new Object[0];
-	
-	private final String fieldName;
-	private final Class<T> type;
-	private final Method getter;
-	private final Method setter;
-	
-	
-	
 
-	/**
-	 * @param fieldName
-	 * @param type
-	 * @param getter
-	 * @param setter
-	 */
-	public PropertyDelegator(String fieldName, Class<T> type, Method getter,
-			Method setter) {
-		super();
-		this.fieldName = fieldName;
-		this.type = type;
-		this.getter = getter;
-		this.setter = setter;
-	}
-
-	public Class<T> type(){
-		return type;
-	}
+	Class<T> type();
 	
-	public String getName(){
-		return fieldName;
-	}
+	String getName();
 	
-	@SuppressWarnings("unchecked")
-	public T get(Object bean){
-		try {
-			return (T)getter.invoke(bean, EMPTY_ARRAY);
-		} catch (Exception e) {
-			throw new RtException(e);
-		}
-	}
+	T get(Object bean);
 	
-	public void set(Object bean, Object value){
-		try {
-			setter.invoke(bean, new Object[]{value});
-		} catch (Exception e) {
-			throw new RtException(e);
-		}
-	}
+	void set(Object bean, Object value);
 }
