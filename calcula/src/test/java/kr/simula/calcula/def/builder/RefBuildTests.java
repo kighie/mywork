@@ -15,6 +15,7 @@
 package kr.simula.calcula.def.builder;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 
 import kr.simula.calcula.ExpressionTests;
 import kr.simula.calcula.core.RootContext;
@@ -32,7 +33,55 @@ public class RefBuildTests extends ExpressionTests {
 	public void basic(){
 		RootContext context = new RootContext();
 		context.setParameter("A1", new BigDecimal(30));
-		testExpression("=A1 + 3", context, new BigDecimal("33"));
+		
+		testExpression("=A1", context, new BigDecimal("30"));
 	}
+
+	/**
+	 * <pre>
+	 * 30	0.12	-17	-1.3	=A1/ABS(B1 + C1/5)*D1 + 3
+	 * 
+	 * -8.890243902
+	 * </pre>
+	 */
+	@Test
+	public void formula(){
+		RootContext context = new RootContext();
+		context.setParameter("A1", new BigDecimal(30));
+		context.setParameter("B1", new BigDecimal("0.12"));
+		context.setParameter("C1", new BigDecimal("-17"));
+		context.setParameter("D1", new BigDecimal("-1.3"));
+		
+		testExpression("=A1/ABS(B1 + C1/5)*D1 + 3", context, new BigDecimal("-8.8902439019"));
+	}
+
+
+	@Test
+	public void objectRef(){
+		RootContext context = new RootContext();
+		
+		SampleData data = new SampleData();
+		data.setBoolC(true);
+		data.setNumA(new BigDecimal(10));
+		data.setNumB(34);
+		data.setNumD(-4.7);
+		data.setNumF(9);
+		data.setTextE("text value...");
+		context.setParameter("data", data);
+
+//		System.out.println(new BigDecimal(100.0D).equals(new BigDecimal("100")));;
+		
+		testExpression("=data.numA + data.numB + data.numD + data.numF", context, new BigDecimal("48.3"));
+		
+//		BigDecimal result = (BigDecimal)eval("=data.numA + data.numB + data.numD * 10 + data.numF", context);
+//		if( !result.equals(new BigDecimal("100.0"))){
+//			System.err.println(result + "<> 100" );
+//		}
+		testExpression("=data.numA + data.numB + data.numD * 10 + data.numF", context, new BigDecimal("6.0"));
+		
+		
+		testExpression("=data.numA/ABS(data.numB + data.numD/5)*data.numF + 3", context, new BigDecimal("5.7223230492"));
+	}
+
 
 }

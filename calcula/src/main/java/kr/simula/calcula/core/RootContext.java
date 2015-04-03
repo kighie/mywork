@@ -43,10 +43,10 @@ public class RootContext implements Context {
 //			value = refMap.get(qname.toString());
 //			refMap.put(qname, value);
 //		}
-		System.out.println(qname + " = " + value);
-		if(value == null){
-			System.out.println(refMap);
-		}
+//		System.out.println(qname + " = " + value);
+//		if(value == null){
+//			System.out.println(refMap);
+//		}
 		return value;
 	}
 	

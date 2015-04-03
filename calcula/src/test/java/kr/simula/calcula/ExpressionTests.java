@@ -44,7 +44,7 @@ public class ExpressionTests {
 		testExpression(expr, null, expected);
 	}
 	
-	protected void testExpression(String expr, Context context, Object expected){
+	protected Object eval(String expr, Context context){
 		Node exprNode = builder.buildExpression(expr);
 		System.out.println();
 		System.out.println(exprNode.getExpression());
@@ -53,6 +53,12 @@ public class ExpressionTests {
 		Gettable<?> gettable = (Gettable<?>)exprNode;
 		
 		Object result = gettable.get(context);
+		
+		return result;
+	}
+	
+	protected void testExpression(String expr, Context context, Object expected){
+		Object result = eval(expr, context);
 		System.out.println(result);
 		
 		Assert.assertEquals(expected, result);

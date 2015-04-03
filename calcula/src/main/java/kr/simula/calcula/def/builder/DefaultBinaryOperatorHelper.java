@@ -15,6 +15,8 @@
 package kr.simula.calcula.def.builder;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 
 import kr.simula.calcula.core.Operator.Binary;
 import kr.simula.calcula.core.factory.helper.BinaryOperatorHelper;
@@ -30,6 +32,8 @@ import kr.simula.calcula.def.ExprTokens;
  * @since 1.0
  */
 public class DefaultBinaryOperatorHelper extends BinaryOperatorHelper {
+
+	public static final MathContext DIVIDE_MATH_CONTEXT = new MathContext(10, RoundingMode.HALF_UP);
 	
 	@Override
 	protected void initDefaults() {
@@ -51,8 +55,7 @@ public class DefaultBinaryOperatorHelper extends BinaryOperatorHelper {
 		setFactory(ExprTokens.OP_CONCAT, new StringBinaryOperatorFactory(CONCAT));
 	}
 
-	public static final Binary<BigDecimal,BigDecimal,BigDecimal> MULTIFLY 
-		= new Binary<BigDecimal,BigDecimal,BigDecimal>() {
+	public static final Binary<BigDecimal,BigDecimal,BigDecimal> MULTIFLY = new Binary<BigDecimal,BigDecimal,BigDecimal>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -68,7 +71,7 @@ public class DefaultBinaryOperatorHelper extends BinaryOperatorHelper {
 
 		@Override
 		public BigDecimal eval(BigDecimal val1, BigDecimal val2) {
-			return val1.divide(val2);
+			return val1.divide(val2, DIVIDE_MATH_CONTEXT);
 		}
 
 		public String toString() { return "DIVIDE";};

@@ -15,6 +15,7 @@
 package kr.simula.calcula.def.builder;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 
 import kr.simula.calcula.ExpressionTests;
 import kr.simula.calcula.core.Gettable;
@@ -32,12 +33,14 @@ import org.junit.Test;
 public class FunctionBuildTests extends ExpressionTests {
 
 	private StopWatch stopwatch = new StopWatch();
+
+	String  expressionStr = "=COMBIN( ABS(83/5) ,2)";
 	
 	@Test
 	public void performance(){
 		stopwatch.start();
 		for( int i =0;i<1000;i++){
-			testExpression("=COMBIN( ABS(83/5) ,2)", new BigDecimal("120"));
+			testExpression(expressionStr, new BigDecimal("120"));
 		}
 		System.out.println("performance : " + stopwatch.ellapsedTime());
 	}
@@ -46,20 +49,15 @@ public class FunctionBuildTests extends ExpressionTests {
 	public void performanceBuild(){
 		stopwatch.start();
 		for( int i =0;i<1000;i++){
-			buildExpression("=COMBIN( ABS(83/5) ,2)");
+			buildExpression(expressionStr);
 		}
 		System.out.println("performanceBuild : " + stopwatch.ellapsedTime());
 	}
-	
-	Gettable<?> expression = (Gettable<?>)buildExpression("=COMBIN( ABS(83/5) ,2)");
+
+	Gettable<?> expression = (Gettable<?>)buildExpression(expressionStr);
 	@Test
 	public void performanceExec(){
 		stopwatch.start();
-		
-//		System.out.println();
-//		System.out.println(expression.getExpression());
-//		System.out.println(expression);
-		
 		for( int i =0;i<1000;i++){
 			System.out.println(expression.get(null));
 		}
@@ -88,4 +86,15 @@ public class FunctionBuildTests extends ExpressionTests {
 		System.out.println("javaCode2 : " + stopwatch.ellapsedTime());
 	}
 
+	@Test
+	public void testDivide(){
+		BigDecimal v31 = new BigDecimal("31");
+		BigDecimal v328 = new BigDecimal("3.28");
+		
+		int min = (int)Math.min(v31.precision() +  (long)Math.ceil(10.0*v328.precision()/3.0), Integer.MAX_VALUE);
+		
+		System.out.println(min);
+		BigDecimal val = v31.divide(v328, new MathContext(12));
+		System.out.println(val);
+	}
 }
