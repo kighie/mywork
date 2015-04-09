@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension id="kr.simula.formula.ide.core.FormulaNature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run class="kr.simula.formula.ide.core.FormulaNature"/>
+      </runtime>
+   </extension>
+ <extension
+       point="org.eclipse.core.contenttype.contentTypes">
+    <content-type
+          describer="kr.simula.formula.ide.core.FormulaContentDescriber"
+          file-extensions="fo"
+          id="kr.simula.formula.ide.formula-content-type"
+          name="Formula Source File"
+          priority="high">
+    </content-type>
+ </extension>
+ 
+ <extension point="org.eclipse.dltk.core.language">
+      <language
+            class="kr.simula.formula.ide.core.FormulaLanguageToolkit"
+            nature="kr.simula.formula.ide.core.FormulaNature"
+            priority="0">
+      </language>
+   </extension>
+   <extension point="org.eclipse.dltk.ui.language">
+      <language
+            class="kr.simula.formula.ide.ui.FormulaUILanguageToolkit"
+            nature="kr.simula.formula.ide.core.FormulaNature"
+            priority="0">
+      </language>
+   </extension>
+</plugin>
