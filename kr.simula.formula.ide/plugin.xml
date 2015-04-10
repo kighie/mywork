@@ -32,4 +32,47 @@
             priority="0">
       </language>
    </extension>
+   <!--
+   <extension point="org.eclipse.dltk.launching.interpreterInstallTypes">
+      <interpreterInstallType
+            class="kr.simula.formula.ide.interpreter.FormulaInstallType"
+            id="kr.simula.formula.ide.core.FormulaNature">
+      </interpreterInstallType>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page class="kr.simula.formula.ide.interpreter.ui.FormulaInterpreterPreferencePage"
+            id="kr.simula.formula.ide.preferences.interpreters"
+            name="Formula Interpreters"/>
+   </extension>
+   -->
+   <extension point="org.eclipse.dltk.core.sourceParsers">
+      <parserContribution
+            natureId="kr.simula.formula.ide.core.FormulaNature">
+         <parser
+               class="kr.simula.formula.ide.core.parser.FormulaSourceParserFactory"
+               description="Formula Source Parser"
+               id="kr.simula.formula.ide.sourceParser"
+               name="sourceParser.name"
+               priority="0" />
+      </parserContribution>
+	</extension>
+	 
+	<extension point="org.eclipse.dltk.core.sourceElementParsers">
+      <parser
+            class="kr.simula.formula.ide.core.parser.FormulaSourceElementParser"
+            nature="kr.simula.formula.ide.core.FormulaNature"
+            priority="1">
+      </parser>
+	</extension>
+	
+	<extension point="org.eclipse.ui.editors">
+      <editor class="kr.simula.formula.ide.ui.editor.FormulaEditor"
+            default="false"
+            id="kr.simula.formula.ide.ui.editor"
+            name="Formula Editor">
+         <contentTypeBinding contentTypeId="kr.simula.formula.ide.formula-content-type"/>
+      </editor>
+   </extension>
+	
 </plugin>

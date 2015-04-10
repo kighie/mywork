@@ -8,9 +8,16 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.ui.editors,
  org.eclipse.ui.ide,
+ org.eclipse.debug.core,
+ org.eclipse.debug.ui,
+ org.eclipse.jface.text,
  org.eclipse.dltk.core,
  org.eclipse.dltk.ui,
- org.eclipse.core.resources
+ org.eclipse.core.resources,
+ org.eclipse.dltk.ui,
+ org.eclipse.dltk.launching,
+ org.eclipse.dltk.debug,
+ org.eclipse.dltk.debug.ui
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: simula.kr
