@@ -74,5 +74,9 @@
          <contentTypeBinding contentTypeId="kr.simula.formula.ide.formula-content-type"/>
       </editor>
    </extension>
-	
+	<extension point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="kr.simula.formula.ide.ui.FormulaPreferenceInitializer">
+      </initializer>
+   </extension>
 </plugin>
