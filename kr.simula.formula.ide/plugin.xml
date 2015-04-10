@@ -53,7 +53,7 @@
                class="kr.simula.formula.ide.core.parser.FormulaSourceParserFactory"
                description="Formula Source Parser"
                id="kr.simula.formula.ide.sourceParser"
-               name="sourceParser.name"
+               name="Formula Source Parser"
                priority="0" />
       </parserContribution>
 	</extension>
@@ -66,6 +66,16 @@
       </parser>
 	</extension>
 	
+   <extension
+		point="org.eclipse.dltk.core.buildParticipant">
+		<buildParticipant
+			class="org.eclipse.dltk.core.builder.ParserBuildParticipantFactory"
+			id="kr.simula.formula.ide.sourceParser"
+			name="Formula Source Parser"
+			nature="kr.simula.formula.ide.core.FormulaNature">
+		</buildParticipant>
+   </extension>
+   
 	<extension point="org.eclipse.ui.editors">
       <editor class="kr.simula.formula.ide.ui.editor.FormulaEditor"
             default="false"
@@ -79,4 +89,32 @@
             class="kr.simula.formula.ide.ui.FormulaPreferenceInitializer">
       </initializer>
    </extension>
+   <!--
+ <extension
+       point="org.eclipse.dltk.core.builder">
+    <builder
+          class="kr.simula.formula.ide.ScriptBuilder1"
+          nature="kr.simula.formula.ide.core.FormulaNature">
+    </builder>
+ </extension>
+  -->
+
+   <extension point="org.eclipse.dltk.core.search">
+	    <matchLocator
+	          class="kr.simula.formula.ide.search.FormulaMatchLocator"
+	          nature="kr.simula.formula.ide.core.FormulaNature">
+	    </matchLocator>
+     <searchFactory
+           class="kr.simula.formula.ide.search.FormulaSearchFactory"
+           nature="kr.simula.formula.ide.core.FormulaNature"
+           priority="0">
+     </searchFactory>
+	</extension>
+	<extension point="org.eclipse.dltk.core.selectionEngine">
+	   <selectionEngine
+	         class="kr.simula.formula.ide.selection.FormulaSelectionEngine"
+	         nature="kr.simula.formula.ide.core.FormulaNature"
+	         priority="0">
+	   </selectionEngine>
+	</extension>
 </plugin>

@@ -14,6 +14,7 @@
  */
 package kr.simula.formula.ide;
 
+import kr.simula.formula.ide.ast.FormulaASTHandlerFactory;
 import kr.simula.formula.ide.ui.editor.FormulaTextTools;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -31,7 +32,10 @@ public class FormulaPlugin extends AbstractUIPlugin {
 	private static FormulaPlugin plugin;
 
 	private FormulaTextTools formulaTextTools;
-	 
+
+	private FormulaASTHandlerFactory handlerFactory;
+	
+	
 	/**
 	 * The constructor
 	 */
@@ -64,4 +68,17 @@ public class FormulaPlugin extends AbstractUIPlugin {
 		
 		return formulaTextTools;
 	}
+
+	/**
+	 * @return the handlerFactory
+	 */
+	public synchronized FormulaASTHandlerFactory getHandlerFactory() {
+		if (handlerFactory == null) {
+			handlerFactory= new FormulaASTHandlerFactory();
+			handlerFactory.init();
+		}
+		return handlerFactory;
+	}
+	
+	
 }

@@ -14,12 +14,16 @@
  */
 package kr.simula.formula.ide.core;
 
+import kr.simula.formula.ide.ast.FormulaASTHandlerFactory;
+
 import org.eclipse.dltk.core.AbstractLanguageToolkit;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 
 public class FormulaLanguageToolkit extends AbstractLanguageToolkit {
 	private static FormulaLanguageToolkit toolkit;
- 
+
+	private FormulaASTHandlerFactory handlerFactory;
+	
 	public static IDLTKLanguageToolkit getDefault() {
 		if (toolkit == null) {
 			toolkit = new FormulaLanguageToolkit();
@@ -38,4 +42,17 @@ public class FormulaLanguageToolkit extends AbstractLanguageToolkit {
 	public String getLanguageContentType() {
 		return "kr.simula.formula.ide.formula-content-type";
 	}
+	
+
+	/**
+	 * @return the handlerFactory
+	 */
+	public synchronized FormulaASTHandlerFactory getHandlerFactory() {
+		if (handlerFactory == null) {
+			handlerFactory= new FormulaASTHandlerFactory();
+			handlerFactory.init();
+		}
+		return handlerFactory;
+	}
+	
 }

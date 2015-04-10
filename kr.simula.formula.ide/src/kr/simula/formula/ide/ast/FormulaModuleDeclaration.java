@@ -12,17 +12,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package kr.simula.formula.ide.core.parser;
+package kr.simula.formula.ide.ast;
 
-import org.eclipse.dltk.ast.parser.ISourceParser;
-import org.eclipse.dltk.ast.parser.ISourceParserFactory;
+import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 
-public class FormulaSourceParserFactory implements ISourceParserFactory {
+/**
+ * <pre>
+ * </pre>
+ * @author Ikchan Kwon
+ *
+ */
+public class FormulaModuleDeclaration extends ModuleDeclaration {
 
-	@Override
-	public ISourceParser createSourceParser() {
-		System.out.println("FormulaSourceParserFactory ::: createSourceParser");
-		return new FormulaSourceParser();
+	/**
+	 * @param sourceLength
+	 * @param rebuildEnabled
+	 */
+	public FormulaModuleDeclaration(int sourceLength, boolean rebuildEnabled) {
+		super(sourceLength, rebuildEnabled);
+	}
+
+	/**
+	 * @param sourceLength
+	 */
+	public FormulaModuleDeclaration(int sourceLength) {
+		super(sourceLength);
 	}
 
 }
