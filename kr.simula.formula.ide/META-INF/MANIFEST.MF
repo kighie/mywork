@@ -24,3 +24,6 @@ Bundle-ClassPath: .,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: simula.kr
+Export-Package: kr.simula.formula.ide,
+ kr.simula.formula.ide.core,
+ kr.simula.formula.ide.ui
