@@ -30,7 +30,7 @@ public class FormulaInstallType  extends AbstractInterpreterInstallType {
 	private static final String[] INTERPRETER_NAMES = { "formula" };
  
 	public String getNatureId() {
-		return FormulaNature.FORMULA_NATURE;
+		return FormulaNature.NATURE;
 	}
  
 	public String getName() {

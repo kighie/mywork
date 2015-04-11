@@ -36,7 +36,7 @@ public class FormulaLanguageToolkit extends AbstractLanguageToolkit {
 	}
  
 	public String getNatureId() {
-		return FormulaNature.FORMULA_NATURE;
+		return FormulaNature.NATURE;
 	}
  
 	public String getLanguageContentType() {

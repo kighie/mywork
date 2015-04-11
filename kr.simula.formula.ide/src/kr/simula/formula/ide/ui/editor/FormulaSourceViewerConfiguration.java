@@ -14,7 +14,8 @@
  */
 package kr.simula.formula.ide.ui.editor;
 
-import org.eclipse.jface.util.PropertyChangeEvent;
+import kr.simula.formula.ide.completion.FormulaCompletionProcessor;
+
 import org.eclipse.dltk.ui.text.AbstractScriptScanner;
 import org.eclipse.dltk.ui.text.IColorManager;
 import org.eclipse.dltk.ui.text.ScriptPresentationReconciler;
@@ -25,10 +26,13 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.DefaultIndentLineAutoEditStrategy;
 import org.eclipse.jface.text.IAutoEditStrategy;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.contentassist.ContentAssistant;
+import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.presentation.IPresentationReconciler;
 import org.eclipse.jface.text.presentation.PresentationReconciler;
 import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
 import org.eclipse.jface.text.source.ISourceViewer;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 /**
@@ -51,6 +55,8 @@ public class FormulaSourceViewerConfiguration extends ScriptSourceViewerConfigur
 		super(colorManager, preferenceStore, editor, partitioning);
 	}
  
+	
+	
 	public IAutoEditStrategy[] getAutoEditStrategies(
 			ISourceViewer sourceViewer, String contentType) {
 		return new IAutoEditStrategy[] { new DefaultIndentLineAutoEditStrategy() };
@@ -114,5 +120,13 @@ public class FormulaSourceViewerConfiguration extends ScriptSourceViewerConfigur
 	public boolean affectsTextPresentation(PropertyChangeEvent event) {
 		return this.fCodeScanner.affectsBehavior(event)
 				|| this.fStringScanner.affectsBehavior(event);
+	}
+	
+	protected void alterContentAssistant(ContentAssistant assistant) {
+		// IDocument.DEFAULT_CONTENT_TYPE
+		IContentAssistProcessor scriptProcessor = new FormulaCompletionProcessor(
+				getEditor(), assistant, IDocument.DEFAULT_CONTENT_TYPE);
+		assistant.setContentAssistProcessor(scriptProcessor,
+				IDocument.DEFAULT_CONTENT_TYPE);
 	}
 }

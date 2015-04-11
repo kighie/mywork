@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<templates>
+	<template name="foreach" description="foreach loop statement"
+		autoinsert="true" context="formulaUniversalTemplateContextType"
+		deleted="false"  enabled="true">foreach( a in
+		list ){
+		}
+	</template>
+</templates>

@@ -39,7 +39,7 @@ public class FormulaInterpretersBlock extends InterpretersBlock {
 	}
  
 	protected String getCurrentNature() {
-		return FormulaNature.FORMULA_NATURE;
+		return FormulaNature.NATURE;
 	}
 }
 

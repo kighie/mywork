@@ -19,5 +19,5 @@ import kr.simula.formula.ide.FormulaPlugin;
 import org.eclipse.dltk.core.ScriptNature;
 
 public class FormulaNature  extends ScriptNature {
-	public static final String FORMULA_NATURE = FormulaPlugin.PLUGIN_ID + ".nature";
+	public static final String NATURE = FormulaPlugin.PLUGIN_ID + ".nature";
 }

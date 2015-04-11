@@ -35,6 +35,6 @@ public class FormulaSourceElementParser extends AbstractSourceElementParser {
 	
 	@Override
 	protected String getNatureId() {
-		return FormulaNature.FORMULA_NATURE;
+		return FormulaNature.NATURE;
 	}
 }

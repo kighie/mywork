@@ -10,6 +10,8 @@
  <extension
        point="org.eclipse.core.contenttype.contentTypes">
     <content-type
+          base-type="org.eclipse.core.runtime.text"
+          default-charset="UTF-8"
           describer="kr.simula.formula.ide.core.FormulaContentDescriber"
           file-extensions="fo"
           id="kr.simula.formula.ide.formula-content-type"
@@ -117,4 +119,76 @@
 	         priority="0">
 	   </selectionEngine>
 	</extension>
+	<!--
+	<extension point="org.eclipse.ui.actionSets">
+	   <actionSet
+	         id="kr.simula.formula.actionSet"
+	         label="Formula action set">
+	          <action
+	                class="kr.simula.formula.actions.FormulaOpenTypeAction"
+	                id="openType"
+	                label="Formula Open type"
+	                menubarPath="navigate/open.ext2"
+	                toolbarPath="org.eclipse.search.searchActionSet/Search"
+	                tooltip="Formula open type">
+	         </action>
+	   </actionSet>
+	</extension>
+	-->
+	<extension point="org.eclipse.dltk.ui.scriptDocumentationProviders">
+	     <provider
+	           class="kr.simula.formula.selection.FormulaCommentDocumentationProvider"
+	           id="kr.simula.formula.selection.FormulaCommentDocumentationProvider"
+	           nature="kr.simula.formula.ide.core.FormulaNature"/>
+	</extension>
+	
+	<extension point="org.eclipse.dltk.core.completionEngine">
+	   <completionEngine
+	         class="kr.simula.formula.ide.completion.FormulaCompletionEngine"
+	         nature="kr.simula.formula.ide.core.FormulaNature"
+	         priority="0">
+	   </completionEngine>
+	</extension>
+	<extension point="org.eclipse.dltk.ui.scriptCompletionProposalComputer"
+			id="FormulaTypeCompletionProposalComputer">
+			<scriptCompletionProposalComputer
+				class="kr.simula.formula.ide.completion.FormulaCompletionProposalComputer"
+				categoryId="org.eclipse.dltk.ui.scriptTypeProposalCategory"
+				toolkitId="kr.simula.formula.ide.core.FormulaNature">
+				<partition type="__dftl_partition_content_type"/>
+			</scriptCompletionProposalComputer>
+	</extension>
+	 <extension point="org.eclipse.ui.editors.templates">
+       <contextType
+          class="kr.simula.formula.ide.completion.templates.FormulaUniversalTemplateContextType"
+          id="formulaUniversalTemplateContextType"
+          name="Formula Template content">
+       </contextType>
+       <include
+          file="templates/templates.xml"
+          translations="templates/templates.properties">
+       </include>
+    </extension>
+    
+    <extension
+	       point="org.eclipse.ui.preferencePages">
+	         <page
+                category="kr.simula.formula.ide.ui.prefs.FormulaPreferencePage"
+                class="kr.simula.formula.ide.ui.prefs.FormulaCodeTemplatesPreferencePage"
+                id="kr.simula.formula.ide.ui.editor.Templates"
+                name="Formula Templates"/>
+	         <page
+	              class="kr.simula.formula.ide.ui.prefs.FormulaPreferencePage"
+	              id="kr.simula.formula.ide.ui.prefs.FormulaPreferencePage"
+	              name="Formula"/>
+	</extension>
+	
+	
+	 <extension point="org.eclipse.dltk.ui.language">
+	      <language
+	            class="kr.simula.formula.ide.ui.FormulaUILanguageToolkit2"
+	            nature="kr.simula.formula.ide.core.FormulaNature"
+	            priority="1">
+	      </language>
+	   </extension>
 </plugin>
