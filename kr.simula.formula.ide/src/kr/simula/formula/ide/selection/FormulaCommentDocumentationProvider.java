@@ -1,4 +1,4 @@
-package kr.simula.formula.selection;
+package kr.simula.formula.ide.selection;
 
 import java.io.Reader;
 import java.io.StringReader;

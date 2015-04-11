@@ -137,7 +137,7 @@
 	-->
 	<extension point="org.eclipse.dltk.ui.scriptDocumentationProviders">
 	     <provider
-	           class="kr.simula.formula.selection.FormulaCommentDocumentationProvider"
+	           class="kr.simula.formula.ide.selection.FormulaCommentDocumentationProvider"
 	           id="kr.simula.formula.selection.FormulaCommentDocumentationProvider"
 	           nature="kr.simula.formula.ide.core.FormulaNature"/>
 	</extension>
