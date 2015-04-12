@@ -27,15 +27,13 @@ import kr.simula.formula.script.Script;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.TokenStream;
 import org.eclipse.dltk.ast.parser.AbstractSourceParser;
 import org.eclipse.dltk.ast.parser.IModuleDeclaration;
 import org.eclipse.dltk.compiler.env.IModuleSource;
-import org.eclipse.dltk.compiler.problem.DefaultProblem;
 import org.eclipse.dltk.compiler.problem.IProblem;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
-import org.eclipse.dltk.compiler.problem.ProblemSeverities;
+import org.eclipse.dltk.compiler.problem.ProblemCollector;
 
 /**
  * <pre>
@@ -74,8 +72,12 @@ public class FormulaSourceParser extends AbstractSourceParser {
 		try {
 			FormulaScriptContext ctx = parser.formulaScript();
 			script = ctx.script;
-			
+
 			System.err.println("FormulaSourceParser#parse " + script.getExpression());
+			ProblemCollector collector = (ProblemCollector)reporter.getAdapter(ProblemCollector.class);
+			for( IProblem p : collector.getProblems() ){
+				System.err.println(p);
+			}
 		} catch (BuildException e) {
 			errorAdapter.reportBuildError(e);
 		}

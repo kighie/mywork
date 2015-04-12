@@ -82,4 +82,23 @@
     </launchConfigurationTabGroup>
   </extension>
   
+  <extension point="org.eclipse.debug.ui.launchShortcuts">
+    <shortcut
+      class="kr.simula.formula.ide.launcher.ui.FormulaLaunchShortcut"
+      icon="icon/formula.png"
+      id="kr.simula.formula.ide.launcher.ui.launchShortcut"
+      label="Formula"
+      modes="run, debug">
+      <configurationType
+            id="kr.simula.formula.ide.launcher.FormulaLaunchConfigurationType">
+      </configurationType>
+      <contextualLaunch>
+         <enablement>
+            <adapt
+                  type="kr.simula.formula.ide.ast.FormulaModuleDeclaration">
+            </adapt>
+         </enablement>
+      </contextualLaunch>
+    </shortcut>
+  </extension>
 </plugin>
