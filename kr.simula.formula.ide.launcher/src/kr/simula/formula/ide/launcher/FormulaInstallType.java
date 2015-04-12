@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package kr.simula.formula.ide.interpreter;
+package kr.simula.formula.ide.launcher;
 
 import java.io.IOException;
 
@@ -21,9 +21,13 @@ import kr.simula.formula.ide.core.FormulaNature;
 
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.dltk.core.environment.IDeployment;
+import org.eclipse.dltk.core.environment.IFileHandle;
 import org.eclipse.dltk.internal.launching.AbstractInterpreterInstallType;
+import org.eclipse.dltk.launching.EnvironmentVariable;
 import org.eclipse.dltk.launching.IInterpreterInstall;
+import org.eclipse.dltk.launching.LibraryLocation;
 import org.osgi.framework.Bundle;
 
 public class FormulaInstallType  extends AbstractInterpreterInstallType {
@@ -34,13 +38,20 @@ public class FormulaInstallType  extends AbstractInterpreterInstallType {
 	}
  
 	public String getName() {
-		return "Formula";
+		return "Formula Install";
 	}
  
 	protected String getPluginId() {
 		return FormulaPlugin.PLUGIN_ID;
 	}
  
+
+	public LibraryLocation[] getDefaultLibraryLocations(
+			IFileHandle installLocation, EnvironmentVariable[] variables,
+			IProgressMonitor monitor) {
+		return new LibraryLocation[0];
+	}
+	
 	protected String[] getPossibleInterpreterNames() {
 		return INTERPRETER_NAMES;
 	}

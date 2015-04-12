@@ -79,8 +79,10 @@
    </extension>
    
 	<extension point="org.eclipse.ui.editors">
-      <editor class="kr.simula.formula.ide.ui.editor.FormulaEditor"
+      <editor
+            class="kr.simula.formula.ide.ui.editor.FormulaEditor"
             default="false"
+            icon="icon/formula.png"
             id="kr.simula.formula.ide.ui.editor"
             name="Formula Editor">
          <contentTypeBinding contentTypeId="kr.simula.formula.ide.formula-content-type"/>

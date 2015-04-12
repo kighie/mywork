@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.dltk.launching.interpreterInstallTypes">
+      <interpreterInstallType
+            class="kr.simula.formula.ide.launcher.FormulaInstallType"
+            id="kr.simula.formula.ide.launcher.interpreterInstallType">
+      </interpreterInstallType>
+   </extension>
+
+  <extension point="org.eclipse.debug.core.launchDelegates">
+    <launchDelegate
+      delegate="kr.simula.formula.ide.launcher.FormulaLaunchConfigurationDelegate"
+      id="kr.simula.formula.ide.launcher.launchDelegates"
+      modes="debug"
+      name="Debugging with Formula debug support"
+      type="org.eclipse.jdt.launching.localJavaApplication">
+    </launchDelegate>
+  </extension>
+	
+  <extension point="org.eclipse.dltk.console.scriptInterpreter">
+    <scriptInterpreter
+      class="kr.simula.formula.ide.console.FormulaInterpreter"
+      natureID="kr.simula.formula.ide.core.FormulaNature" />
+  </extension>
+	
+  <extension point="org.eclipse.debug.core.launchConfigurationTypes">
+    <launchConfigurationType
+      delegate="kr.simula.formula.ide.launcher.FormulaLaunchConfigurationDelegate"
+      id="kr.simula.formula.ide.launcher.FormulaLaunchConfigurationType"
+      modes="run,debug"
+      name="Formula"
+      public="true"
+      sourceLocatorId="formulaSourceLocator"
+      sourcePathComputerId="formulaSourcePathComputer">
+    </launchConfigurationType>
+  </extension>
+  
+  <extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+    <launchConfigurationTypeImage
+          configTypeID="kr.simula.formula.ide.launcher.FormulaLaunchConfigurationType"
+          icon="icon/formula.png"
+          id="kr.simula.formula.ide.launcher.FormulaLaunchConfigurationTypeImage">
+    </launchConfigurationTypeImage>
+  </extension>
+  
+  <extension point="org.eclipse.debug.core.sourcePathComputers">
+    <sourcePathComputer
+      class="kr.simula.formula.ide.launcher.FormulaSourcePathComputer"
+      id="formulaSourcePathComputer" />
+  </extension>
+
+  <extension point="org.eclipse.debug.core.sourceLocators">
+    <sourceLocator
+      class="kr.simula.formula.ide.launcher.FormulaSourceLookupDirector"
+      id="formulaSourceLocator"
+      name="kr.simula.formula.ide.launcher.formulaSourceLocator" />
+  </extension>
+  
+  <extension point="org.eclipse.dltk.launching.debuggingEngine">
+    <engineContribution 
+    	natureId="kr.simula.formula.ide.core.FormulaNature">
+      <selector class="kr.simula.formula.ide.launcher.FormulaDebuggingEngineSelector" />
+    </engineContribution>
+  </extension>
+  
+  <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+    <launchConfigurationTabGroup
+      type="kr.simula.formula.ide.launcher.FormulaLaunchConfigurationType"
+      class="kr.simula.formula.ide.launcher.ui.FormulaTabGroup"
+      id="kr.simula.formula.ide.debug.ui.launchConfigurations.FormulaTabGroup">
+      <launchMode
+        mode="debug"
+        perspective="org.eclipse.debug.ui.DebugPerspective"
+        description="Debug Formula">
+      </launchMode>
+      <launchMode
+        mode="run"
+        description="Run Formula">
+      </launchMode>
+    </launchConfigurationTabGroup>
+  </extension>
+  
+</plugin>

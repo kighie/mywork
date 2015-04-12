@@ -44,7 +44,7 @@ public class FormulaEditor extends ScriptEditor {
 			IDocumentExtension3 extension = (IDocumentExtension3) document;
 			if (extension.getDocumentPartitioner(IFormulaPartitions.FORMULA_PARTITIONING) == null) {
 				FormulaTextTools tools = FormulaPlugin.getDefault().getTextTools();
-		                tools.setupDocumentPartitioner(document, IFormulaPartitions.FORMULA_PARTITIONING);
+				tools.setupDocumentPartitioner(document, IFormulaPartitions.FORMULA_PARTITIONING);
 			}
 		}
 	}

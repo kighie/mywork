@@ -17,6 +17,7 @@ package kr.simula.formula.ide.core.parser;
 import kr.simula.formula.antlr.FormulaScriptLexer;
 import kr.simula.formula.antlr.FormulaScriptParser;
 import kr.simula.formula.antlr.FormulaScriptParser.FormulaScriptContext;
+import kr.simula.formula.core.builder.BuildException;
 import kr.simula.formula.ide.FormulaPlugin;
 import kr.simula.formula.ide.ast.FormulaASTHandler;
 import kr.simula.formula.ide.ast.FormulaModuleDeclaration;
@@ -26,11 +27,15 @@ import kr.simula.formula.script.Script;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.TokenStream;
 import org.eclipse.dltk.ast.parser.AbstractSourceParser;
 import org.eclipse.dltk.ast.parser.IModuleDeclaration;
 import org.eclipse.dltk.compiler.env.IModuleSource;
+import org.eclipse.dltk.compiler.problem.DefaultProblem;
+import org.eclipse.dltk.compiler.problem.IProblem;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
+import org.eclipse.dltk.compiler.problem.ProblemSeverities;
 
 /**
  * <pre>
@@ -40,22 +45,12 @@ import org.eclipse.dltk.compiler.problem.IProblemReporter;
  */
 public class FormulaSourceParser extends AbstractSourceParser {
 
-	private SyntaxErrorAdapter errorAdapter;
-	
 	/**
 	 * 
 	 */
 	public FormulaSourceParser() {
-		System.err.println("new FormulaSourceParser");
 	}
 	
-	/**
-	 * @param errorAdapter the errorAdapter to set
-	 */
-	public void setErrorAdapter(SyntaxErrorAdapter errorAdapter) {
-		this.errorAdapter = errorAdapter;
-	}
-
 	@Override
 	public IModuleDeclaration parse(IModuleSource input,
 			IProblemReporter reporter) {
@@ -70,20 +65,25 @@ public class FormulaSourceParser extends AbstractSourceParser {
 		
 		parser.setHandler(handler);
 		
-		if(errorAdapter != null){
-			parser.addErrorListener(errorAdapter);
+		SyntaxErrorAdapter errorAdapter = new SyntaxErrorAdapter(reporter, input.getFileName());
+		
+		parser.addErrorListener(errorAdapter);
+		
+		Script script = null;
+		
+		try {
+			FormulaScriptContext ctx = parser.formulaScript();
+			script = ctx.script;
+			
+			System.err.println("FormulaSourceParser#parse " + script.getExpression());
+		} catch (BuildException e) {
+			errorAdapter.reportBuildError(e);
 		}
-		
-		FormulaScriptContext ctx = parser.formulaScript();
-		Script script = ctx.script;
-		
-		System.err.println("FormulaSourceParser#parse " + script);
 		
 		
 		FormulaModuleDeclaration module = new FormulaModuleDeclaration(sourceCode.length());
 		
-		
 		return module;
 	}
-
+	
 }

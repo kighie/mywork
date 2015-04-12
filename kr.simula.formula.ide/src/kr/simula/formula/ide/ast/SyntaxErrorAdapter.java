@@ -14,14 +14,17 @@
  */
 package kr.simula.formula.ide.ast;
 
-import java.util.BitSet;
+import kr.simula.formula.core.SourceLocation;
+import kr.simula.formula.core.builder.BuildException;
 
-import org.antlr.v4.runtime.ANTLRErrorListener;
-import org.antlr.v4.runtime.Parser;
+import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
-import org.antlr.v4.runtime.atn.ATNConfigSet;
-import org.antlr.v4.runtime.dfa.DFA;
+import org.antlr.v4.runtime.Token;
+import org.eclipse.dltk.compiler.problem.DefaultProblem;
+import org.eclipse.dltk.compiler.problem.IProblem;
+import org.eclipse.dltk.compiler.problem.IProblemReporter;
+import org.eclipse.dltk.compiler.problem.ProblemSeverities;
 
 /**
  * <pre>
@@ -29,48 +32,71 @@ import org.antlr.v4.runtime.dfa.DFA;
  * @author Ikchan Kwon
  *
  */
-public class SyntaxErrorAdapter implements ANTLRErrorListener {
+public class SyntaxErrorAdapter extends BaseErrorListener {
 
-	/* (non-Javadoc)
-	 * @see org.antlr.v4.runtime.ANTLRErrorListener#syntaxError(org.antlr.v4.runtime.Recognizer, java.lang.Object, int, int, java.lang.String, org.antlr.v4.runtime.RecognitionException)
+	private IProblemReporter reporter;
+	private String fileName;
+	
+	/**
+	 * @param reporter
+	 * @param fileName
 	 */
+	public SyntaxErrorAdapter(IProblemReporter reporter, String fileName) {
+		super();
+		this.reporter = reporter;
+		this.fileName = fileName;
+	}
+
+
 	@Override
 	public void syntaxError(Recognizer<?, ?> recognizer,
 			Object offendingSymbol, int line, int charPositionInLine,
 			String msg, RecognitionException e) {
-		// TODO Auto-generated method stub
-		
+		reporter.reportProblem( makeProblem(fileName, msg, e) );
 	}
 
-	/* (non-Javadoc)
-	 * @see org.antlr.v4.runtime.ANTLRErrorListener#reportAmbiguity(org.antlr.v4.runtime.Parser, org.antlr.v4.runtime.dfa.DFA, int, int, boolean, java.util.BitSet, org.antlr.v4.runtime.atn.ATNConfigSet)
-	 */
-	@Override
-	public void reportAmbiguity(Parser recognizer, DFA dfa, int startIndex,
-			int stopIndex, boolean exact, BitSet ambigAlts, ATNConfigSet configs) {
-		// TODO Auto-generated method stub
-		
+
+	public void reportBuildError(BuildException e) {
+		reporter.reportProblem( makeProblem(fileName, e) );
 	}
 
-	/* (non-Javadoc)
-	 * @see org.antlr.v4.runtime.ANTLRErrorListener#reportAttemptingFullContext(org.antlr.v4.runtime.Parser, org.antlr.v4.runtime.dfa.DFA, int, int, java.util.BitSet, org.antlr.v4.runtime.atn.ATNConfigSet)
-	 */
-	@Override
-	public void reportAttemptingFullContext(Parser recognizer, DFA dfa,
-			int startIndex, int stopIndex, BitSet conflictingAlts,
-			ATNConfigSet configs) {
-		// TODO Auto-generated method stub
-		
+
+	protected static IProblem makeProblem(String fileName, String msg, RecognitionException e) {
+		Token offendingToken = e.getOffendingToken();
+		IProblem problem = new DefaultProblem(fileName,msg,
+				IProblem.Internal,new String[0],ProblemSeverities.Fatal,
+				offendingToken.getLine(), offendingToken.getCharPositionInLine(), 
+				offendingToken.getStartIndex(), offendingToken.getStopIndex());
+		return problem;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.antlr.v4.runtime.ANTLRErrorListener#reportContextSensitivity(org.antlr.v4.runtime.Parser, org.antlr.v4.runtime.dfa.DFA, int, int, int, org.antlr.v4.runtime.atn.ATNConfigSet)
+	/**<pre>
+	 * </pre>
+	 * @param fileName
+	 * @param e
+	 * @return
 	 */
-	@Override
-	public void reportContextSensitivity(Parser recognizer, DFA dfa,
-			int startIndex, int stopIndex, int prediction, ATNConfigSet configs) {
-		// TODO Auto-generated method stub
+	protected static IProblem makeProblem(String fileName, BuildException e) {
+		Throwable cause = e.getCause();
+		if(cause != null && cause instanceof RecognitionException){
+			return makeProblem(fileName, e.getMessage(), (RecognitionException)cause);
+		}
 		
+		SourceLocation loc = e.getLocation();
+		IProblem problem;
+		
+		if(loc != null){
+			problem = new DefaultProblem(fileName,e.getMessage(),
+					IProblem.Unclassified,null,ProblemSeverities.Fatal, 
+					loc.getStartIndex(), loc.getEndIndex(),
+					loc.getLine(),loc.getCharPositionInLine());
+		} else {
+			problem = new DefaultProblem(fileName,e.getMessage(),
+					IProblem.Unclassified,null,ProblemSeverities.Fatal, 
+					-1,-1,-1,-1);
+		}
+
+		return problem;
 	}
 
 }

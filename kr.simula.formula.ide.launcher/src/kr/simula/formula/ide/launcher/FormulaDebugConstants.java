@@ -1,4 +1,4 @@
-/* ******************************************************************************
+/* 
  * Copyright (c) 2012 IkChan Kwon kighie@gmail.com
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,16 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package kr.simula.formula.ide.interpreter.ui;
+package kr.simula.formula.ide.launcher;
 
-import org.eclipse.dltk.internal.debug.ui.interpreters.InterpretersBlock;
-import org.eclipse.dltk.internal.debug.ui.interpreters.ScriptInterpreterPreferencePage;
+/**
+ * <pre></pre>
+ * @author kighie@gmail.com
+ * @since 1.0
+ */
+public interface FormulaDebugConstants {
 
-@Deprecated
-public class FormulaInterpreterPreferencePage extends ScriptInterpreterPreferencePage {
-	public static final String PAGE_ID = "kr.simula.formula.ide.preferences.interpreters";
-
-	public InterpretersBlock createInterpretersBlock() {
-		return new FormulaInterpretersBlock();
-	}
+	public static final String DEBUG_MODEL_ID = "kr.simula.formula.ide.debug.javascriptModel";
+	
+	public static final String DEBUGGING_ENGINE_ID_KEY = "debugging_engine_id";
 }
